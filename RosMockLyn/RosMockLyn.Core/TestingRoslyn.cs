@@ -51,7 +51,7 @@ namespace RosMockLyn.Core
 
             var syntaxTrees = compilation.SyntaxTrees.Where(HasInterface);
 
-            var mockingWalker = new InterfaceMockGenerator();
+            IInterfaceMockGenerator mockingWalker = new InterfaceMockGenerator();
             var outputWalker = new OutputWalker();
 
             //foreach (var tree in syntaxTrees)
@@ -60,13 +60,13 @@ namespace RosMockLyn.Core
             //    outputWalker.Visit(tree.GetRoot());
             //}
 
-            var syntax = mockingWalker.Visit(syntaxTrees.First().GetRoot());
+            var syntax = mockingWalker.GenerateMock(syntaxTrees.First());
 
             outputWalker.Visit(syntaxTrees.First().GetRoot());
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------");
             Console.WriteLine();
-            outputWalker.Visit(syntax);
+            outputWalker.Visit(syntax.GetRoot());
 
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------");

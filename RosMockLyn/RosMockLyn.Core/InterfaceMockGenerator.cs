@@ -28,7 +28,7 @@ namespace RosMockLyn.Core
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class InterfaceMockGenerator : CSharpSyntaxRewriter
+    public class InterfaceMockGenerator : CSharpSyntaxRewriter, IInterfaceMockGenerator
     {
         public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
@@ -59,6 +59,11 @@ namespace RosMockLyn.Core
                         SyntaxFactory.IdentifierName(
                             SyntaxFactory.Identifier(interfaceDeclaration.Identifier.ValueText)))
                     .AddMembers(interfaceDeclaration.Members.ToArray());
+        }
+
+        public SyntaxTree GenerateMock(SyntaxTree treeToGenerateMockFrom)
+        {
+            return SyntaxFactory.SyntaxTree(Visit(treeToGenerateMockFrom.GetRoot()).NormalizeWhitespace());
         }
     }
 }
