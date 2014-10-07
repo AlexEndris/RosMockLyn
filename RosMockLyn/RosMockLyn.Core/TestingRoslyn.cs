@@ -22,8 +22,45 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace RosMockLyn.Core
 {
+    using System.Collections.Immutable;
+    using System.Linq;
+    using System.Linq.Expressions;
+
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Formatting;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Host;
+    using Microsoft.CodeAnalysis.Host.Mef;
+    using Microsoft.CodeAnalysis.MSBuild;
+
     public class TestingRoslyn
     {
-         
+        public void DoSomething()
+        {
+            typeof(CSharpFormattingOptions).ToString();
+
+            var workspace = MSBuildWorkspace.Create();
+
+            var project =
+                workspace.OpenProjectAsync(@"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\TestProject\TestProject.csproj")
+                    .Result;
+
+            var compilation = project.GetCompilationAsync().Result;
+
+            var syntaxTrees = compilation.SyntaxTrees.Where(HasInterface);
+
+            var mockingWalker = new MockingWalker();
+
+            mockingWalker.Visit(syntaxTrees.First().GetRoot());
+        }
+
+        private bool HasInterface(SyntaxTree tree)
+        {
+            var root = tree.GetRoot();
+
+            var interfaceBlockSyntaxs = from node in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>() select node;
+
+            return interfaceBlockSyntaxs.Any();
+        }
     }
 }

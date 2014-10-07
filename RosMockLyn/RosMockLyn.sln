@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Cmd", "RosMockLy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Core", "RosMockLyn.Core\RosMockLyn.Core.csproj", "{02A07CAC-A4FC-4188-8315-E359C8BEC92D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://namelessone.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -19,6 +21,9 @@ Global
 		SccProjectUniqueName2 = RosMockLyn.Core\\RosMockLyn.Core.csproj
 		SccProjectName2 = RosMockLyn.Core
 		SccLocalPath2 = RosMockLyn.Core
+		SccProjectUniqueName3 = TestProject\\TestProject.csproj
+		SccProjectName3 = TestProject
+		SccLocalPath3 = TestProject
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +38,10 @@ Global
 		{02A07CAC-A4FC-4188-8315-E359C8BEC92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02A07CAC-A4FC-4188-8315-E359C8BEC92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02A07CAC-A4FC-4188-8315-E359C8BEC92D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
