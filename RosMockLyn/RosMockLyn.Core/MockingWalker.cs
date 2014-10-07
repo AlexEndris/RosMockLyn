@@ -28,17 +28,16 @@ namespace RosMockLyn.Core
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class MockingWalker : CSharpSyntaxWalker
+    public class MockingWalker : CSharpSyntaxRewriter
     {
-        
-        public override void Visit(SyntaxNode node)
+        public override SyntaxNode Visit(SyntaxNode node)
         {
             var padding = node.Ancestors().Count();
             var cSharpKind = node.CSharpKind();
 
             Console.WriteLine("{0}{1}", new String(' ', padding), cSharpKind);
 
-            base.Visit(node);
+            return base.Visit(node);
         }
     }
 }
