@@ -22,11 +22,13 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace RosMockLyn.Core
 {
+    using System;
     using System.Collections.Immutable;
     using System.Linq;
     using System.Linq.Expressions;
 
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Formatting;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Host;
@@ -49,9 +51,27 @@ namespace RosMockLyn.Core
 
             var syntaxTrees = compilation.SyntaxTrees.Where(HasInterface);
 
-            var mockingWalker = new MockingWalker();
+            var mockingWalker = new InterfaceMockGenerator();
+            var outputWalker = new OutputWalker();
 
-            mockingWalker.Visit(syntaxTrees.First().GetRoot());
+            //foreach (var tree in syntaxTrees)
+            //{
+            //    Console.Clear();
+            //    outputWalker.Visit(tree.GetRoot());
+            //}
+
+            var syntax = mockingWalker.Visit(syntaxTrees.First().GetRoot());
+
+            outputWalker.Visit(syntaxTrees.First().GetRoot());
+            Console.WriteLine();
+            Console.WriteLine("-----------------------------------------------------------");
+            Console.WriteLine();
+            outputWalker.Visit(syntax);
+
+            Console.WriteLine();
+            Console.WriteLine("-----------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine(syntax.ToString());
         }
 
         private bool HasInterface(SyntaxTree tree)
@@ -59,6 +79,7 @@ namespace RosMockLyn.Core
             var root = tree.GetRoot();
 
             var interfaceBlockSyntaxs = from node in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>() select node;
+
 
             return interfaceBlockSyntaxs.Any();
         }
