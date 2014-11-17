@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Cmd", "RosMockLyn.Cmd\RosMockLyn.Cmd.csproj", "{93F224D4-5948-446C-A1AE-D1C7E0D94952}"
 EndProject
@@ -16,9 +16,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C6D75B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{CD908017-07B3-4EEC-A2C6-40437F4824FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedTestingAssembly", "GeneratedTestingAssembly\GeneratedTestingAssembly.csproj", "{98BD449F-64CC-4193-A76C-1A517CF42632}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingAssembly.Tests", "TestingAssembly.Tests\TestingAssembly.Tests.csproj", "{3AA631B6-C852-4B1B-89EA-119D87516C92}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://namelessone.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -31,6 +37,14 @@ Global
 		SccProjectUniqueName3 = TestProject\\TestProject.csproj
 		SccProjectName3 = TestProject
 		SccLocalPath3 = TestProject
+		SccProjectUniqueName4 = GeneratedTestingAssembly\\GeneratedTestingAssembly.csproj
+		SccProjectTopLevelParentUniqueName4 = RosMockLyn.sln
+		SccProjectName4 = GeneratedTestingAssembly
+		SccLocalPath4 = GeneratedTestingAssembly
+		SccProjectUniqueName5 = TestingAssembly.Tests\\TestingAssembly.Tests.csproj
+		SccProjectTopLevelParentUniqueName5 = RosMockLyn.sln
+		SccProjectName5 = TestingAssembly.Tests
+		SccLocalPath5 = TestingAssembly.Tests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,8 +63,20 @@ Global
 		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98BD449F-64CC-4193-A76C-1A517CF42632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98BD449F-64CC-4193-A76C-1A517CF42632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98BD449F-64CC-4193-A76C-1A517CF42632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98BD449F-64CC-4193-A76C-1A517CF42632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{98BD449F-64CC-4193-A76C-1A517CF42632} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
+		{3AA631B6-C852-4B1B-89EA-119D87516C92} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
 	EndGlobalSection
 EndGlobal
