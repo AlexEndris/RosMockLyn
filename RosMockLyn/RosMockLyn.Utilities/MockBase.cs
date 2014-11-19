@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GeneratedTestingAssembly
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
+namespace RosMockLyn.Utilities
 {
     public abstract class MockBase : IMock
     {
@@ -14,29 +16,27 @@ namespace GeneratedTestingAssembly
         public void Returns<T>(string calledMember, T value)
         {
 
-            SetReturnValue(calledMember, value);
+            this.SetReturnValue(calledMember, value);
         }
 
         private void SetReturnValue(string calledMember, object value)
         {
-            FieldInfo fieldInfo = this.GetType()
-                .GetField(
-                    string.Format("{0}_ReturnValue", calledMember),
-                    BindingFlags.Instance | BindingFlags.NonPublic);
+            var fieldInfo = this.GetType().GetRuntimeFields()
+                                .First(x => x.Name == string.Format("{0}_ReturnValue", calledMember));
 
             fieldInfo.SetValue(this, value);
         }
 
         public void Received(int expectedCalls)
         {
-            asserting = true;
+            this.asserting = true;
             this.expectedCalls = expectedCalls;
         }
 
         public void AssertCalled(int actual)
         {
-            Assert.AreEqual(expectedCalls, actual);
-            asserting = false;
+            Assert.AreEqual(this.expectedCalls, actual);
+            this.asserting = false;
         }
 
         protected void Record([CallerMemberName] string caller = "")

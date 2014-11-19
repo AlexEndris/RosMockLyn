@@ -22,46 +22,58 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
-namespace GeneratedTestingAssembly
+namespace RosMockLyn.Utilities
 {
-    public struct Call
+    public static class Extensions
     {
-        private readonly IMock mockedObject;
-
-        private readonly string calledMember;
-
-        private readonly Type returnType;
-
-        public Call(IMock mockedObject, string calledMember, Type returnType)
+        public static T Received<T>(this T mock, int expectedCalls)
         {
-            this.mockedObject = mockedObject;
-            this.calledMember = calledMember;
-            this.returnType = returnType;
+            var realMock = mock as IMock;
+            if (realMock == null) throw new InvalidOperationException("mock is no mock");
+
+            realMock.Received(expectedCalls);
+
+            return mock;
         }
 
-        public Type ReturnType
+        public static void Returns<T>(this T returnType, T value)
         {
-            get
+            Call lastCall = MockBase.Recorder.GetLastCall();
+
+            if (!CheckReturnType(lastCall.ReturnType, typeof(T)))
             {
-                return this.returnType;
+                throw new InvalidOperationException();
             }
+
+            lastCall.MockedObject.Returns(lastCall.CalledMember, value);
         }
 
-        public IMock MockedObject
+
+        // Change Name!!!
+        private static bool CheckReturnType(Type expectedReturnType, Type actualType)
         {
-            get
-            {
-                return this.mockedObject;
-            }
+            return expectedReturnType == actualType;
         }
 
-        public string CalledMember
+
+        public static bool IsAssignableTo<T>(this Type type)
         {
-            get
-            {
-                return this.calledMember;
-            }
+            return typeof(T).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+        }
+
+        public static bool IsAssignableFrom<T>(this Type type)
+        {
+            return type.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
+        }
+
+        public static void Apply<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            foreach (var item in items) 
+                action(item);
         }
     }
+
 }

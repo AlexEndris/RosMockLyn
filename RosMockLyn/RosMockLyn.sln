@@ -20,13 +20,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{CD90
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedTestingAssembly", "GeneratedTestingAssembly\GeneratedTestingAssembly.csproj", "{98BD449F-64CC-4193-A76C-1A517CF42632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingAssembly.Tests", "TestingAssembly.Tests\TestingAssembly.Tests.csproj", "{3AA631B6-C852-4B1B-89EA-119D87516C92}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerator", "CodeGenerator", "{7528AB22-0B49-44AD-9673-5DCECDD8808A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Utilities", "RosMockLyn.Utilities\RosMockLyn.Utilities.csproj", "{8304E31C-400E-47BA-A083-0B1ABD72F1A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Utilities.Tests", "RosMockLyn.Utilities.Tests\RosMockLyn.Utilities.Tests.csproj", "{605E59EE-1031-4EA2-9A29-A8FF57B6AB05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyWithInterfaces", "AssemblyWithInterfaces\AssemblyWithInterfaces.csproj", "{597007AB-7EC8-48AA-884C-86D8A90A12F7}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -50,16 +50,16 @@ Global
 		SccProjectTopLevelParentUniqueName4 = RosMockLyn.sln
 		SccProjectName4 = GeneratedTestingAssembly
 		SccLocalPath4 = GeneratedTestingAssembly
-		SccProjectUniqueName5 = TestingAssembly.Tests\\TestingAssembly.Tests.csproj
-		SccProjectTopLevelParentUniqueName5 = RosMockLyn.sln
-		SccProjectName5 = TestingAssembly.Tests
-		SccLocalPath5 = TestingAssembly.Tests
-		SccProjectUniqueName6 = RosMockLyn.Utilities\\RosMockLyn.Utilities.csproj
-		SccProjectName6 = RosMockLyn.Utilities
-		SccLocalPath6 = RosMockLyn.Utilities
-		SccProjectUniqueName7 = RosMockLyn.Utilities.Tests\\RosMockLyn.Utilities.Tests.csproj
-		SccProjectName7 = RosMockLyn.Utilities.Tests
-		SccLocalPath7 = RosMockLyn.Utilities.Tests
+		SccProjectUniqueName5 = RosMockLyn.Utilities\\RosMockLyn.Utilities.csproj
+		SccProjectName5 = RosMockLyn.Utilities
+		SccLocalPath5 = RosMockLyn.Utilities
+		SccProjectUniqueName6 = RosMockLyn.Utilities.Tests\\RosMockLyn.Utilities.Tests.csproj
+		SccProjectName6 = RosMockLyn.Utilities.Tests
+		SccLocalPath6 = RosMockLyn.Utilities.Tests
+		SccProjectUniqueName7 = AssemblyWithInterfaces\\AssemblyWithInterfaces.csproj
+		SccProjectTopLevelParentUniqueName7 = RosMockLyn.sln
+		SccProjectName7 = AssemblyWithInterfaces
+		SccLocalPath7 = AssemblyWithInterfaces
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,16 +112,6 @@ Global
 		{98BD449F-64CC-4193-A76C-1A517CF42632}.Release|ARM.ActiveCfg = Release|Any CPU
 		{98BD449F-64CC-4193-A76C-1A517CF42632}.Release|x64.ActiveCfg = Release|Any CPU
 		{98BD449F-64CC-4193-A76C-1A517CF42632}.Release|x86.ActiveCfg = Release|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|ARM.ActiveCfg = Release|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|x64.ActiveCfg = Release|Any CPU
-		{3AA631B6-C852-4B1B-89EA-119D87516C92}.Release|x86.ActiveCfg = Release|Any CPU
 		{8304E31C-400E-47BA-A083-0B1ABD72F1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8304E31C-400E-47BA-A083-0B1ABD72F1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8304E31C-400E-47BA-A083-0B1ABD72F1A6}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -156,6 +146,16 @@ Global
 		{605E59EE-1031-4EA2-9A29-A8FF57B6AB05}.Release|x86.ActiveCfg = Release|x86
 		{605E59EE-1031-4EA2-9A29-A8FF57B6AB05}.Release|x86.Build.0 = Release|x86
 		{605E59EE-1031-4EA2-9A29-A8FF57B6AB05}.Release|x86.Deploy.0 = Release|x86
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|x64.ActiveCfg = Release|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +165,6 @@ Global
 		{02A07CAC-A4FC-4188-8315-E359C8BEC92D} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
 		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
 		{98BD449F-64CC-4193-A76C-1A517CF42632} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
-		{3AA631B6-C852-4B1B-89EA-119D87516C92} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
 	EndGlobalSection
 EndGlobal

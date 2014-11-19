@@ -20,18 +20,15 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace GeneratedTestingAssembly
+namespace RosMockLyn.Utilities
 {
-    public static class Mock
+    public interface IMock
     {
-        public static ISomeInterface For<T>() where T : class
-        {
-            return new MockSomeInterface();
-        }
+        void Returns<T>(string calledMember, T value);
+
+        void Received(int expectedCalls);
+
+        void AssertCalled(int actual);
     }
+
 }

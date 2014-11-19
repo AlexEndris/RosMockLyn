@@ -38,16 +38,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IInjector.cs" />
-    <Compile Include="MockInjector.cs" />
+    <Compile Include="Call.cs" />
+    <Compile Include="CallRecorder.cs" />
+    <Compile Include="ICallRecorder.cs" />
+    <Compile Include="IoC\IInjector.cs" />
+    <Compile Include="IMock.cs" />
+    <Compile Include="IoC\IInjectorRegistry.cs" />
+    <Compile Include="Mock.cs" />
+    <Compile Include="MockBase.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IoC\MockInjector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.UnitTestFramework">
+      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\References\CommonConfiguration\Neutral\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

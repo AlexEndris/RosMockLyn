@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{98BD449F-64CC-4193-A76C-1A517CF42632}</ProjectGuid>
+    <ProjectGuid>{597007AB-7EC8-48AA-884C-86D8A90A12F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeneratedTestingAssembly</RootNamespace>
-    <AssemblyName>GeneratedTestingAssembly</AssemblyName>
+    <RootNamespace>AssemblyWithInterfaces</RootNamespace>
+    <AssemblyName>AssemblyWithInterfaces</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,19 +38,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GeneratedRegistry.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MockSomeInterface.cs" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AssemblyWithInterfaces\AssemblyWithInterfaces.csproj">
-      <Project>{597007ab-7ec8-48aa-884c-86d8a90a12f7}</Project>
-      <Name>AssemblyWithInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RosMockLyn.Utilities\RosMockLyn.Utilities.csproj">
-      <Project>{8304e31c-400e-47ba-a083-0b1abd72f1a6}</Project>
-      <Name>RosMockLyn.Utilities</Name>
-    </ProjectReference>
+    <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
+    <TargetPlatform Include="Windows, Version=8.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ISomeInterface.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

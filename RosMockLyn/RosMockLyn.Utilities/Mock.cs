@@ -21,26 +21,25 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using RosMockLyn.Utilities.IoC;
 
-namespace GeneratedTestingAssembly
+namespace RosMockLyn.Utilities
 {
-    public class CallRecorder : ICallRecorder
+    public static class Mock
     {
-        private Stack<Call> calls = new Stack<Call>();
+        private static readonly IInjector injector;
 
-        public void Record(IMock mock, [CallerMemberName] string memberName = "")
+        static Mock()
         {
-            MethodInfo methodInfo = mock.GetType().GetMethod(memberName);
-
-            calls.Push(new Call(mock, memberName, methodInfo.ReturnType));
+            injector = new MockInjector();
+            injector.ScanAssemblies()
+                    .Wait();
         }
 
-        public Call GetLastCall()
+
+        public static T For<T>() where T : class
         {
-            return calls.Peek();
+            return injector.Resolve<T>();
         }
     }
 }

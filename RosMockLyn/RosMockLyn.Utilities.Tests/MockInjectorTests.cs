@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
+using RosMockLyn.Utilities.IoC;
+
 namespace RosMockLyn.Utilities.Tests
 {
     [TestClass]
@@ -22,7 +24,7 @@ namespace RosMockLyn.Utilities.Tests
             
             // Act
             // Assert
-            Assert.ThrowsException<Exception>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
+            Assert.ThrowsException<InvalidOperationException>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
         }
 
         [TestMethod]

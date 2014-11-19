@@ -20,15 +20,48 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-namespace GeneratedTestingAssembly
+
+using System;
+
+namespace RosMockLyn.Utilities
 {
-    public interface IMock
+    public struct Call
     {
-        void Returns<T>(string calledMember, T value);
+        private readonly IMock mockedObject;
 
-        void Received(int expectedCalls);
+        private readonly string calledMember;
 
-        void AssertCalled(int actual);
+        private readonly Type returnType;
+
+        public Call(IMock mockedObject, string calledMember, Type returnType)
+        {
+            this.mockedObject = mockedObject;
+            this.calledMember = calledMember;
+            this.returnType = returnType;
+        }
+
+        public Type ReturnType
+        {
+            get
+            {
+                return this.returnType;
+            }
+        }
+
+        public IMock MockedObject
+        {
+            get
+            {
+                return this.mockedObject;
+            }
+        }
+
+        public string CalledMember
+        {
+            get
+            {
+                return this.calledMember;
+            }
+        }
     }
-
 }

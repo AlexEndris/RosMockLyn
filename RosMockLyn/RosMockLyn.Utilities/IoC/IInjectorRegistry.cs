@@ -20,44 +20,10 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using RosMockLyn.Utilities;
-
-namespace GeneratedTestingAssembly
+namespace RosMockLyn.Utilities.IoC
 {
-    public class MockSomeInterface : MockBase, ISomeInterface
+    public interface IInjectorRegistry
     {
-        private int VoidCall_Calls;
-
-        private int IntCall_Calls;
-        private int IntCall_ReturnValue;
-
-        public void VoidCall()
-        {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(VoidCall_Calls);
-                return;
-            }
-
-            VoidCall_Calls++;
-        }
-
-        public int IntCall()
-        {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(IntCall_Calls);
-                return IntCall_ReturnValue;
-            }
-
-            IntCall_Calls++;
-
-            return IntCall_ReturnValue;
-        }
+        void Register(IInjector injector);
     }
 }

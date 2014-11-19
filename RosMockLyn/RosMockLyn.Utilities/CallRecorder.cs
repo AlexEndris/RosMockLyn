@@ -21,43 +21,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using RosMockLyn.Utilities;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace GeneratedTestingAssembly
+namespace RosMockLyn.Utilities
 {
-    public class MockSomeInterface : MockBase, ISomeInterface
+    public sealed class CallRecorder : ICallRecorder
     {
-        private int VoidCall_Calls;
+        private Stack<Call> calls = new Stack<Call>();
 
-        private int IntCall_Calls;
-        private int IntCall_ReturnValue;
-
-        public void VoidCall()
+        public void Record(IMock mock, [CallerMemberName] string memberName = "")
         {
-            Record();
+            MethodInfo methodInfo = mock.GetType().GetTypeInfo().GetDeclaredMethod(memberName);
 
-            if (asserting)
-            {
-                AssertCalled(VoidCall_Calls);
-                return;
-            }
-
-            VoidCall_Calls++;
+            this.calls.Push(new Call(mock, memberName, methodInfo.ReturnType));
         }
 
-        public int IntCall()
+        public Call GetLastCall()
         {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(IntCall_Calls);
-                return IntCall_ReturnValue;
-            }
-
-            IntCall_Calls++;
-
-            return IntCall_ReturnValue;
+            return this.calls.Peek();
         }
     }
 }

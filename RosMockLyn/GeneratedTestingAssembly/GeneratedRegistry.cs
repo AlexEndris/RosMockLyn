@@ -21,43 +21,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using RosMockLyn.Utilities;
+using RosMockLyn.Utilities.IoC;
 
 namespace GeneratedTestingAssembly
 {
-    public class MockSomeInterface : MockBase, ISomeInterface
+    public sealed class GeneratedRegistry : IInjectorRegistry
     {
-        private int VoidCall_Calls;
-
-        private int IntCall_Calls;
-        private int IntCall_ReturnValue;
-
-        public void VoidCall()
+        public void Register(IInjector injector)
         {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(VoidCall_Calls);
-                return;
-            }
-
-            VoidCall_Calls++;
-        }
-
-        public int IntCall()
-        {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(IntCall_Calls);
-                return IntCall_ReturnValue;
-            }
-
-            IntCall_Calls++;
-
-            return IntCall_ReturnValue;
+            injector.RegisterType<ISomeInterface, MockSomeInterface>();
         }
     }
 }
