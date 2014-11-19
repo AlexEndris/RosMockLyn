@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedTestingAssembly", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingAssembly.Tests", "TestingAssembly.Tests\TestingAssembly.Tests.csproj", "{3AA631B6-C852-4B1B-89EA-119D87516C92}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerator", "CodeGenerator", "{7528AB22-0B49-44AD-9673-5DCECDD8808A}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 6
@@ -29,12 +31,15 @@ Global
 		SccTeamFoundationServer = https://namelessone.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = RosMockLyn.Cmd\\RosMockLyn.Cmd.csproj
+		SccProjectTopLevelParentUniqueName1 = RosMockLyn.sln
 		SccProjectName1 = RosMockLyn.Cmd
 		SccLocalPath1 = RosMockLyn.Cmd
 		SccProjectUniqueName2 = RosMockLyn.Core\\RosMockLyn.Core.csproj
+		SccProjectTopLevelParentUniqueName2 = RosMockLyn.sln
 		SccProjectName2 = RosMockLyn.Core
 		SccLocalPath2 = RosMockLyn.Core
 		SccProjectUniqueName3 = TestProject\\TestProject.csproj
+		SccProjectTopLevelParentUniqueName3 = RosMockLyn.sln
 		SccProjectName3 = TestProject
 		SccLocalPath3 = TestProject
 		SccProjectUniqueName4 = GeneratedTestingAssembly\\GeneratedTestingAssembly.csproj
@@ -76,6 +81,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{93F224D4-5948-446C-A1AE-D1C7E0D94952} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
+		{02A07CAC-A4FC-4188-8315-E359C8BEC92D} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
+		{003D8DE4-2D92-4D3B-A2AC-51C16A622F2C} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
 		{98BD449F-64CC-4193-A76C-1A517CF42632} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
 		{3AA631B6-C852-4B1B-89EA-119D87516C92} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
 	EndGlobalSection
