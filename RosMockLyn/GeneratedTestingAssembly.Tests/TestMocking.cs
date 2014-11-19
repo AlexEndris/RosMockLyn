@@ -1,14 +1,16 @@
 ﻿using System;
 
-using GeneratedTestingAssembly;
+using AssemblyWithInterfaces;
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace RosMockLyn.Utilities.Tests
+using RosMockLyn.Utilities;
+
+namespace GeneratedTestingAssembly.Tests
 {
 
     [TestClass]
-    public class UnitTest1
+    public class TestMocking
     {
         [TestMethod]
         public void Returns_UsedTheWrongWay()

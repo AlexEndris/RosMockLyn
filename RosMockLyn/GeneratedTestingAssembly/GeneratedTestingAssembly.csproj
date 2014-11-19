@@ -47,9 +47,9 @@
       <Project>{597007ab-7ec8-48aa-884c-86d8a90a12f7}</Project>
       <Name>AssemblyWithInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RosMockLyn.Utilities\RosMockLyn.Utilities.csproj">
+    <ProjectReference Include="..\RosMockLyn.Mocking\RosMockLyn.Mocking.csproj">
       <Project>{8304e31c-400e-47ba-a083-0b1abd72f1a6}</Project>
-      <Name>RosMockLyn.Utilities</Name>
+      <Name>RosMockLyn.Mocking</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
