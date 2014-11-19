@@ -22,7 +22,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace GeneratedTestingAssembly
 {
-    public class MockSomeInterface : Mock, ISomeInterface
+    public class MockSomeInterface : MockBase, ISomeInterface
     {
         private int VoidCall_Calls;
 

@@ -57,7 +57,7 @@ namespace UnitTestProject1
 
         public static void Returns<T>(this T returnType, T value)
         {
-            Call lastCall = Mock.recorder.GetLastCall();
+            Call lastCall = MockBase.Recorder.GetLastCall();
 
             if (!CheckReturnType(lastCall.ReturnType, typeof(T)))
             {

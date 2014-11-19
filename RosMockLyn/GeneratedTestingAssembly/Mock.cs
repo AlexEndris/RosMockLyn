@@ -27,50 +27,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GeneratedTestingAssembly
 {
-    public abstract class Mock : IMock
+    public static class Mock
     {
         public static ISomeInterface For<T>() where T : class
         {
             return new MockSomeInterface();
         }
-
-        public static readonly ICallRecorder recorder = new CallRecorder();
-
-        protected bool asserting;
-        private int expectedCalls;
-
-        public void Returns<T>(string calledMember, T value)
-        {
-
-            SetReturnValue(calledMember, value);
-        }
-
-        private void SetReturnValue(string calledMember, object value)
-        {
-            FieldInfo fieldInfo = this.GetType()
-                .GetField(
-                    string.Format("{0}_ReturnValue", calledMember),
-                    BindingFlags.Instance | BindingFlags.NonPublic);
-
-            fieldInfo.SetValue(this, value);
-        }
-
-        public void Received(int expectedCalls)
-        {
-            asserting = true;
-            this.expectedCalls = expectedCalls;
-        }
-
-        public void AssertCalled(int actual)
-        {
-            Assert.AreEqual(expectedCalls, actual);
-            asserting = false;
-        }
-
-        protected void Record([CallerMemberName] string caller = "")
-        {
-            recorder.Record(this, caller);
-        }
-
     }
 }

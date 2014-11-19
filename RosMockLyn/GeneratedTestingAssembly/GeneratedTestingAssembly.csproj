@@ -50,6 +50,7 @@
     <Compile Include="IMock.cs" />
     <Compile Include="ISomeInterface.cs" />
     <Compile Include="Mock.cs" />
+    <Compile Include="MockBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MockSomeInterface.cs" />
   </ItemGroup>
