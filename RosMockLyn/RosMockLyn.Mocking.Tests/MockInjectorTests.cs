@@ -1,9 +1,10 @@
 ﻿using System;
+
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-using RosMockLyn.Utilities.IoC;
+using RosMockLyn.Mocking.IoC;
 
-namespace RosMockLyn.Utilities.Tests
+namespace RosMockLyn.Mocking.Tests
 {
     [TestClass]
     public class MockInjectorTests
@@ -13,28 +14,28 @@ namespace RosMockLyn.Utilities.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _injector = new MockInjector();
+            this._injector = new MockInjector();
         }
 
         [TestMethod]
         public void RegisterSameBaseTypeMultipleTimes_ShouldThrowException()
         {
             // Arrange
-            _injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
+            this._injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
             
             // Act
             // Assert
-            Assert.ThrowsException<InvalidOperationException>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
+            Assert.ThrowsException<InvalidOperationException>(() => this._injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
         }
 
         [TestMethod]
         public void ResolvingRegisteredType_ShouldReturnInstance()
         {
             // Arrange
-            _injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
+            this._injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
 
             // Act
-            var instance = _injector.Resolve<ISomeInterface>();
+            var instance = this._injector.Resolve<ISomeInterface>();
             
             // Assert
             Assert.IsNotNull(instance);
@@ -45,7 +46,7 @@ namespace RosMockLyn.Utilities.Tests
         {
             // Arrange
             // Act
-            var instance = _injector.Resolve<ISomeInterface>();
+            var instance = this._injector.Resolve<ISomeInterface>();
 
             // Assert
             Assert.IsNull(instance);

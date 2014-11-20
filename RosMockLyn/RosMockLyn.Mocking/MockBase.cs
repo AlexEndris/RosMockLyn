@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace RosMockLyn.Utilities
+namespace RosMockLyn.Mocking
 {
     public abstract class MockBase : IMock
     {

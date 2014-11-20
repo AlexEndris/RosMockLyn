@@ -25,7 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace RosMockLyn.Utilities
+namespace RosMockLyn.Mocking
 {
     public static class Extensions
     {
@@ -48,7 +48,8 @@ namespace RosMockLyn.Utilities
                 throw new InvalidOperationException();
             }
 
-            lastCall.MockedObject.Returns(lastCall.CalledMember, value);
+            lastCall.MockedObject
+                    .Returns(lastCall.CalledMember, value);
         }
 
 
@@ -59,17 +60,17 @@ namespace RosMockLyn.Utilities
         }
 
 
-        public static bool IsAssignableTo<T>(this Type type)
+        internal static bool IsAssignableTo<T>(this Type type)
         {
             return typeof(T).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
-        public static bool IsAssignableFrom<T>(this Type type)
+        internal static bool IsAssignableFrom<T>(this Type type)
         {
             return type.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
         }
 
-        public static void Apply<T>(this IEnumerable<T> items, Action<T> action)
+        internal static void Apply<T>(this IEnumerable<T> items, Action<T> action)
         {
             foreach (var item in items) 
                 action(item);

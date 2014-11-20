@@ -23,7 +23,7 @@
 
 using AssemblyWithInterfaces;
 
-using RosMockLyn.Utilities.IoC;
+using RosMockLyn.Mocking.IoC;
 
 namespace GeneratedTestingAssembly
 {

@@ -21,9 +21,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using RosMockLyn.Utilities.IoC;
+using RosMockLyn.Mocking.IoC;
 
-namespace RosMockLyn.Utilities
+namespace RosMockLyn.Mocking
 {
     public static class Mock
     {

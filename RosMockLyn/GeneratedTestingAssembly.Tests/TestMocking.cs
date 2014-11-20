@@ -4,7 +4,7 @@ using AssemblyWithInterfaces;
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-using RosMockLyn.Utilities;
+using RosMockLyn.Mocking;
 
 namespace GeneratedTestingAssembly.Tests
 {

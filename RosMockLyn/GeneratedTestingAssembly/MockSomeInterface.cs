@@ -23,7 +23,7 @@
 
 using AssemblyWithInterfaces;
 
-using RosMockLyn.Utilities;
+using RosMockLyn.Mocking;
 
 namespace GeneratedTestingAssembly
 {

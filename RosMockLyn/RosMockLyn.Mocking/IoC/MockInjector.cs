@@ -6,18 +6,11 @@ using System.Threading.Tasks;
 
 using Windows.ApplicationModel;
 
-namespace RosMockLyn.Utilities.IoC
+namespace RosMockLyn.Mocking.IoC
 {
     public sealed class MockInjector : IInjector
     {
         private readonly Dictionary<Type, Type> _typeMapper = new Dictionary<Type, Type>();
-
-        public void RegisterAssembly(Assembly assembly)
-        {
-            var registries = GetRegistriesFromAssembly(assembly);
-
-            registries.Apply(x => x.Register(this));
-        }
 
         public void RegisterType<TInterface, TConcrete>() where TInterface : class
                                                           where TConcrete : TInterface, new()
@@ -54,14 +47,22 @@ namespace RosMockLyn.Utilities.IoC
                         var assemblyName = new AssemblyName(file.DisplayName);
                         var assembly = Assembly.Load(assemblyName);
 
-                        RegisterAssembly(assembly);
+                        this.RegisterAssembly(assembly);
                     }
                     catch (Exception)
                     {
-                        // TODO: Do something here!
+                        // No need to do something as the assembly loaded
+                        // could just be a native one (like Sqlite)
                     }
                 }
             }
+        }
+
+        private void RegisterAssembly(Assembly assembly)
+        {
+            var registries = GetRegistriesFromAssembly(assembly);
+
+            registries.Apply(x => x.Register(this));
         }
 
         private static T InstantiateType<T>(Type mappedType) where T : class

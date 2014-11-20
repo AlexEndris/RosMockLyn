@@ -25,11 +25,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace RosMockLyn.Utilities
+namespace RosMockLyn.Mocking
 {
     public sealed class CallRecorder : ICallRecorder
     {
-        private Stack<Call> calls = new Stack<Call>();
+        private readonly Stack<Call> calls = new Stack<Call>();
 
         public void Record(IMock mock, [CallerMemberName] string memberName = "")
         {
@@ -40,7 +40,10 @@ namespace RosMockLyn.Utilities
 
         public Call GetLastCall()
         {
-            return this.calls.Peek();
+            var lastCall = this.calls.Peek();
+            this.calls.Clear();
+
+            return lastCall;
         }
     }
 }

@@ -23,7 +23,7 @@
 
 using System;
 
-namespace RosMockLyn.Utilities
+namespace RosMockLyn.Mocking
 {
     public struct Call
     {
