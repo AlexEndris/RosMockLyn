@@ -15,27 +15,36 @@ namespace RosMockLyn.Mocking
 
         public void Returns<T>(string calledMember, T value)
         {
+            SetReturnValue(calledMember, value);
+            IgnorePreviousCall(calledMember);
+        }
 
-            this.SetReturnValue(calledMember, value);
+        private void IgnorePreviousCall(string calledMember)
+        {
+            var fieldInfo = GetType().GetRuntimeFields()
+                                     .First(x => x.Name == string.Format("{0}_Calls", calledMember));
+
+            var value = ((int)fieldInfo.GetValue(this)) - 1;
+            fieldInfo.SetValue(this, value);
         }
 
         private void SetReturnValue(string calledMember, object value)
         {
-            var fieldInfo = this.GetType().GetRuntimeFields()
-                                .First(x => x.Name == string.Format("{0}_ReturnValue", calledMember));
+            var fieldInfo = GetType().GetRuntimeFields()
+                                     .First(x => x.Name == string.Format("{0}_ReturnValue", calledMember));
 
             fieldInfo.SetValue(this, value);
         }
 
-        public void Received(int expectedCalls)
+        public void Received(int numExpectedCalls)
         {
-            this.asserting = true;
-            this.expectedCalls = expectedCalls;
+            asserting = true;
+            expectedCalls = numExpectedCalls;
         }
 
         public void AssertCalled(int actual)
         {
-            Assert.AreEqual(this.expectedCalls, actual);
+            Assert.AreEqual(expectedCalls, actual);
             this.asserting = false;
         }
 

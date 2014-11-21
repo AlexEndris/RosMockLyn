@@ -40,5 +40,15 @@ namespace GeneratedTestingAssembly.Tests
 
             someInterface.Received(1).VoidCall();
         }
+
+        [TestMethod]
+        public void Returns_ShouldNotCountAsReceived()
+        {
+            var someInterface = Mock.For<ISomeInterface>();
+
+            someInterface.IntCall().Returns(2);
+
+            someInterface.Received(0).IntCall();
+        }
     }
 }
