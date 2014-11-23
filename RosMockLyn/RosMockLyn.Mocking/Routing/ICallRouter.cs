@@ -20,16 +20,15 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-namespace AssemblyWithInterfaces
+
+namespace RosMockLyn.Mocking.Routing
 {
-    public interface ISomeInterface
+    internal interface ICallRouter
     {
-        void VoidCall();
+        void Route(string methodName, params object[] arguments);
 
-        int IntCall();
+        TReturn Route<TReturn>(string methodName, params object[] arguments);
 
-        void Parameters(int i, double d, string s);
-
-        int ReturnParameters(int i, double d, string s);
+        MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments);
     }
 }

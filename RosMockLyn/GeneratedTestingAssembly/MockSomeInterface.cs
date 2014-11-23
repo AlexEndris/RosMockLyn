@@ -61,5 +61,14 @@ namespace GeneratedTestingAssembly
 
             return IntCall_ReturnValue;
         }
+
+        public void Parameters(int i, double d, string s)
+        {
+        }
+
+        public int ReturnParameters(int i, double d, string s)
+        {
+            return 0;
+        }
     }
 }

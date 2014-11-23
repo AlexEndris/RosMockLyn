@@ -22,17 +22,17 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
+using System.Linq.Expressions;
 
 namespace RosMockLyn.Mocking
 {
-    public static class Extensions
+    public static class MockExtensions
     {
         public static T Received<T>(this T mock, int expectedCalls)
         {
             var realMock = mock as IMock;
-            if (realMock == null) throw new InvalidOperationException("mock is no mock");
+            if (realMock == null)
+                throw new InvalidOperationException("mock is no mock");
 
             realMock.Received(expectedCalls);
 
@@ -52,29 +52,35 @@ namespace RosMockLyn.Mocking
                     .Returns(lastCall.CalledMember, value);
         }
 
+        public static void Setup<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression)
+        {
+        }
+
+        public static void Received<T>(this T mock, Expression<Action<T>> expression, int expectedCalls)
+        {
+            Received(mock, (MethodCallExpression)expression.Body, expectedCalls);
+        }
+
+        public static void Received<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression, int expectedCalls)
+        {
+            Received(mock, (MethodCallExpression)expression.Body, expectedCalls);
+        }
+
+        private static void Received<T>(T mock, MethodCallExpression expression, int expectedCalls)
+        {
+            var realMock = mock as IMock;
+            if (realMock == null)
+                throw new InvalidOperationException("mock is no mock");
+
+            realMock.Received(expectedCalls);
+
+            expression.Method.Invoke(mock, new object[]{});
+        }
 
         // Change Name!!!
         private static bool CheckReturnType(Type expectedReturnType, Type actualType)
         {
             return expectedReturnType == actualType;
         }
-
-
-        internal static bool IsAssignableTo<T>(this Type type)
-        {
-            return typeof(T).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
-        }
-
-        internal static bool IsAssignableFrom<T>(this Type type)
-        {
-            return type.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo());
-        }
-
-        internal static void Apply<T>(this IEnumerable<T> items, Action<T> action)
-        {
-            foreach (var item in items) 
-                action(item);
-        }
     }
-
 }

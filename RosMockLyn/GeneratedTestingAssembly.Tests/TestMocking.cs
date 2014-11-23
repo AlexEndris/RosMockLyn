@@ -13,6 +13,26 @@ namespace GeneratedTestingAssembly.Tests
     public class TestMocking
     {
         [TestMethod]
+        public void Sandbox()
+        {
+            var someInterface = Mock.For<ISomeInterface>();
+
+            someInterface.VoidCall();
+            someInterface.IntCall();
+
+            someInterface.Received(x => x.VoidCall(), 1);
+            someInterface.Received(x => x.IntCall(), 1);
+        }
+
+        public static class Arg
+        {
+            public static T Is<T>()
+            {
+                return default(T);
+            }
+        }
+
+        [TestMethod]
         public void Returns_UsedTheWrongWay()
         {
             var someInterface = Mock.For<ISomeInterface>();

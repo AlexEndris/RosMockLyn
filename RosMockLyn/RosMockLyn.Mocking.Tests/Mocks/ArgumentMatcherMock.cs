@@ -20,16 +20,34 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-namespace AssemblyWithInterfaces
+
+using System.Collections;
+
+using RosMockLyn.Mocking.Matching;
+
+namespace RosMockLyn.Mocking.Tests.Mocks
 {
-    public interface ISomeInterface
+    public class ArgumentMatcherMock : IArgumentMatcher
     {
-        void VoidCall();
+        private bool returnValue;
 
-        int IntCall();
+        public bool Match_WasCalled { get; private set; }
 
-        void Parameters(int i, double d, string s);
+        public bool Match(IEnumerable left, IEnumerable right)
+        {
+            Match_WasCalled = true;
 
-        int ReturnParameters(int i, double d, string s);
+            return returnValue;
+        }
+
+        public void SetNoMatch()
+        {
+            returnValue = false;
+        }
+
+        public void SetMatch()
+        {
+            returnValue = true;
+        }
     }
 }
