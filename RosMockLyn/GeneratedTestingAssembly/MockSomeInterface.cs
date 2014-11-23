@@ -29,46 +29,24 @@ namespace GeneratedTestingAssembly
 {
     public class MockSomeInterface : MockBase, ISomeInterface
     {
-        private int VoidCall_Calls;
-
-        private int IntCall_Calls;
-        private int IntCall_ReturnValue;
-
         public void VoidCall()
         {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(VoidCall_Calls);
-                return;
-            }
-
-            VoidCall_Calls++;
+            CallRouter.Route();
         }
 
         public int IntCall()
         {
-            Record();
-
-            if (asserting)
-            {
-                AssertCalled(IntCall_Calls);
-                return IntCall_ReturnValue;
-            }
-
-            IntCall_Calls++;
-
-            return IntCall_ReturnValue;
+            return CallRouter.Route<int>();
         }
 
         public void Parameters(int i, double d, string s)
         {
+            CallRouter.Route(arguments: new object[] { i, d, s });
         }
 
         public int ReturnParameters(int i, double d, string s)
         {
-            return 0;
+            return CallRouter.Route<int>(arguments: new object[] { i, d, s });
         }
     }
 }

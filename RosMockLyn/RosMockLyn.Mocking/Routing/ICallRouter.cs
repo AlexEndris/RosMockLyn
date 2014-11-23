@@ -21,13 +21,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System.Runtime.CompilerServices;
+
 namespace RosMockLyn.Mocking.Routing
 {
-    internal interface ICallRouter
+    public interface ICallRouter
     {
-        void Route(string methodName, params object[] arguments);
+        void Route([CallerMemberName] string methodName = "", params object[] arguments);
 
-        TReturn Route<TReturn>(string methodName, params object[] arguments);
+        TReturn Route<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
 
         MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments);
     }

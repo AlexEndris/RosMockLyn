@@ -26,7 +26,7 @@ using System.Collections;
 
 namespace RosMockLyn.Mocking.Routing
 {
-    internal class MethodInvocationInfo
+    public class MethodInvocationInfo
     {
         public MethodInvocationInfo(string methodName, IEnumerable arguments)
             : this(methodName, arguments, null, null)

@@ -22,36 +22,14 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
 namespace RosMockLyn.Mocking
 {
     public static class MockExtensions
     {
-        public static T Received<T>(this T mock, int expectedCalls)
-        {
-            var realMock = mock as IMock;
-            if (realMock == null)
-                throw new InvalidOperationException("mock is no mock");
-
-            realMock.Received(expectedCalls);
-
-            return mock;
-        }
-
-        public static void Returns<T>(this T returnType, T value)
-        {
-            Call lastCall = MockBase.Recorder.GetLastCall();
-
-            if (!CheckReturnType(lastCall.ReturnType, typeof(T)))
-            {
-                throw new InvalidOperationException();
-            }
-
-            lastCall.MockedObject
-                    .Returns(lastCall.CalledMember, value);
-        }
-
         public static void Setup<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression)
         {
         }
@@ -72,9 +50,24 @@ namespace RosMockLyn.Mocking
             if (realMock == null)
                 throw new InvalidOperationException("mock is no mock");
 
-            realMock.Received(expectedCalls);
+            IEnumerable arguments = GetArguments(expression.Arguments);
 
-            expression.Method.Invoke(mock, new object[]{});
+            realMock.CallRouter.GetMatchingInvocationInfo(expression.Method.Name, arguments);
+        }
+
+        private static IEnumerable GetArguments(ReadOnlyCollection<Expression> arguments)
+        {
+            foreach (var argument in arguments)
+            {
+                switch (argument.NodeType)
+                {
+                    case ExpressionType.Constant:
+                        yield return ((ConstantExpression)argument).Value;
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
         }
 
         // Change Name!!!

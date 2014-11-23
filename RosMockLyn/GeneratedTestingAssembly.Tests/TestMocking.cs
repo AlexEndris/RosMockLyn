@@ -32,43 +32,44 @@ namespace GeneratedTestingAssembly.Tests
             }
         }
 
-        [TestMethod]
-        public void Returns_UsedTheWrongWay()
-        {
-            var someInterface = Mock.For<ISomeInterface>();
-            someInterface.IntCall();
-            Assert.ThrowsException<InvalidOperationException>(() => someInterface.Returns(someInterface));
-        }
+        //[TestMethod]
+        //public void Returns_UsedTheWrongWay()
+        //{
+        //    var someInterface = Mock.For<ISomeInterface>();
+        //    someInterface.IntCall();
+        //    Assert.ThrowsException<InvalidOperationException>(() => someInterface.Returns(someInterface));
+        //}
 
-        [TestMethod]
-        public void Returns_CorrectlyUsed()
-        {
-            var someInterface = Mock.For<ISomeInterface>();
+        //[TestMethod]
+        //public void Returns_CorrectlyUsed()
+        //{
+        //    var someInterface = Mock.For<ISomeInterface>();
 
-            someInterface.IntCall().Returns(5);
+        //    someInterface.IntCall().Returns(5);
         
-            int result = someInterface.IntCall();
+        //    int result = someInterface.IntCall();
 
-            Assert.AreEqual(5, result);
-        }
+        //    Assert.AreEqual(5, result);
+        //}
 
         [TestMethod]
         public void Received_CorrectlyUsed()
         {
             var someInterface = Mock.For<ISomeInterface>();
+
             someInterface.VoidCall();
 
-            someInterface.Received(1).VoidCall();
+            someInterface.Received(x => x.VoidCall(), 1);
         }
 
-        [TestMethod]
-        public void Returns_ShouldNotCountAsReceived()
-        {
-            var someInterface = Mock.For<ISomeInterface>();
+        //[TestMethod]
+        //public void Returns_ShouldNotCountAsReceived()
+        //{
+        //    var someInterface = Mock.For<ISomeInterface>();
 
-            someInterface.IntCall().Returns(2);
+        //    someInterface.IntCall().Returns(2);
 
-            someInterface.Received(0).IntCall();
-        }
+        //    someInterface.Received(0).IntCall();
+        //}
     }
 }

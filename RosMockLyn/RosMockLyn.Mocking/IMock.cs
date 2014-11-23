@@ -20,15 +20,13 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+using RosMockLyn.Mocking.Routing;
+
 namespace RosMockLyn.Mocking
 {
     public interface IMock
     {
-        void Returns<T>(string calledMember, T value);
-
-        void Received(int expectedCalls);
-
-        void AssertCalled(int actual);
+        ICallRouter CallRouter { get; }
     }
-
 }
