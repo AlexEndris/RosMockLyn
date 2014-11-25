@@ -26,13 +26,38 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
+using RosMockLyn.Mocking.Routing;
+
 namespace RosMockLyn.Mocking
 {
     public static class MockExtensions
     {
-        public static void Setup<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression)
+        public static ISetup<TMock> Setup<TMock>(this TMock mock, Expression<Action<TMock>> expression)
         {
+            var realMock = TryGetMock(mock);
+
+            var methodCallExpression = (MethodCallExpression)expression.Body;
+
+            IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
+
+            var methodInvocationInfo = realMock.CallRouter.Setup(methodCallExpression.Method.Name, arguments);
+
+            return new MethodCall<TMock>(methodInvocationInfo);
         }
+
+        public static ISetup<TMock, TReturn> Setup<TMock, TReturn>(this TMock mock, Expression<Func<TMock, TReturn>> expression)
+        {
+            var realMock = TryGetMock(mock);
+
+            var methodCallExpression = (MethodCallExpression)expression.Body;
+
+            IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
+
+            var methodInvocationInfo = realMock.CallRouter.Setup<TReturn>(methodCallExpression.Method.Name, arguments);
+
+            return new MethodCallReturn<TMock, TReturn>(methodInvocationInfo);
+        }
+
 
         public static void Received<T>(this T mock, Expression<Action<T>> expression, int expectedCalls)
         {
@@ -46,13 +71,21 @@ namespace RosMockLyn.Mocking
 
         private static void Received<T>(T mock, MethodCallExpression expression, int expectedCalls)
         {
-            var realMock = mock as IMock;
-            if (realMock == null)
-                throw new InvalidOperationException("mock is no mock");
+            var realMock = TryGetMock(mock);
 
             IEnumerable arguments = GetArguments(expression.Arguments);
 
             realMock.CallRouter.GetMatchingInvocationInfo(expression.Method.Name, arguments);
+        }
+
+        private static IMock TryGetMock<T>(T mock)
+        {
+            var realMock = mock as IMock;
+            if (realMock == null)
+            {
+                throw new InvalidOperationException("mock is no mock");
+            }
+            return realMock;
         }
 
         private static IEnumerable GetArguments(ReadOnlyCollection<Expression> arguments)
@@ -68,12 +101,6 @@ namespace RosMockLyn.Mocking
                         throw new NotSupportedException();
                 }
             }
-        }
-
-        // Change Name!!!
-        private static bool CheckReturnType(Type expectedReturnType, Type actualType)
-        {
-            return expectedReturnType == actualType;
         }
     }
 }

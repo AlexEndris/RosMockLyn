@@ -20,21 +20,22 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using System.Runtime.CompilerServices;
-
 namespace RosMockLyn.Mocking.Routing
 {
-    public interface ICallRouter
+    public class MethodCallReturn<TMock, TReturn> : ISetup<TMock, TReturn>
     {
-        MethodInvocationInfo Setup(string methodName, params object[] arguments);
+        private readonly MethodInvocationInfo invocationInfo;
 
-        void Route([CallerMemberName] string methodName = "", params object[] arguments);
+        public MethodCallReturn(MethodInvocationInfo invocationInfo)
+        {
+            this.invocationInfo = invocationInfo;
+        }
 
-        TReturn Route<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
+        public ISetup<TMock, TReturn> Returns(TReturn value)
+        {
+            invocationInfo.ReturnValue = value;
 
-        MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments);
-
-        MethodInvocationInfo Setup<TReturn>(string methodName, params object[] arguments);
+            return this;
+        }
     }
 }

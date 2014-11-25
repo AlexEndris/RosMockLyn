@@ -25,6 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 using RosMockLyn.Mocking.Matching;
 
@@ -50,6 +51,16 @@ namespace RosMockLyn.Mocking.Routing
         public MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments)
         {
             return GetMatchOrDefault(methodName, arguments);
+        }
+
+        public MethodInvocationInfo Setup(string methodName, params object[] arguments)
+        {
+            return CreateInvocation(methodName, arguments);
+        }
+
+        public MethodInvocationInfo Setup<TReturn>(string methodName, params object[] arguments)
+        {
+            return CreateInvocation<TReturn>(methodName, arguments);
         }
 
         public void Route([CallerMemberName] string methodName = "", params object[] arguments)
@@ -90,8 +101,8 @@ namespace RosMockLyn.Mocking.Routing
             MethodInvocationInfo invocation = new MethodInvocationInfo(
                 methodName,
                 arguments,
-                default(TReturn),
-                typeof(TReturn));
+                typeof(TReturn),
+                default(TReturn));
 
             _invocations.Add(invocation);
 

@@ -33,7 +33,7 @@ namespace RosMockLyn.Mocking.Routing
         {
         }
 
-        public MethodInvocationInfo(string methodName, IEnumerable arguments, object returnValue, Type returnType)
+        public MethodInvocationInfo(string methodName, IEnumerable arguments, Type returnType, object returnValue)
         {
             MethodName = methodName;
             Arguments = arguments;
@@ -45,7 +45,7 @@ namespace RosMockLyn.Mocking.Routing
         public string MethodName { get; private set; }
         public int Calls { get; set; }
         public Type ReturnType { get; private set; }
-        public object ReturnValue { get; private set; }
+        public object ReturnValue { get; set; }
         public IEnumerable Arguments { get; private set; }
     }
 }

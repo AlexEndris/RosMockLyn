@@ -17,8 +17,14 @@ namespace GeneratedTestingAssembly.Tests
         {
             var someInterface = Mock.For<ISomeInterface>();
 
+            someInterface.Setup(x => x.IntCall()).Returns(100);
+            someInterface.Setup(
+                x => x.ReturnParameters(1, 2, "3")).Returns(123);
+
+
             someInterface.VoidCall();
-            someInterface.IntCall();
+            var intCall = someInterface.IntCall();
+            intCall = someInterface.ReturnParameters(1, 2, "3");
 
             someInterface.Received(x => x.VoidCall(), 1);
             someInterface.Received(x => x.IntCall(), 1);
