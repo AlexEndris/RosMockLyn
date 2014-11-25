@@ -23,7 +23,7 @@
 
 using System;
 using System.Collections;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using RosMockLyn.Mocking.Routing;
@@ -88,7 +88,7 @@ namespace RosMockLyn.Mocking
             return realMock;
         }
 
-        private static IEnumerable GetArguments(ReadOnlyCollection<Expression> arguments)
+        private static IEnumerable GetArguments(IEnumerable<Expression> arguments)
         {
             foreach (var argument in arguments)
             {
