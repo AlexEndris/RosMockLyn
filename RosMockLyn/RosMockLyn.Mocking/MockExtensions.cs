@@ -83,7 +83,7 @@ namespace RosMockLyn.Mocking
             var realMock = mock as IMock;
             if (realMock == null)
             {
-                throw new InvalidOperationException("mock is no mock");
+                throw new InvalidOperationException("mock is no mock"); // TODO: Better Exception!
             }
             return realMock;
         }
