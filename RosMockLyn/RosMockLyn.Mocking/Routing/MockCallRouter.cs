@@ -68,7 +68,7 @@ namespace RosMockLyn.Mocking.Routing
             var invocation = GetMatchOrDefault(methodName, arguments)
                              ?? CreateInvocation(methodName, arguments);
 
-            invocation.Calls++;
+            invocation.Execute();
         }
 
         public TReturn Route<TReturn>([CallerMemberName] string methodName = "", params object[] arguments)
@@ -76,7 +76,7 @@ namespace RosMockLyn.Mocking.Routing
             var invocation = GetMatchOrDefault(methodName, arguments)
                             ?? CreateInvocation<TReturn>(methodName, arguments);
 
-            invocation.Calls++;
+            invocation.Execute();
 
             return (TReturn)invocation.ReturnValue;
         }

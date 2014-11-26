@@ -47,5 +47,15 @@ namespace RosMockLyn.Mocking.Routing
         public Type ReturnType { get; private set; }
         public object ReturnValue { get; set; }
         public IEnumerable Arguments { get; private set; }
+        public Action WhenCalled { get; set; }
+
+        public void Execute()
+        {
+            Calls++;
+            
+
+            if (WhenCalled != null)
+                WhenCalled();
+        }
     }
 }

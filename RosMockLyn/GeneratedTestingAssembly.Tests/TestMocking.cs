@@ -20,7 +20,8 @@ namespace GeneratedTestingAssembly.Tests
             someInterface.Setup(x => x.IntCall()).Returns(100);
             someInterface.Setup(
                 x => x.ReturnParameters(1, 2, "3")).Returns(123);
-
+            someInterface.Setup(x => x.Parameters(1,2,"1"))
+                         .Throws<InvalidCastException>();
 
             someInterface.VoidCall();
             var intCall = someInterface.IntCall();
@@ -28,6 +29,7 @@ namespace GeneratedTestingAssembly.Tests
 
             someInterface.Received(x => x.VoidCall(), 1);
             someInterface.Received(x => x.IntCall(), 1);
+            Assert.ThrowsException<InvalidCastException>(() => someInterface.Parameters(1, 2, "1"));
         }
 
         public static class Arg

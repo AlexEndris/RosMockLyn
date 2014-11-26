@@ -20,14 +20,22 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+using System;
+
 namespace RosMockLyn.Mocking
 {
-    public interface ISetup<TMock>
+    public interface ISetup
+    {
+        void Throws<T>() where T : Exception;
+    }
+
+    public interface ISetup<TMock> : ISetup
     {
         
     }
 
-    public interface ISetup<TMock, in TReturn>
+    public interface ISetup<TMock, in TReturn> : ISetup
     {
         ISetup<TMock, TReturn> Returns(TReturn value);
     }
