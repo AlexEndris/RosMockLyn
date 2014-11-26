@@ -26,6 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
+using RosMockLyn.Mocking.Assertion;
 using RosMockLyn.Mocking.Routing;
 
 namespace RosMockLyn.Mocking
@@ -59,23 +60,25 @@ namespace RosMockLyn.Mocking
         }
 
 
-        public static void Received<T>(this T mock, Expression<Action<T>> expression, int expectedCalls)
+        public static IReceived Received<T>(this T mock, Expression<Action<T>> expression)
         {
-            Received(mock, (MethodCallExpression)expression.Body, expectedCalls);
+            return Received(mock, (MethodCallExpression)expression.Body);
         }
 
-        public static void Received<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression, int expectedCalls)
+        public static IReceived Received<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression)
         {
-            Received(mock, (MethodCallExpression)expression.Body, expectedCalls);
+            return Received(mock, (MethodCallExpression)expression.Body);
         }
 
-        private static void Received<T>(T mock, MethodCallExpression expression, int expectedCalls)
+        private static IReceived Received<T>(T mock, MethodCallExpression expression)
         {
             var realMock = TryGetMock(mock);
 
             IEnumerable arguments = GetArguments(expression.Arguments);
 
-            realMock.CallRouter.GetMatchingInvocationInfo(expression.Method.Name, arguments);
+            var invocationInfo = realMock.CallRouter.GetMatchingInvocationInfo(expression.Method.Name, arguments);
+
+            return new Received(invocationInfo);
         }
 
         private static IMock TryGetMock<T>(T mock)

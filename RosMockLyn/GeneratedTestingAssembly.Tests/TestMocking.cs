@@ -27,8 +27,8 @@ namespace GeneratedTestingAssembly.Tests
             var intCall = someInterface.IntCall();
             intCall = someInterface.ReturnParameters(1, 2, "3");
 
-            someInterface.Received(x => x.VoidCall(), 1);
-            someInterface.Received(x => x.IntCall(), 1);
+            someInterface.Received(x => x.VoidCall()).AtLeastOne();
+            someInterface.Received(x => x.IntCall()).One();
             Assert.ThrowsException<InvalidCastException>(() => someInterface.Parameters(1, 2, "1"));
         }
 
@@ -67,7 +67,7 @@ namespace GeneratedTestingAssembly.Tests
 
             someInterface.VoidCall();
 
-            someInterface.Received(x => x.VoidCall(), 1);
+            someInterface.Received(x => x.VoidCall()).AtLeastOne();
         }
 
         //[TestMethod]

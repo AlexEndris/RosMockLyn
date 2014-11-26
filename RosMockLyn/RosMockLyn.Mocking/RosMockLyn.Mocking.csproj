@@ -42,12 +42,14 @@
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertion\Received.cs" />
     <Compile Include="Call.cs" />
     <Compile Include="CallRecorder.cs" />
     <Compile Include="ICallRecorder.cs" />
     <Compile Include="IoC\IInjector.cs" />
     <Compile Include="IMock.cs" />
     <Compile Include="IoC\IInjectorRegistry.cs" />
+    <Compile Include="Assertion\IReceived.cs" />
     <Compile Include="ISetup.cs" />
     <Compile Include="Matching\ArgumentMatcher.cs" />
     <Compile Include="Matching\IArgumentMatcher.cs" />
