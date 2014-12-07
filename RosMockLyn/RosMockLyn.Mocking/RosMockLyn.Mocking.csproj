@@ -44,8 +44,6 @@
   <ItemGroup>
     <Compile Include="Assertion\Received.cs" />
     <Compile Include="Call.cs" />
-    <Compile Include="CallRecorder.cs" />
-    <Compile Include="ICallRecorder.cs" />
     <Compile Include="IoC\IInjector.cs" />
     <Compile Include="IMock.cs" />
     <Compile Include="IoC\IInjectorRegistry.cs" />
@@ -59,11 +57,11 @@
     <Compile Include="IoC\MockInjector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionExtensions.cs" />
-    <Compile Include="Routing\ICallRouter.cs" />
+    <Compile Include="Routing\ISubstitutionContext.cs" />
     <Compile Include="Routing\MethodCall.cs" />
     <Compile Include="Routing\MethodCallReturn.cs" />
     <Compile Include="Routing\MethodInvocationInfo.cs" />
-    <Compile Include="Routing\MockCallRouter.cs" />
+    <Compile Include="Routing\MockSubstitutionContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.UnitTestFramework">

@@ -31,22 +31,22 @@ namespace GeneratedTestingAssembly
     {
         public void VoidCall()
         {
-            CallRouter.Route();
+            SubstitutionContext.Route();
         }
 
         public int IntCall()
         {
-            return CallRouter.Route<int>();
+            return SubstitutionContext.Route<int>();
         }
 
         public void Parameters(int i, double d, string s)
         {
-            CallRouter.Route(arguments: new object[] { i, d, s });
+            SubstitutionContext.Route(arguments: new object[] { i, d, s });
         }
 
         public int ReturnParameters(int i, double d, string s)
         {
-            return CallRouter.Route<int>(arguments: new object[] { i, d, s });
+            return SubstitutionContext.Route<int>(arguments: new object[] { i, d, s });
         }
     }
 }

@@ -27,6 +27,6 @@ namespace RosMockLyn.Mocking
 {
     public interface IMock
     {
-        ICallRouter CallRouter { get; }
+        ISubstitutionContext SubstitutionContext { get; }
     }
 }

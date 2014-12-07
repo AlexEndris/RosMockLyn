@@ -41,7 +41,7 @@ namespace RosMockLyn.Mocking
 
             IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
 
-            var methodInvocationInfo = realMock.CallRouter.Setup(methodCallExpression.Method.Name, arguments);
+            var methodInvocationInfo = realMock.SubstitutionContext.SetupMethod(methodCallExpression.Method.Name, arguments);
 
             return new MethodCall<TMock>(methodInvocationInfo);
         }
@@ -54,7 +54,7 @@ namespace RosMockLyn.Mocking
 
             IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
 
-            var methodInvocationInfo = realMock.CallRouter.Setup<TReturn>(methodCallExpression.Method.Name, arguments);
+            var methodInvocationInfo = realMock.SubstitutionContext.SetupMethod<TReturn>(methodCallExpression.Method.Name, arguments);
 
             return new MethodCallReturn<TMock, TReturn>(methodInvocationInfo);
         }
@@ -76,7 +76,7 @@ namespace RosMockLyn.Mocking
 
             IEnumerable arguments = GetArguments(expression.Arguments);
 
-            var invocationInfo = realMock.CallRouter.GetMatchingInvocationInfo(expression.Method.Name, arguments);
+            var invocationInfo = realMock.SubstitutionContext.GetMatchingInvocationInfo(expression.Method.Name, arguments);
 
             return new Received(invocationInfo);
         }

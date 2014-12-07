@@ -33,7 +33,7 @@ namespace RosMockLyn.Mocking.Tests
     [TestClass]
     public class MockCallRouterTests
     {
-        private MockCallRouter _callRouter;
+        private MockSubstitutionContext substitutionContext;
 
         private ArgumentMatcherMock _matcherMock;
 
@@ -42,7 +42,7 @@ namespace RosMockLyn.Mocking.Tests
         {
             _matcherMock = new ArgumentMatcherMock();
 
-            _callRouter = new MockCallRouter(_matcherMock);
+            substitutionContext = new MockSubstitutionContext(_matcherMock);
         }
 
         [TestMethod]
@@ -55,11 +55,11 @@ namespace RosMockLyn.Mocking.Tests
             _matcherMock.SetNoMatch();
 
             // Act
-            _callRouter.Route(methodName, arguments);
+            substitutionContext.Route(methodName, arguments);
 
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Should().NotBeNull();
         }
@@ -76,7 +76,7 @@ namespace RosMockLyn.Mocking.Tests
             // Act
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Should().BeNull();
         }
@@ -91,11 +91,11 @@ namespace RosMockLyn.Mocking.Tests
             _matcherMock.SetNoMatch();
 
             // Act
-            _callRouter.Route<int>(methodName, arguments);
+            substitutionContext.Route<int>(methodName, arguments);
 
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Should().NotBeNull();
         }
@@ -110,11 +110,11 @@ namespace RosMockLyn.Mocking.Tests
             _matcherMock.SetNoMatch();
 
             // Act
-            _callRouter.Route(methodName, arguments);
+            substitutionContext.Route(methodName, arguments);
 
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Arguments.Should().BeEquivalentTo(arguments);
             info.MethodName.Should().Be(methodName);
@@ -132,11 +132,11 @@ namespace RosMockLyn.Mocking.Tests
             _matcherMock.SetNoMatch();
 
             // Act
-            _callRouter.Route<int>(methodName, arguments);
+            substitutionContext.Route<int>(methodName, arguments);
 
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Arguments.Should().BeEquivalentTo(arguments);
             info.MethodName.Should().Be(methodName);
@@ -154,11 +154,11 @@ namespace RosMockLyn.Mocking.Tests
             _matcherMock.SetNoMatch();
 
             // Act
-            _callRouter.Route(methodName, arguments);
+            substitutionContext.Route(methodName, arguments);
 
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Calls.Should().Be(1);
         }
@@ -173,11 +173,11 @@ namespace RosMockLyn.Mocking.Tests
             _matcherMock.SetNoMatch();
 
             // Act
-            _callRouter.Route<int>(methodName, arguments);
+            substitutionContext.Route<int>(methodName, arguments);
 
             // Assert
             _matcherMock.SetMatch();
-            var info = _callRouter.GetMatchingInvocationInfo(methodName, arguments);
+            var info = substitutionContext.GetMatchingInvocationInfo(methodName, arguments);
 
             info.Calls.Should().Be(1);
         }

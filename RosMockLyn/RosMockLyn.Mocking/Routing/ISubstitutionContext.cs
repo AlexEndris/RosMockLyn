@@ -21,29 +21,20 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace RosMockLyn.Mocking
+namespace RosMockLyn.Mocking.Routing
 {
-    public sealed class CallRecorder : ICallRecorder
+    public interface ISubstitutionContext
     {
-        private readonly Stack<Call> calls = new Stack<Call>();
+        MethodInvocationInfo SetupMethod(string methodName, params object[] arguments);
 
-        public void Record(IMock mock, [CallerMemberName] string memberName = "")
-        {
-            MethodInfo methodInfo = mock.GetType().GetTypeInfo().GetDeclaredMethod(memberName);
+        MethodInvocationInfo SetupMethod<TReturn>(string methodName, params object[] arguments);
 
-            this.calls.Push(new Call(mock, memberName, methodInfo.ReturnType));
-        }
+        void Route([CallerMemberName] string methodName = "", params object[] arguments);
 
-        public Call GetLastCall()
-        {
-            var lastCall = this.calls.Peek();
-            this.calls.Clear();
+        TReturn Route<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
 
-            return lastCall;
-        }
+        MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments);
     }
 }

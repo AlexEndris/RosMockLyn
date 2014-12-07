@@ -31,18 +31,18 @@ using RosMockLyn.Mocking.Matching;
 
 namespace RosMockLyn.Mocking.Routing
 {
-    internal sealed class MockCallRouter : ICallRouter
+    internal sealed class MockSubstitutionContext : ISubstitutionContext
     {
         private readonly IArgumentMatcher _matcher;
         private readonly IList<MethodInvocationInfo> _invocations;
 
-        public MockCallRouter()
+        public MockSubstitutionContext()
         {
             _matcher = new ArgumentMatcher();
             _invocations = new List<MethodInvocationInfo>();
         }
 
-        public MockCallRouter(IArgumentMatcher matcher)
+        public MockSubstitutionContext(IArgumentMatcher matcher)
         {
             _matcher = matcher;
             _invocations = new List<MethodInvocationInfo>();
@@ -53,12 +53,12 @@ namespace RosMockLyn.Mocking.Routing
             return GetMatchOrDefault(methodName, arguments);
         }
 
-        public MethodInvocationInfo Setup(string methodName, params object[] arguments)
+        public MethodInvocationInfo SetupMethod(string methodName, params object[] arguments)
         {
             return CreateInvocation(methodName, arguments);
         }
 
-        public MethodInvocationInfo Setup<TReturn>(string methodName, params object[] arguments)
+        public MethodInvocationInfo SetupMethod<TReturn>(string methodName, params object[] arguments)
         {
             return CreateInvocation<TReturn>(methodName, arguments);
         }

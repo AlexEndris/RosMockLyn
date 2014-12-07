@@ -6,9 +6,9 @@ namespace RosMockLyn.Mocking
     {
         protected MockBase()
         {
-            CallRouter = new MockCallRouter();
+            SubstitutionContext = new MockSubstitutionContext();
         }
 
-        public ICallRouter CallRouter { get; private set; }
+        public ISubstitutionContext SubstitutionContext { get; private set; }
     }
 }
