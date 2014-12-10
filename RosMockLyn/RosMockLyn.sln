@@ -62,14 +62,14 @@ Global
 		SccProjectTopLevelParentUniqueName6 = RosMockLyn.sln
 		SccProjectName6 = GeneratedTestingAssembly.Tests
 		SccLocalPath6 = GeneratedTestingAssembly.Tests
-		SccProjectUniqueName7 = RosMockLyn.Utilities\\RosMockLyn.Mocking.csproj
+		SccProjectUniqueName7 = RosMockLyn.Mocking\\RosMockLyn.Mocking.csproj
 		SccProjectTopLevelParentUniqueName7 = RosMockLyn.sln
-		SccProjectName7 = RosMockLyn.Utilities
-		SccLocalPath7 = RosMockLyn.Utilities
-		SccProjectUniqueName8 = RosMockLyn.Utilities.Tests\\RosMockLyn.Mocking.Tests.csproj
+		SccProjectName7 = RosMockLyn.Mocking
+		SccLocalPath7 = RosMockLyn.Mocking
+		SccProjectUniqueName8 = RosMockLyn.Mocking.Tests\\RosMockLyn.Mocking.Tests.csproj
 		SccProjectTopLevelParentUniqueName8 = RosMockLyn.sln
-		SccProjectName8 = RosMockLyn.Utilities.Tests
-		SccLocalPath8 = RosMockLyn.Utilities.Tests
+		SccProjectName8 = RosMockLyn.Mocking.Tests
+		SccLocalPath8 = RosMockLyn.Mocking.Tests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
