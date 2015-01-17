@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,40 +21,31 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System;
 
-using RosMockLyn.Mocking.Routing;
 using RosMockLyn.Mocking.Routing.Invocations;
 
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking.Routing
 {
-    public class Received : IReceived
+    public class PropertyCallReturn<TMock, TReturn> : ISetup<TMock, TReturn>
     {
-        private readonly MethodInvocationInfo invocationInfo;
+        private readonly PropertyInvocationInfo _invocationInfo;
 
-        public Received(MethodInvocationInfo invocationInfo)
+        public PropertyCallReturn(PropertyInvocationInfo invocationInfo)
         {
-            this.invocationInfo = invocationInfo;
+            _invocationInfo = invocationInfo;
         }
 
-        public void One()
+        public ISetup<TMock, TReturn> Returns(TReturn value)
         {
-            Excatly(1);
+            _invocationInfo.ReturnValue = value;
+
+            return this;
         }
 
-        public void AtLeastOne()
+        public void Throws<T>() where T : Exception
         {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
-        }
-
-        public void Excatly(int expectedCalls)
-        {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
-        }
-
-        public void None()
-        {
-            Excatly(0);
+            throw new NotSupportedException("It is not supported to make a property throw an exception.");
         }
     }
 }

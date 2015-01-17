@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,40 +21,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-using RosMockLyn.Mocking.Routing;
-using RosMockLyn.Mocking.Routing.Invocations;
-
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
 {
-    public class Received : IReceived
+    public interface IHandlePropertyInvocation
     {
-        private readonly MethodInvocationInfo invocationInfo;
+        PropertyInvocationInfo Setup<TReturn>(TReturn value, string propertyName);
 
-        public Received(MethodInvocationInfo invocationInfo)
-        {
-            this.invocationInfo = invocationInfo;
-        }
+        TReturn Handle<TReturn>(string propertyName);
 
-        public void One()
-        {
-            Excatly(1);
-        }
-
-        public void AtLeastOne()
-        {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
-        }
-
-        public void Excatly(int expectedCalls)
-        {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
-        }
-
-        public void None()
-        {
-            Excatly(0);
-        }
+        PropertyInvocationInfo Setup<TReturn>(string propertyName);
     }
 }

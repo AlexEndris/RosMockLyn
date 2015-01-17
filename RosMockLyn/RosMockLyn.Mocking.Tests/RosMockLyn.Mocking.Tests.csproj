@@ -120,9 +120,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\ArgumentMatcherMock.cs" />
-    <Compile Include="Tests\MockCallRouterTests.cs" />
+    <Compile Include="Mocks\HandleIndexInvocationMock.cs" />
+    <Compile Include="Mocks\HandleMethodInvocationMock.cs" />
+    <Compile Include="Mocks\HandlePropertyInvocationMock.cs" />
+    <Compile Include="Tests\IndexInvocationHandlerTests.cs" />
+    <Compile Include="Tests\MethodInvocationHandlerTests.cs" />
+    <Compile Include="Tests\MockSubstitutionContextTests.cs" />
     <Compile Include="Tests\MockInjectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\PropertyInvocationHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

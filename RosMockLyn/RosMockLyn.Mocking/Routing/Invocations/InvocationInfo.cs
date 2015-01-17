@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,40 +21,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System;
 
-using RosMockLyn.Mocking.Routing;
-using RosMockLyn.Mocking.Routing.Invocations;
-
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    public class Received : IReceived
+    public class InvocationInfo
     {
-        private readonly MethodInvocationInfo invocationInfo;
-
-        public Received(MethodInvocationInfo invocationInfo)
+        public InvocationInfo(string methodName, Type returnType, object returnValue)
         {
-            this.invocationInfo = invocationInfo;
         }
 
-        public void One()
-        {
-            Excatly(1);
-        }
-
-        public void AtLeastOne()
-        {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
-        }
-
-        public void Excatly(int expectedCalls)
-        {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
-        }
-
-        public void None()
-        {
-            Excatly(0);
-        }
+ 
     }
 }

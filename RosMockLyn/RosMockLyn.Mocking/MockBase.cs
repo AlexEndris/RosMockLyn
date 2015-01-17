@@ -1,4 +1,5 @@
 ﻿using RosMockLyn.Mocking.Routing;
+using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking
 {
@@ -6,7 +7,10 @@ namespace RosMockLyn.Mocking
     {
         protected MockBase()
         {
-            SubstitutionContext = new MockSubstitutionContext();
+            SubstitutionContext = new MockSubstitutionContext(
+                new MethodInvocationHandler(),
+                new PropertyInvocationHandler(),
+                new IndexInvocationHandler());
         }
 
         public ISubstitutionContext SubstitutionContext { get; private set; }

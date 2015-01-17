@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,40 +21,23 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System;
 
-using RosMockLyn.Mocking.Routing;
-using RosMockLyn.Mocking.Routing.Invocations;
-
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    public class Received : IReceived
+    public class IndexerInvocationInfo
     {
-        private readonly MethodInvocationInfo invocationInfo;
-
-        public Received(MethodInvocationInfo invocationInfo)
+        public IndexerInvocationInfo(Type returnType, object returnValue, Type indexType, object index)
         {
-            this.invocationInfo = invocationInfo;
+            ReturnType = returnType;
+            ReturnValue = returnValue;
+            IndexType = indexType;
+            Index = index;
         }
 
-        public void One()
-        {
-            Excatly(1);
-        }
-
-        public void AtLeastOne()
-        {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
-        }
-
-        public void Excatly(int expectedCalls)
-        {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
-        }
-
-        public void None()
-        {
-            Excatly(0);
-        }
+        public Type ReturnType { get; set; }
+        public object ReturnValue { get; set; }
+        public Type IndexType { get; set; }
+        public object Index { get; set; }
     }
 }

@@ -12,8 +12,8 @@ namespace GeneratedTestingAssembly.Tests
     [TestClass]
     public class TestMocking
     {
-        [TestMethod]
-        public void Sandbox()
+        [TestMethod, TestCategory("Using mocking framework")]
+        public void Test_Methods()
         {
             var someInterface = Mock.For<ISomeInterface>();
 
@@ -32,21 +32,29 @@ namespace GeneratedTestingAssembly.Tests
             Assert.ThrowsException<InvalidCastException>(() => someInterface.Parameters(1, 2, "1"));
         }
 
-        public static class Arg
+        [TestMethod, TestCategory("Using mocking framework")]
+        public void Test_Properties()
         {
-            public static T Is<T>()
-            {
-                return default(T);
-            }
+            var someInterface = Mock.For<ISomeInterface>();
+
+            someInterface.IntNormalProperty = 100;
+            someInterface.Setup(x => x.IntReadonlyProperty).Returns(200);
+
+            Assert.AreEqual(100, someInterface.IntNormalProperty);
+            Assert.AreEqual(200, someInterface.IntReadonlyProperty);
         }
 
-        //[TestMethod]
-        //public void Returns_UsedTheWrongWay()
-        //{
-        //    var someInterface = Mock.For<ISomeInterface>();
-        //    someInterface.IntCall();
-        //    Assert.ThrowsException<InvalidOperationException>(() => someInterface.Returns(someInterface));
-        //}
+        [TestMethod, TestCategory("Using mocking framework")]
+        public void Test_Indexer()
+        {
+            var someInterface = Mock.For<ISomeInterface>();
+
+            someInterface["1"] = 100;
+            someInterface.Setup(x => x[1]).Returns(200);
+
+            Assert.AreEqual(100, someInterface["1"]);
+            Assert.AreEqual(200, someInterface[1]);
+        }
 
         //[TestMethod]
         //public void Returns_CorrectlyUsed()
@@ -60,7 +68,7 @@ namespace GeneratedTestingAssembly.Tests
         //    Assert.AreEqual(5, result);
         //}
 
-        [TestMethod]
+        [TestMethod, TestCategory("Using mocking framework")]
         public void Received_CorrectlyUsed()
         {
             var someInterface = Mock.For<ISomeInterface>();

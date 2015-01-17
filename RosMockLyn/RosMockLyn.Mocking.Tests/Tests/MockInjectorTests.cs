@@ -17,7 +17,7 @@ namespace RosMockLyn.Mocking.Tests
             this._injector = new MockInjector();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void RegisterSameBaseTypeMultipleTimes_ShouldThrowException()
         {
             // Arrange
@@ -28,7 +28,7 @@ namespace RosMockLyn.Mocking.Tests
             Assert.ThrowsException<InvalidOperationException>(() => this._injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void ResolvingRegisteredType_ShouldReturnInstance()
         {
             // Arrange
@@ -41,7 +41,7 @@ namespace RosMockLyn.Mocking.Tests
             Assert.IsNotNull(instance);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void ResolvingNotRegisteredType_ShouldReturnNull()
         {
             // Arrange

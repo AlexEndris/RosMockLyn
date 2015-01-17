@@ -29,24 +29,64 @@ namespace GeneratedTestingAssembly
 {
     public class MockSomeInterface : MockBase, ISomeInterface
     {
+        int ISomeInterface.this[int index]
+        {
+            get
+            {
+                return SubstitutionContext.GetIndex<int, int>(index);
+            }
+        }
+
+        int ISomeInterface.this[string index]
+        {
+            get
+            {
+                return SubstitutionContext.GetIndex<string, int>(index);
+            }
+            set
+            {
+                SubstitutionContext.SetIndex(index, value);
+            }
+        }
+
+        public int IntReadonlyProperty
+        {
+            get
+            {
+                return SubstitutionContext.GetProperty<int>();
+            }
+        }
+
+        public int IntNormalProperty
+        {
+            get
+            {
+                return SubstitutionContext.GetProperty<int>();
+            }
+            set
+            {
+                SubstitutionContext.SetProperty(value);
+            }
+        }
+
         public void VoidCall()
         {
-            SubstitutionContext.Route();
+            SubstitutionContext.CallMethod();
         }
 
         public int IntCall()
         {
-            return SubstitutionContext.Route<int>();
+            return SubstitutionContext.CallMethod<int>();
         }
 
         public void Parameters(int i, double d, string s)
         {
-            SubstitutionContext.Route(arguments: new object[] { i, d, s });
+            SubstitutionContext.CallMethod(arguments: new object[] { i, d, s });
         }
 
         public int ReturnParameters(int i, double d, string s)
         {
-            return SubstitutionContext.Route<int>(arguments: new object[] { i, d, s });
+            return SubstitutionContext.CallMethod<int>(arguments: new object[] { i, d, s });
         }
     }
 }

@@ -24,6 +24,14 @@ namespace AssemblyWithInterfaces
 {
     public interface ISomeInterface
     {
+        int this[int index] { get; }
+
+        int this[string index] { get; set; }
+
+        int IntReadonlyProperty { get; }
+
+        int IntNormalProperty { get; set; }
+
         void VoidCall();
 
         int IntCall();

@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 using RosMockLyn.Mocking.Assertion;
@@ -50,16 +51,12 @@ namespace RosMockLyn.Mocking
         {
             var realMock = TryGetMock(mock);
 
-            var methodCallExpression = (MethodCallExpression)expression.Body;
+            if (expression.Body.ToString().Contains("get_Item")) // HACK: Indexer appears as a MethodCallExpression in a lambda.
+                return SetupIndex<TMock, TReturn>(realMock, (MethodCallExpression)expression.Body);
 
-            IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
-
-            var methodInvocationInfo = realMock.SubstitutionContext.SetupMethod<TReturn>(methodCallExpression.Method.Name, arguments);
-
-            return new MethodCallReturn<TMock, TReturn>(methodInvocationInfo);
+            return Setup<TMock, TReturn>(realMock, (dynamic)expression.Body);
         }
-
-
+        
         public static IReceived Received<T>(this T mock, Expression<Action<T>> expression)
         {
             return Received(mock, (MethodCallExpression)expression.Body);
@@ -70,13 +67,40 @@ namespace RosMockLyn.Mocking
             return Received(mock, (MethodCallExpression)expression.Body);
         }
 
+        private static ISetup<TMock, TReturn> Setup<TMock, TReturn>(IMock mock, MemberExpression expression)
+        {
+            var propertyInvocationInfo = mock.SubstitutionContext.SetProperty<TReturn>(expression.Member.Name);
+
+            return new PropertyCallReturn<TMock, TReturn>(propertyInvocationInfo);
+        }
+
+        private static ISetup<TMock, TReturn> SetupIndex<TMock, TReturn>(IMock mock, MethodCallExpression expression)
+        {
+            var index = GetArguments(expression.Arguments).OfType<object>().First();
+
+            var indexerInvocationInfo = mock.SubstitutionContext.SetIndex<TReturn>(index);
+
+            return new IndexerCallReturn<TMock, TReturn>(indexerInvocationInfo);
+        }
+
+        private static ISetup<TMock, TReturn> Setup<TMock, TReturn>(IMock mock, MethodCallExpression expression)
+        {
+            var methodCallExpression = expression;
+
+            IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
+
+            var methodInvocationInfo = mock.SubstitutionContext.SetupMethod<TReturn>(methodCallExpression.Method.Name, arguments);
+
+            return new MethodCallReturn<TMock, TReturn>(methodInvocationInfo);
+        }
+
         private static IReceived Received<T>(T mock, MethodCallExpression expression)
         {
             var realMock = TryGetMock(mock);
 
             IEnumerable arguments = GetArguments(expression.Arguments);
 
-            var invocationInfo = realMock.SubstitutionContext.GetMatchingInvocationInfo(expression.Method.Name, arguments);
+            var invocationInfo = realMock.SubstitutionContext.GetMatchingMethodInvocationInfo(expression.Method.Name, arguments);
 
             return new Received(invocationInfo);
         }

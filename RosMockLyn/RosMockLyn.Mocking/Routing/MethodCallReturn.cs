@@ -23,27 +23,29 @@
 
 using System;
 
+using RosMockLyn.Mocking.Routing.Invocations;
+
 namespace RosMockLyn.Mocking.Routing
 {
     public class MethodCallReturn<TMock, TReturn> : ISetup<TMock, TReturn>
     {
-        private readonly MethodInvocationInfo invocationInfo;
+        private readonly MethodInvocationInfo _invocationInfo;
 
         public MethodCallReturn(MethodInvocationInfo invocationInfo)
         {
-            this.invocationInfo = invocationInfo;
+            _invocationInfo = invocationInfo;
         }
 
         public ISetup<TMock, TReturn> Returns(TReturn value)
         {
-            invocationInfo.ReturnValue = value;
+            _invocationInfo.ReturnValue = value;
 
             return this;
         }
 
         public void Throws<T>() where T : Exception
         {
-            invocationInfo.WhenCalled = () => { throw Activator.CreateInstance<T>(); };
+            _invocationInfo.WhenCalled = () => { throw Activator.CreateInstance<T>(); };
         }
     }
 }

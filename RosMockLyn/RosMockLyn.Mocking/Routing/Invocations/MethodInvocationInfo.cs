@@ -21,40 +21,41 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System;
+using System.Collections;
 
-using RosMockLyn.Mocking.Routing;
-using RosMockLyn.Mocking.Routing.Invocations;
-
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    public class Received : IReceived
+    public class MethodInvocationInfo
     {
-        private readonly MethodInvocationInfo invocationInfo;
-
-        public Received(MethodInvocationInfo invocationInfo)
+        public MethodInvocationInfo(string methodName, IEnumerable arguments)
+            : this(methodName, null, null, arguments)
         {
-            this.invocationInfo = invocationInfo;
         }
 
-        public void One()
+        public MethodInvocationInfo(string methodName, Type returnType, object returnValue, IEnumerable arguments)
         {
-            Excatly(1);
+            MethodName = methodName;
+            ReturnType = returnType;
+            ReturnValue = returnValue;
+            Arguments = arguments;
+            Calls = 0;
         }
 
-        public void AtLeastOne()
-        {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
-        }
+        public string MethodName { get; private set; }
+        public int Calls { get; set; }
+        public Type ReturnType { get; private set; }
+        public object ReturnValue { get; set; }
+        public Action WhenCalled { get; set; }
+        public IEnumerable Arguments { get; private set; }
 
-        public void Excatly(int expectedCalls)
+        public void Execute()
         {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
-        }
+            Calls++;
 
-        public void None()
-        {
-            Excatly(0);
+
+            if (WhenCalled != null)
+                WhenCalled();
         }
     }
 }

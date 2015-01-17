@@ -23,6 +23,8 @@
 
 using System.Runtime.CompilerServices;
 
+using RosMockLyn.Mocking.Routing.Invocations;
+
 namespace RosMockLyn.Mocking.Routing
 {
     public interface ISubstitutionContext
@@ -31,10 +33,22 @@ namespace RosMockLyn.Mocking.Routing
 
         MethodInvocationInfo SetupMethod<TReturn>(string methodName, params object[] arguments);
 
-        void Route([CallerMemberName] string methodName = "", params object[] arguments);
+        void SetProperty<TValue>(TValue value, [CallerMemberName] string propertyName = "");
 
-        TReturn Route<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
+        PropertyInvocationInfo SetProperty<TValue>([CallerMemberName] string propertyName = "");
 
-        MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments);
+        void SetIndex<TIndex, TValue>(TIndex index, TValue value);
+
+        IndexerInvocationInfo SetIndex<TValue>(object index);
+
+        TReturn GetProperty<TReturn>([CallerMemberName] string propertyName = "");
+
+        TReturn GetIndex<TIndex, TReturn>(TIndex index);
+
+        void CallMethod([CallerMemberName] string methodName = "", params object[] arguments);
+
+        TReturn CallMethod<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
+
+        MethodInvocationInfo GetMatchingMethodInvocationInfo(string methodName, params object[] arguments);
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,40 +21,49 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-using RosMockLyn.Mocking.Routing;
 using RosMockLyn.Mocking.Routing.Invocations;
+using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking.Tests.Mocks
 {
-    public class Received : IReceived
+    public class HandlePropertyInvocationMock : IHandlePropertyInvocation
     {
-        private readonly MethodInvocationInfo invocationInfo;
+        public bool SetupWithReturn_WasCalled { get; private set; }
+        public bool Setup_WasCalled { get; private set; }
+        public bool Handle_WasCalled { get; private set; }
 
-        public Received(MethodInvocationInfo invocationInfo)
+        private PropertyInvocationInfo _invocationInfo;
+        private object _returnValue;
+
+        public PropertyInvocationInfo Setup<TReturn>(TReturn value, string propertyName)
         {
-            this.invocationInfo = invocationInfo;
+            SetupWithReturn_WasCalled = true;
+
+            return _invocationInfo;
         }
 
-        public void One()
+        public TReturn Handle<TReturn>(string propertyName)
         {
-            Excatly(1);
+            Handle_WasCalled = true;
+
+            return (TReturn)(_returnValue ?? default(TReturn));
         }
 
-        public void AtLeastOne()
+        public PropertyInvocationInfo Setup<TReturn>(string propertyName)
         {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
+            Setup_WasCalled = true;
+
+            return _invocationInfo;
         }
 
-        public void Excatly(int expectedCalls)
+        public void SetMethodInvocationReturnValue(PropertyInvocationInfo returnValue)
         {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
+            _invocationInfo = returnValue;
         }
 
-        public void None()
+        public void SetHandleReturnValue<TReturn>(TReturn returnValue)
         {
-            Excatly(0);
+            _returnValue = returnValue;
         }
     }
 }

@@ -21,92 +21,90 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 
-using RosMockLyn.Mocking.Matching;
+using RosMockLyn.Mocking.Routing.Invocations;
+using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 
 namespace RosMockLyn.Mocking.Routing
 {
     internal sealed class MockSubstitutionContext : ISubstitutionContext
     {
-        private readonly IArgumentMatcher _matcher;
-        private readonly IList<MethodInvocationInfo> _invocations;
+        private readonly IHandleMethodInvocation _methodInvocationHandler;
+        private readonly IHandlePropertyInvocation _propertyInvocationHandler;
+        private readonly IHandleIndexInvocation _indexInvocationHandler;
 
-        public MockSubstitutionContext()
+        public MockSubstitutionContext(IHandleMethodInvocation methodInvocationHandler,
+                                       IHandlePropertyInvocation propertyInvocationHandler,
+                                       IHandleIndexInvocation indexInvocationHandler)
         {
-            _matcher = new ArgumentMatcher();
-            _invocations = new List<MethodInvocationInfo>();
+            if (methodInvocationHandler == null)
+                throw new ArgumentNullException("methodInvocationHandler");
+            if (propertyInvocationHandler == null)
+                throw new ArgumentNullException("propertyInvocationHandler");
+            if (indexInvocationHandler == null)
+                throw new ArgumentNullException("indexInvocationHandler");
+
+            _methodInvocationHandler = methodInvocationHandler;
+            _propertyInvocationHandler = propertyInvocationHandler;
+            _indexInvocationHandler = indexInvocationHandler;
         }
 
-        public MockSubstitutionContext(IArgumentMatcher matcher)
+        public MethodInvocationInfo GetMatchingMethodInvocationInfo(string methodName, params object[] arguments)
         {
-            _matcher = matcher;
-            _invocations = new List<MethodInvocationInfo>();
-        }
-
-        public MethodInvocationInfo GetMatchingInvocationInfo(string methodName, params object[] arguments)
-        {
-            return GetMatchOrDefault(methodName, arguments);
+            return _methodInvocationHandler.Get(methodName, arguments);
         }
 
         public MethodInvocationInfo SetupMethod(string methodName, params object[] arguments)
         {
-            return CreateInvocation(methodName, arguments);
+            return _methodInvocationHandler.Setup(methodName, arguments);
         }
 
         public MethodInvocationInfo SetupMethod<TReturn>(string methodName, params object[] arguments)
         {
-            return CreateInvocation<TReturn>(methodName, arguments);
+            return _methodInvocationHandler.Setup<TReturn>(methodName, arguments);
         }
-
-        public void Route([CallerMemberName] string methodName = "", params object[] arguments)
+        
+        public void SetProperty<TValue>(TValue value, [CallerMemberName]string propertyName = "")
         {
-            var invocation = GetMatchOrDefault(methodName, arguments)
-                             ?? CreateInvocation(methodName, arguments);
-
-            invocation.Execute();
+            _propertyInvocationHandler.Setup(value, propertyName);
         }
 
-        public TReturn Route<TReturn>([CallerMemberName] string methodName = "", params object[] arguments)
+        public PropertyInvocationInfo SetProperty<TValue>([CallerMemberName]string propertyName = "")
         {
-            var invocation = GetMatchOrDefault(methodName, arguments)
-                            ?? CreateInvocation<TReturn>(methodName, arguments);
-
-            invocation.Execute();
-
-            return (TReturn)invocation.ReturnValue;
+            return _propertyInvocationHandler.Setup<TValue>(propertyName);
         }
 
-        private MethodInvocationInfo GetMatchOrDefault(string methodName, IEnumerable arguments)
+        public void SetIndex<TIndex, TValue>(TIndex index, TValue value)
         {
-            return _invocations.FirstOrDefault(x => x.MethodName == methodName 
-                                                    && _matcher.Match(x.Arguments, arguments));
+            _indexInvocationHandler.Setup(index, value);
         }
 
-        private MethodInvocationInfo CreateInvocation(string methodName, IEnumerable arguments)
+        public IndexerInvocationInfo SetIndex<TValue>(object index)
         {
-            MethodInvocationInfo invocation = new MethodInvocationInfo(methodName,arguments);
-
-            _invocations.Add(invocation);
-
-            return invocation;
+            return _indexInvocationHandler.Setup<TValue>(index);
         }
 
-        private MethodInvocationInfo CreateInvocation<TReturn>(string methodName, IEnumerable arguments)
+        public TReturn GetProperty<TReturn>([CallerMemberName]string propertyName = "")
         {
-            MethodInvocationInfo invocation = new MethodInvocationInfo(
-                methodName,
-                arguments,
-                typeof(TReturn),
-                default(TReturn));
-
-            _invocations.Add(invocation);
-
-            return invocation;
+            return _propertyInvocationHandler.Handle<TReturn>(propertyName);
         }
+
+        public TReturn GetIndex<TIndex, TReturn>(TIndex index)
+        {
+            return _indexInvocationHandler.Handle<TIndex, TReturn>(index);
+        }
+
+        public void CallMethod([CallerMemberName] string methodName = "", params object[] arguments)
+        {
+            _methodInvocationHandler.Handle(methodName, arguments);
+        }
+
+        public TReturn CallMethod<TReturn>([CallerMemberName] string methodName = "", params object[] arguments)
+        {
+            return _methodInvocationHandler.Handle<TReturn>(methodName, arguments);
+        }
+
     }
 }

@@ -23,6 +23,8 @@
 
 using System;
 
+using RosMockLyn.Mocking.Routing.Invocations;
+
 namespace RosMockLyn.Mocking.Routing
 {
     public class MethodCall<TMock> : ISetup<TMock>
