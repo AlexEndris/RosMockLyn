@@ -42,6 +42,7 @@
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arg.cs" />
     <Compile Include="Assertion\Received.cs" />
     <Compile Include="Call.cs" />
     <Compile Include="IoC\IInjector.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="ISetup.cs" />
     <Compile Include="Matching\ArgumentMatcher.cs" />
     <Compile Include="Matching\IArgumentMatcher.cs" />
+    <Compile Include="Matching\Match.cs" />
+    <Compile Include="Matching\MatcherFactory.cs" />
     <Compile Include="Mock.cs" />
     <Compile Include="MockBase.cs" />
     <Compile Include="MockExtensions.cs" />

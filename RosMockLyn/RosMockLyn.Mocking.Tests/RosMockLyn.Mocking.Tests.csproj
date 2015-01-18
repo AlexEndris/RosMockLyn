@@ -124,6 +124,7 @@
     <Compile Include="Mocks\HandleMethodInvocationMock.cs" />
     <Compile Include="Mocks\HandlePropertyInvocationMock.cs" />
     <Compile Include="Tests\IndexInvocationHandlerTests.cs" />
+    <Compile Include="Tests\MatcherFactoryTests.cs" />
     <Compile Include="Tests\MethodInvocationHandlerTests.cs" />
     <Compile Include="Tests\MockSubstitutionContextTests.cs" />
     <Compile Include="Tests\MockInjectorTests.cs" />
