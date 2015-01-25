@@ -21,92 +21,91 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 
 namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    public class MethodInvocationHandler : IHandleMethodInvocation
+    internal class MethodInvocationHandler : IHandleMethodInvocation
     {
-        private readonly IArgumentMatcher _matcher;
-        private readonly IList<MethodInvocationInfo> _invocations;
+        private readonly IList<MethodSetupInfo> _invocations;
+        private readonly IMethodCallRecorder _recorder;
 
         public MethodInvocationHandler()
         {
-            _matcher = new ArgumentMatcher();
-            _invocations = new List<MethodInvocationInfo>();
+            _invocations = new List<MethodSetupInfo>();
+            _recorder = new MethodCallRecorder();
         }
 
-        internal MethodInvocationHandler(IArgumentMatcher argumentMatcher)
+        public MethodInvocationHandler(IMethodCallRecorder methodCallRecorder)
         {
-            _matcher = argumentMatcher;
-            _invocations = new List<MethodInvocationInfo>();
+            _invocations = new List<MethodSetupInfo>();
+            _recorder = methodCallRecorder;
         }
 
-        public MethodInvocationInfo Get(string methodName, IEnumerable arguments)
+        public IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments)
         {
-            return GetMatchOrDefault(methodName, arguments);
+            return _recorder.RecordedInvocations.Where(x => x.MethodName == methodName
+                                                           && MatchArguments(arguments, x.Arguments));
         }
 
-        public MethodInvocationInfo Setup(string methodName, IEnumerable arguments)
+        public MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments)
         {
-            return GetMatchOrCreate(methodName, arguments);
+            return Create(methodName, arguments);
         }
 
-        public MethodInvocationInfo Setup<TReturn>(string methodName, IEnumerable arguments)
+        public MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments)
         {
-            return GetMatchOrCreate<TReturn>(methodName, arguments);
+            return Create<TReturn>(methodName, arguments);
         }
 
-        public void Handle(string methodName,IEnumerable arguments)
+        public void Handle(string methodName, IEnumerable<object> arguments)
         {
-            var invocation = GetMatchOrCreate(methodName, arguments);
+            _recorder.Record(methodName, arguments);
+
+            var invocation = GetLastMatch(methodName, arguments);
+
+            if (invocation == null)
+                return;
 
             invocation.Execute();
         }
 
-        public TReturn Handle<TReturn>(string methodName, IEnumerable arguments)
+        public TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments)
         {
-            var invocation = GetMatchOrCreate<TReturn>(methodName, arguments);
+            _recorder.Record(methodName, arguments);
+
+            var invocation = GetLastMatch(methodName, arguments);
+
+            if (invocation == null)
+                return default(TReturn);
 
             invocation.Execute();
 
             return (TReturn)invocation.ReturnValue;
         }
 
-        private MethodInvocationInfo GetMatchOrCreate(string methodName, IEnumerable arguments)
+        private MethodSetupInfo GetLastMatch(string methodName, IEnumerable<object> arguments)
         {
-            return GetMatchOrDefault(methodName, arguments)
-                   ?? Create(methodName, arguments);
+            return _invocations.LastOrDefault(x => x.MethodName == methodName 
+                                                    && MatchArguments(x.Arguments, arguments));
         }
 
-        private MethodInvocationInfo GetMatchOrCreate<TReturn>(string methodName, IEnumerable arguments)
+        private MethodSetupInfo Create(string methodName, IEnumerable<IMatcher> arguments)
         {
-            return GetMatchOrDefault(methodName, arguments)
-                   ?? Create<TReturn>(methodName, arguments);
-        }
-
-        private MethodInvocationInfo GetMatchOrDefault(string methodName, IEnumerable arguments)
-        {
-            return _invocations.FirstOrDefault(x => x.MethodName == methodName
-                                                    && _matcher.Match(x.Arguments, arguments));
-        }
-
-        private MethodInvocationInfo Create(string methodName, IEnumerable arguments)
-        {
-            var invocation = new MethodInvocationInfo(methodName, arguments);
+            var invocation = new MethodSetupInfo(methodName, arguments);
 
             _invocations.Add(invocation);
 
             return invocation;
         }
 
-        private MethodInvocationInfo Create<TReturn>(string methodName, IEnumerable arguments)
+        private MethodSetupInfo Create<TReturn>(string methodName, IEnumerable<IMatcher> arguments)
         {
-            var invocation = new MethodInvocationInfo(
+            var invocation = new MethodSetupInfo(
                 methodName,
                 typeof(TReturn),
                 default(TReturn),
@@ -117,5 +116,9 @@ namespace RosMockLyn.Mocking.Routing.Invocations
             return invocation;
         }
 
+        private bool MatchArguments(IEnumerable<IMatcher> matchers, IEnumerable<object> arguments)
+        {
+            return arguments.All((x, i) => matchers.ElementAt(i).Match(x));
+        }
     }
 }

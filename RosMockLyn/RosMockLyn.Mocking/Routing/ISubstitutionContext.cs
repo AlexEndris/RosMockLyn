@@ -21,17 +21,19 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking.Routing
 {
     public interface ISubstitutionContext
     {
-        MethodInvocationInfo SetupMethod(string methodName, params object[] arguments);
+        MethodSetupInfo SetupMethod(string methodName, IEnumerable<IMatcher> arguments);
 
-        MethodInvocationInfo SetupMethod<TReturn>(string methodName, params object[] arguments);
+        MethodSetupInfo SetupMethod<TReturn>(string methodName, IEnumerable<IMatcher> arguments);
 
         void SetProperty<TValue>(TValue value, [CallerMemberName] string propertyName = "");
 
@@ -49,6 +51,6 @@ namespace RosMockLyn.Mocking.Routing
 
         TReturn CallMethod<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
 
-        MethodInvocationInfo GetMatchingMethodInvocationInfo(string methodName, params object[] arguments);
+        IEnumerable<MethodInvocationInfo> GetMatchingInvocations(string methodName, IEnumerable<IMatcher> arguments);
     }
 }

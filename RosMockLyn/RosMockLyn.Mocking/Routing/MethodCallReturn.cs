@@ -29,23 +29,23 @@ namespace RosMockLyn.Mocking.Routing
 {
     public class MethodCallReturn<TMock, TReturn> : ISetup<TMock, TReturn>
     {
-        private readonly MethodInvocationInfo _invocationInfo;
+        private readonly MethodSetupInfo _setupInfo;
 
-        public MethodCallReturn(MethodInvocationInfo invocationInfo)
+        internal MethodCallReturn(MethodSetupInfo _setupInfo)
         {
-            _invocationInfo = invocationInfo;
+            this._setupInfo = _setupInfo;
         }
 
         public ISetup<TMock, TReturn> Returns(TReturn value)
         {
-            _invocationInfo.ReturnValue = value;
+            _setupInfo.ReturnValue = value;
 
             return this;
         }
 
         public void Throws<T>() where T : Exception
         {
-            _invocationInfo.WhenCalled = () => { throw Activator.CreateInstance<T>(); };
+            _setupInfo.WhenCalled = () => { throw Activator.CreateInstance<T>(); };
         }
     }
 }

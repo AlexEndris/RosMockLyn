@@ -23,20 +23,11 @@
 
 using System.Collections.Generic;
 
-using RosMockLyn.Mocking.Matching;
-
 namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
 {
-    internal interface IHandleMethodInvocation
+    internal interface IMethodCallRecorder
     {
-        IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments);
-
-        MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments);
-
-        MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments);
-
-        void Handle(string methodName, IEnumerable<object> arguments);
-
-        TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments);
+        IEnumerable<MethodInvocationInfo> RecordedInvocations { get; }
+        void Record(string methodName, IEnumerable<object> arguments);
     }
 }

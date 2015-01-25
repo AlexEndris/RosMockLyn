@@ -20,23 +20,20 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using System.Collections.Generic;
-
-using RosMockLyn.Mocking.Matching;
-
-namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
+namespace RosMockLyn.Mocking.Matching
 {
-    internal interface IHandleMethodInvocation
+    internal sealed class ConditionMatcher : IMatcher
     {
-        IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments);
+        private readonly MatchCondition _condition;
 
-        MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments);
+        public ConditionMatcher(MatchCondition condition)
+        {
+            _condition = condition;
+        }
 
-        MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments);
-
-        void Handle(string methodName, IEnumerable<object> arguments);
-
-        TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments);
+        public bool Match(object value)
+        {
+            return _condition.Matches(value);
+        }
     }
 }

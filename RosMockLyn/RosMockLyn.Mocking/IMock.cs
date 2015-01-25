@@ -25,7 +25,7 @@ using RosMockLyn.Mocking.Routing;
 
 namespace RosMockLyn.Mocking
 {
-    public interface IMock
+    internal interface IMock
     {
         ISubstitutionContext SubstitutionContext { get; }
     }

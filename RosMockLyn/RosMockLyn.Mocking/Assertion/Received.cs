@@ -21,20 +21,24 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System.Collections.Generic;
+using System.Linq;
+
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-using RosMockLyn.Mocking.Routing;
 using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking.Assertion
 {
     public class Received : IReceived
     {
-        private readonly MethodInvocationInfo invocationInfo;
+        private readonly string _methodName;
+        private readonly IEnumerable<MethodInvocationInfo> _setupInfo;
 
-        public Received(MethodInvocationInfo invocationInfo)
+        internal Received(string methodName, IEnumerable<MethodInvocationInfo> setupInfo)
         {
-            this.invocationInfo = invocationInfo;
+            _methodName = methodName;
+            _setupInfo = setupInfo;
         }
 
         public void One()
@@ -44,12 +48,18 @@ namespace RosMockLyn.Mocking.Assertion
 
         public void AtLeastOne()
         {
-            Assert.AreNotEqual(0, invocationInfo.Calls);
+            Assert.AreNotEqual(0, _setupInfo.Count(), string.Format("There were no calls made for method '{0}'.", _methodName));
         }
 
         public void Excatly(int expectedCalls)
         {
-            Assert.AreEqual(expectedCalls, invocationInfo.Calls);
+            Assert.AreEqual(
+                expectedCalls,
+                _setupInfo.Count(),
+                string.Format("There were {0} calls to method '{1}' but {2} were expected.",
+                    _setupInfo.Count(),
+                    _methodName,
+                    expectedCalls));
         }
 
         public void None()

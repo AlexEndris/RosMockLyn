@@ -21,6 +21,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System.Collections.Generic;
+
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -34,148 +36,131 @@ namespace RosMockLyn.Mocking.Tests
     public class MethodInvocationHandlerTests
     {
         private const string MethodName = "method";
-        private static readonly object[] Arguments = { 1, 2.0f, "test" };
+        private static readonly object[] Arguments = { 1 };
 
         private MethodInvocationHandler _invocationHandler;
 
-        private ArgumentMatcherMock _matcherMock;
+        private MethodCallRecorderMock _recorderMock;
+        private MatcherMock _matcherMock;
 
         [TestInitialize]
         public void Initialize()
         {
-            _matcherMock = new ArgumentMatcherMock();
-            
-            _invocationHandler = new MethodInvocationHandler(_matcherMock);
+            _recorderMock = new MethodCallRecorderMock();
+            _matcherMock = new MatcherMock();
+
+            _invocationHandler = new MethodInvocationHandler(_recorderMock);
         }
 
         [TestMethod, TestCategory("Unit Test")]
-        public void Get_MatchingMethodInvocation_ShouldReturnInfo()
+        public void GetMatches_MatchingMethodInvocation_ShouldReturnInfos()
         {
             // Arrange
-            _matcherMock.SetNoMatch();
+            _recorderMock.SetRecordedInvocationsReturnValue(CreateInvocations());
+            _matcherMock.SetMatchReturnValue(true);
 
+            // Act
+            var info = _invocationHandler.GetMatches(MethodName, _matcherMock.ToEnumerable());
+
+            // Assert
+            info.Should().NotBeEmpty();
+        }
+
+        [TestMethod, TestCategory("Unit Test")]
+        public void GetMatches_NoMatchingMethodInvocation_ShouldReturnEmpty()
+        {
+            // Arrange
+            _recorderMock.SetRecordedInvocationsReturnValue(CreateInvocations());
+            _matcherMock.SetMatchReturnValue(false);
+
+            // Act
+            var info = _invocationHandler.GetMatches(MethodName, _matcherMock.ToEnumerable());
+
+            // Assert
+            info.Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void Setup_ShouldCreateSetup()
+        {
+            // Arrange
+            // Act
+            var methodSetupInfo = _invocationHandler.Setup(MethodName, _matcherMock.ToEnumerable());
+
+            // Assert
+            methodSetupInfo.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void SetupGeneric_ShouldCreateSetup()
+        {
+            // Arrange
+            // Act
+            var methodSetupInfo = _invocationHandler.Setup<int>(MethodName, _matcherMock.ToEnumerable());
+
+            // Assert
+            methodSetupInfo.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void Setup_ShouldMakeSetupAvailableForHandle()
+        {
+            // Arrange
+            bool called = false;
+            _matcherMock.SetMatchReturnValue(true);
+
+            // Act
+            var methodSetupInfo = _invocationHandler.Setup(MethodName, _matcherMock.ToEnumerable());
+
+            // Assert
+            methodSetupInfo.WhenCalled = () => called = true;
+            _invocationHandler.Handle(MethodName, _matcherMock.ToEnumerable());
+
+            called.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void SetupGeneric_ShouldMakeSetupAvailableForHandle()
+        {
+           // Arrange
+            bool called = false;
+            _matcherMock.SetMatchReturnValue(true);
+
+            // Act
+            var methodSetupInfo = _invocationHandler.Setup<int>(MethodName, _matcherMock.ToEnumerable());
+
+            // Assert
+            methodSetupInfo.WhenCalled = () => called = true;
+            _invocationHandler.Handle<int>(MethodName, _matcherMock.ToEnumerable());
+
+            called.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Handle_ShouldRecord()
+        {
+            // Arrange
             // Act
             _invocationHandler.Handle(MethodName, Arguments);
 
             // Assert
-            _matcherMock.SetMatch();
-            var info = _invocationHandler.Get(MethodName, Arguments);
-            
-            info.Should().NotBeNull();
+            _recorderMock.Record_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
-        public void Get_NoMatchingMethodInvocation_ShouldReturnNull()
+        [TestMethod]
+        public void HandleGeneric_ShouldRecord()
         {
             // Arrange
-            _matcherMock.SetNoMatch();
-
-            // Act
-            // Assert
-            _matcherMock.SetMatch();
-            var info = _invocationHandler.Get(MethodName, Arguments);
-
-            info.Should().BeNull();
-        }
-
-        [TestMethod, TestCategory("Unit Test")]
-        public void Handle_NoMatchingMethodInvocation_ShouldCreateNew()
-        {
-            // Arrange
-            _matcherMock.SetNoMatch();
-
-            // Act
-            _invocationHandler.Handle(MethodName, Arguments);
-
-            // Assert
-            _matcherMock.SetMatch();
-            var info = _invocationHandler.Get(MethodName, Arguments);
-
-            info.Arguments.Should().BeEquivalentTo(Arguments);
-            info.MethodName.Should().Be(MethodName);
-            info.ReturnType.Should().BeNull();
-            info.ReturnValue.Should().BeNull();
-        }
-
-        [TestMethod, TestCategory("Unit Test")]
-        public void HandleGeneric_NoMatchingMethodInvocation_ShouldCreateNew()
-        {
-            // Arrange
-            _matcherMock.SetNoMatch();
-
             // Act
             _invocationHandler.Handle<int>(MethodName, Arguments);
 
             // Assert
-            _matcherMock.SetMatch();
-            var info = _invocationHandler.Get(MethodName, Arguments);
-
-            info.Arguments.Should().BeEquivalentTo(Arguments);
-            info.MethodName.Should().Be(MethodName);
-            info.ReturnType.Should().Be(typeof(int));
-            info.ReturnValue.Should().Be(default(int));
+            _recorderMock.Record_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
-        public void Handle_ShouldIncreaseCallCount()
+        private IEnumerable<MethodInvocationInfo> CreateInvocations()
         {
-            // Arrange
-            _matcherMock.SetNoMatch();
-
-            // Act
-            _invocationHandler.Handle(MethodName, Arguments);
-
-            // Assert
-            _matcherMock.SetMatch();
-            var info = _invocationHandler.Get(MethodName, Arguments);
-
-            info.Calls.Should().Be(1);
-        }
-
-        [TestMethod, TestCategory("Unit Test")]
-        public void HandleGeneric_ShouldIncreaseCallCount()
-        {
-            // Arrange
-            _matcherMock.SetNoMatch();
-
-            // Act
-            _invocationHandler.Handle<int>(MethodName, Arguments);
-
-            // Assert
-            _matcherMock.SetMatch();
-            var info = _invocationHandler.Get(MethodName, Arguments);
-
-            info.Calls.Should().Be(1);
-        }
-
-        [TestMethod, TestCategory("Unit Test")]
-        public void Setup_NoMatchingMethodInvocation_ShouldCreateNew()
-        {
-            // Arrange
-            _matcherMock.SetNoMatch();
-
-            // Act
-            var before = _invocationHandler.Get(MethodName, Arguments);
-            var after = _invocationHandler.Setup(MethodName, Arguments);
-
-            // Assert
-            before.Should().BeNull();
-            after.Should().NotBeNull();
-        }
-
-        [TestMethod, TestCategory("Unit Test")]
-        public void SetupGeneric_NoMatchingMethodInvocation_ShouldCreateNew()
-        {
-            // Arrange
-            _matcherMock.SetNoMatch();
-
-            // Act
-            var before = _invocationHandler.Get(MethodName, Arguments);
-            var after = _invocationHandler.Setup<int>(MethodName, Arguments);
-
-            // Assert
-            before.Should().BeNull();
-            after.Should().NotBeNull();
+            return new MethodInvocationInfo(MethodName, Arguments).ToEnumerable();
         }
     }
 }

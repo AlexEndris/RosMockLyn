@@ -21,22 +21,36 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
-using RosMockLyn.Mocking.Matching;
-
-namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
+namespace RosMockLyn.Mocking.Matching
 {
-    internal interface IHandleMethodInvocation
+    internal sealed class ConstantMatcher : IMatcher
     {
-        IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments);
+        private readonly object _constantValue;
 
-        MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments);
+        public ConstantMatcher(object constantValue)
+        {
+            _constantValue = constantValue;
+        }
 
-        MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments);
+        public bool Match(object value)
+        {
+            if (Equals(_constantValue, value))
+                return true;
 
-        void Handle(string methodName, IEnumerable<object> arguments);
+            if (_constantValue is IEnumerable && value is IEnumerable)
+                return Match((IEnumerable)value);
 
-        TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments);
+            return false;
+        }
+
+        private bool Match(IEnumerable values)
+        {
+            IEnumerable constantValues = (IEnumerable)_constantValue;
+
+            return constantValues.Cast<object>().SequenceEqual(values.Cast<object>());
+        }
     }
 }

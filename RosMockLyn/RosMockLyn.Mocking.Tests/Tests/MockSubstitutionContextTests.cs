@@ -25,7 +25,9 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
+using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing;
+using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 using RosMockLyn.Mocking.Tests.Mocks;
 
 namespace RosMockLyn.Mocking.Tests
@@ -41,6 +43,7 @@ namespace RosMockLyn.Mocking.Tests
         private HandleIndexInvocationMock _handleIndexInvocationMock;
         private HandleMethodInvocationMock _handleMethodInvocationMock;
         private HandlePropertyInvocationMock _handlePropertyInvocationMock;
+        private IMatcher _matcherMock;
 
         [TestInitialize]
         public void Initialize()
@@ -48,6 +51,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleIndexInvocationMock = new HandleIndexInvocationMock();
             _handleMethodInvocationMock = new HandleMethodInvocationMock();
             _handlePropertyInvocationMock = new HandlePropertyInvocationMock();
+            //_matcherMock = new MatcherMock();
 
             _substitutionContext = new MockSubstitutionContext(
                 _handleMethodInvocationMock,
@@ -82,7 +86,7 @@ namespace RosMockLyn.Mocking.Tests
         {
             // Arrange
             // Act
-            _substitutionContext.SetupMethod(MethodName, Arguments);
+            _substitutionContext.SetupMethod(MethodName, _matcherMock.ToEnumerable());
 
             // Assert
             _handleMethodInvocationMock.Setup_WasCalled.Should().BeTrue();
@@ -93,7 +97,7 @@ namespace RosMockLyn.Mocking.Tests
         {
             // Arrange
             // Act
-            _substitutionContext.SetupMethod<int>(MethodName, Arguments);
+            _substitutionContext.SetupMethod<int>(MethodName, _matcherMock.ToEnumerable());
 
             // Assert
             _handleMethodInvocationMock.SetupGeneric_WasCalled.Should().BeTrue();
@@ -104,10 +108,10 @@ namespace RosMockLyn.Mocking.Tests
         {
             // Arrange
             // Act
-            _substitutionContext.GetMatchingMethodInvocationInfo(MethodName, Arguments);
+            _substitutionContext.GetMatchingInvocations(MethodName, _matcherMock.ToEnumerable());
 
             // Assert
-            _handleMethodInvocationMock.Get_WasCalled.Should().BeTrue();
+            _handleMethodInvocationMock.GetMatches_WasCalled.Should().BeTrue();
         }
 
         [TestMethod, TestCategory("Unit Test")]

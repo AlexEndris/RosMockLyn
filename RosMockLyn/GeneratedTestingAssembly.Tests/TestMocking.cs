@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 using AssemblyWithInterfaces;
 
@@ -54,6 +55,32 @@ namespace GeneratedTestingAssembly.Tests
 
             Assert.AreEqual(100, someInterface["1"]);
             Assert.AreEqual(200, someInterface[1]);
+        }
+
+        [TestMethod, TestCategory("Using mocking framework")]
+        public void Test_ArgAny()
+        {
+            var someInterface = Mock.For<ISomeInterface>();
+
+            someInterface.Setup(x => x.ReturnParameters(Arg.IsAny<int>(), Arg.IsAny<double>(), "3")).Returns(100);
+
+            var result = someInterface.ReturnParameters(12, 3, "3");
+
+            Assert.AreEqual(100, result);
+        }
+
+        [TestMethod, TestCategory("Using mocking framework")]
+        public void Test_Received_WithArgAny()
+        {
+            var someInterface = Mock.For<ISomeInterface>();
+
+            someInterface.Parameters(1,2,"3");
+            someInterface.Parameters(123, 2, "3");
+            someInterface.Parameters(123, 3, "31");
+            someInterface.Parameters(123, 4, "32");
+            someInterface.Parameters(123, 2, "33");
+
+            someInterface.Received(x => x.Parameters(Arg.IsAny<int>(), 3, Arg.IsAny<string>())).Excatly(3);
         }
 
         //[TestMethod]

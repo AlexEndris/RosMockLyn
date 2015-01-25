@@ -25,10 +25,5 @@ namespace RosMockLyn.Mocking
         {
             return type.GetTypeInfo().IsAssignableFrom(assignableFrom.GetTypeInfo());
         }
-
-        internal static void Apply<T>(this IEnumerable<T> items, Action<T> action)
-        {
-            foreach (var item in items) action(item);
-        }
     }
 }

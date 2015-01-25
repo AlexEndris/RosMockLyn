@@ -28,6 +28,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using RosMockLyn.Mocking.Assertion;
+using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing;
 
 namespace RosMockLyn.Mocking
@@ -40,7 +41,7 @@ namespace RosMockLyn.Mocking
 
             var methodCallExpression = (MethodCallExpression)expression.Body;
 
-            IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
+            var arguments = CreateMatchersFromArguments(methodCallExpression.Arguments);
 
             var methodInvocationInfo = realMock.SubstitutionContext.SetupMethod(methodCallExpression.Method.Name, arguments);
 
@@ -87,22 +88,22 @@ namespace RosMockLyn.Mocking
         {
             var methodCallExpression = expression;
 
-            IEnumerable arguments = GetArguments(methodCallExpression.Arguments);
+            var arguments = CreateMatchersFromArguments(methodCallExpression.Arguments);
 
-            var methodInvocationInfo = mock.SubstitutionContext.SetupMethod<TReturn>(methodCallExpression.Method.Name, arguments);
+            var setupInfo = mock.SubstitutionContext.SetupMethod<TReturn>(methodCallExpression.Method.Name, arguments);
 
-            return new MethodCallReturn<TMock, TReturn>(methodInvocationInfo);
+            return new MethodCallReturn<TMock, TReturn>(setupInfo);
         }
 
         private static IReceived Received<T>(T mock, MethodCallExpression expression)
         {
             var realMock = TryGetMock(mock);
 
-            IEnumerable arguments = GetArguments(expression.Arguments);
+            var arguments = CreateMatchersFromArguments(expression.Arguments);
 
-            var invocationInfo = realMock.SubstitutionContext.GetMatchingMethodInvocationInfo(expression.Method.Name, arguments);
+            var setupInfo = realMock.SubstitutionContext.GetMatchingInvocations(expression.Method.Name, arguments);
 
-            return new Received(invocationInfo);
+            return new Received(expression.Method.Name, setupInfo);
         }
 
         private static IMock TryGetMock<T>(T mock)
@@ -115,6 +116,12 @@ namespace RosMockLyn.Mocking
             return realMock;
         }
 
+        private static IEnumerable<IMatcher> CreateMatchersFromArguments(IEnumerable<Expression> arguments)
+        {
+            return arguments.Select(MatcherFactory.Create).ToList();
+        }
+
+        // TODO: refactor so this method isn't needed anymore!!!
         private static IEnumerable GetArguments(IEnumerable<Expression> arguments)
         {
             foreach (var argument in arguments)
@@ -129,5 +136,6 @@ namespace RosMockLyn.Mocking
                 }
             }
         }
+
     }
 }

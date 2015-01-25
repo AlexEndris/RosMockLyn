@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,41 +21,20 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    public class MethodInvocationInfo
+    public struct MethodInvocationInfo
     {
-        public MethodInvocationInfo(string methodName, IEnumerable arguments)
-            : this(methodName, null, null, arguments)
-        {
-        }
-
-        public MethodInvocationInfo(string methodName, Type returnType, object returnValue, IEnumerable arguments)
+        public MethodInvocationInfo(string methodName, IEnumerable<object> arguments)
+            : this()
         {
             MethodName = methodName;
-            ReturnType = returnType;
-            ReturnValue = returnValue;
             Arguments = arguments;
-            Calls = 0;
         }
 
         public string MethodName { get; private set; }
-        public int Calls { get; set; }
-        public Type ReturnType { get; private set; }
-        public object ReturnValue { get; set; }
-        public Action WhenCalled { get; set; }
-        public IEnumerable Arguments { get; private set; }
-
-        public void Execute()
-        {
-            Calls++;
-
-
-            if (WhenCalled != null)
-                WhenCalled();
-        }
+        public IEnumerable<object> Arguments { get; private set; }
     }
 }

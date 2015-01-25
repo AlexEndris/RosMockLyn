@@ -21,12 +21,42 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
-namespace RosMockLyn.Mocking.Matching
+using RosMockLyn.Mocking.Matching;
+
+namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    internal interface IArgumentMatcher
+    public class MethodSetupInfo
     {
-        bool Match(IEnumerable left, IEnumerable right);
+        public MethodSetupInfo(string methodName, IEnumerable<IMatcher> arguments)
+            : this(methodName, null, null, arguments)
+        {
+        }
+
+        public MethodSetupInfo(string methodName, Type returnType, object returnValue, IEnumerable<IMatcher> arguments)
+        {
+            MethodName = methodName;
+            ReturnType = returnType;
+            ReturnValue = returnValue;
+            Arguments = arguments;
+            Calls = 0;
+        }
+
+        public string MethodName { get; private set; }
+        public int Calls { get; private set; }
+        public Type ReturnType { get; private set; }
+        public object ReturnValue { get; set; }
+        public Action WhenCalled { get; set; }
+        public IEnumerable<IMatcher> Arguments { get; private set; }
+
+        public void Execute()
+        {
+            Calls++;
+
+            if (WhenCalled != null)
+                WhenCalled();
+        }
     }
 }

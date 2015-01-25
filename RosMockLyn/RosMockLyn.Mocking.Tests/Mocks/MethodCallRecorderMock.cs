@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,33 +21,35 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections;
+using System.Collections.Generic;
 
-using RosMockLyn.Mocking.Matching;
+using RosMockLyn.Mocking.Routing.Invocations;
+using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 
 namespace RosMockLyn.Mocking.Tests.Mocks
 {
-    public class ArgumentMatcherMock : IArgumentMatcher
+    public class MethodCallRecorderMock : IMethodCallRecorder
     {
-        private bool returnValue;
+        private IEnumerable<MethodInvocationInfo> _recordedInvocations;
 
-        public bool Match_WasCalled { get; private set; }
+        public bool Record_WasCalled { get; private set; }
 
-        public bool Match(IEnumerable left, IEnumerable right)
+        public IEnumerable<MethodInvocationInfo> RecordedInvocations
         {
-            Match_WasCalled = true;
-
-            return returnValue;
+            get
+            {
+                return _recordedInvocations;
+            }
         }
 
-        public void SetNoMatch()
+        public void Record(string methodName, IEnumerable<object> arguments)
         {
-            returnValue = false;
+            Record_WasCalled = true;
         }
 
-        public void SetMatch()
+        public void SetRecordedInvocationsReturnValue(IEnumerable<MethodInvocationInfo> recordedInvocations)
         {
-            returnValue = true;
+            _recordedInvocations = recordedInvocations;
         }
     }
 }

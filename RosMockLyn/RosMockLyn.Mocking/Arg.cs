@@ -29,7 +29,7 @@ namespace RosMockLyn.Mocking
     {
         public static TReturn IsAny<TReturn>()
         {
-            return Match.Create<TReturn>(x => x == null || typeof(TReturn).IsAssignableFrom(x.GetType()));
+            return MatchCondition.Create<TReturn>(x => x == null || typeof(TReturn).IsAssignableFrom(x.GetType()));
         }
     }
 }

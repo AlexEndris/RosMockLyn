@@ -21,22 +21,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
-
 using RosMockLyn.Mocking.Matching;
 
-namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
+namespace RosMockLyn.Mocking.Tests.Mocks
 {
-    internal interface IHandleMethodInvocation
+    public class MatcherMock : IMatcher
     {
-        IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments);
+        private bool _returnValue;
 
-        MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments);
+        public bool Match_WasCalled { get; private set; }
 
-        MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments);
+        public bool Match(object value)
+        {
+            Match_WasCalled = true;
 
-        void Handle(string methodName, IEnumerable<object> arguments);
+            return _returnValue;
+        }
 
-        TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments);
+        public void SetMatchReturnValue(bool returnValue)
+        {
+            _returnValue = returnValue;
+        }
     }
 }

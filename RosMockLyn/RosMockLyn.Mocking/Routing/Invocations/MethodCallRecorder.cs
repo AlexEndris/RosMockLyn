@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,47 +21,32 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System;
+using System.Collections.Generic;
 
-namespace RosMockLyn.Mocking
+using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
+
+namespace RosMockLyn.Mocking.Routing.Invocations
 {
-    public struct Call
+    internal sealed class MethodCallRecorder : IMethodCallRecorder
     {
-        private readonly IMock mockedObject;
+        private readonly IList<MethodInvocationInfo> _recordedCalls;
 
-        private readonly string calledMember;
-
-        private readonly Type returnType;
-
-        public Call(IMock mockedObject, string calledMember, Type returnType)
+        public MethodCallRecorder()
         {
-            this.mockedObject = mockedObject;
-            this.calledMember = calledMember;
-            this.returnType = returnType;
+            _recordedCalls = new List<MethodInvocationInfo>();
         }
 
-        public Type ReturnType
+        public IEnumerable<MethodInvocationInfo> RecordedInvocations
         {
             get
             {
-                return this.returnType;
+                return _recordedCalls;
             }
         }
 
-        public IMock MockedObject
+        public void Record(string methodName, IEnumerable<object> arguments)
         {
-            get
-            {
-                return this.mockedObject;
-            }
-        }
-
-        public string CalledMember
-        {
-            get
-            {
-                return this.calledMember;
-            }
+            _recordedCalls.Add(new MethodInvocationInfo(methodName, arguments));
         }
     }
 }

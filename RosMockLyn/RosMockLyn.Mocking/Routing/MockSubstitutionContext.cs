@@ -22,8 +22,10 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing.Invocations;
 using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 
@@ -51,17 +53,17 @@ namespace RosMockLyn.Mocking.Routing
             _indexInvocationHandler = indexInvocationHandler;
         }
 
-        public MethodInvocationInfo GetMatchingMethodInvocationInfo(string methodName, params object[] arguments)
+        public IEnumerable<MethodInvocationInfo> GetMatchingInvocations(string methodName, IEnumerable<IMatcher> arguments)
         {
-            return _methodInvocationHandler.Get(methodName, arguments);
+            return _methodInvocationHandler.GetMatches(methodName, arguments);
         }
 
-        public MethodInvocationInfo SetupMethod(string methodName, params object[] arguments)
+        public MethodSetupInfo SetupMethod(string methodName, IEnumerable<IMatcher> arguments)
         {
             return _methodInvocationHandler.Setup(methodName, arguments);
         }
 
-        public MethodInvocationInfo SetupMethod<TReturn>(string methodName, params object[] arguments)
+        public MethodSetupInfo SetupMethod<TReturn>(string methodName, IEnumerable<IMatcher> arguments)
         {
             return _methodInvocationHandler.Setup<TReturn>(methodName, arguments);
         }

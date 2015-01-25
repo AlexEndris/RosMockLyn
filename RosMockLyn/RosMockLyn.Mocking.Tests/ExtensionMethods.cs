@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2014, Alexander Endris
+﻿// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -21,15 +21,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections;
+using System.Collections.Generic;
 
-namespace RosMockLyn.Mocking.Matching
+namespace RosMockLyn.Mocking.Tests
 {
-    internal class ArgumentMatcher : IArgumentMatcher
+    internal static class ExtensionMethods
     {
-        public bool Match(IEnumerable left, IEnumerable right)
+        internal static IEnumerable<T> ToEnumerable<T>(this T item)
         {
-            return true;
+            return new[] { item };
         }
     }
 }

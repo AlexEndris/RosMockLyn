@@ -22,38 +22,30 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace RosMockLyn.Mocking.Matching
+namespace RosMockLyn.Mocking
 {
-    internal abstract class Match
+    public static class EnumerableExtensions
     {
-        internal static Match LastCreatedMatch { get; private set; }
-
-        internal abstract bool Matches(object value);
-
-        public static TReturn Create<TReturn>(Predicate<TReturn> predicate)
+        internal static void Apply<T>(this IEnumerable<T> items, Action<T> action)
         {
-            LastCreatedMatch = new Match<TReturn>(predicate);
-
-            return default(TReturn);
-        }
-    }
-
-    internal class Match<T> : Match
-    {
-        public Match(Predicate<T> matchCondition)
-        {
-            MatchCondition = matchCondition;
+            foreach (var item in items)
+                action(item);
         }
 
-        private Predicate<T> MatchCondition { get; set; }
-
-        internal override bool Matches(object value)
+        internal static bool All<T>(this IEnumerable<T> items, Func<T, int, bool> function)
         {
-            if (value != null && !(value is T))
-                return false;
+            var list = items.ToList();
 
-            return MatchCondition((T)value);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (!function(list[i], i))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

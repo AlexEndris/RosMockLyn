@@ -26,29 +26,28 @@ using System.Linq.Expressions;
 
 namespace RosMockLyn.Mocking.Matching
 {
-    public interface IMatcher
-    {
-    }
-
-    public static class MatcherFactory
+    internal static class MatcherFactory
     {
         internal static IMatcher Create(Expression expression)
         {
-            var call = expression as MethodCallExpression;
+            var constExpression = expression as ConstantExpression;
 
-            if (call != null)
+            if (constExpression != null)
             {
-                Expression.Lambda<Action>(call).Compile().Invoke();
-
-                var match = Match.LastCreatedMatch;
-
-                var result = match.Matches(100);
-
-                if (!result)
-                    throw new Exception("WRONG!");
+                return new ConstantMatcher(constExpression.Value);
             }
 
-            return default(IMatcher);
+            if (expression is MethodCallExpression)
+            {
+                Expression.Lambda<Action>(expression).Compile().Invoke();
+
+                var condition = MatchCondition.LastCreatedCondition;
+                if (condition != null)
+                    return new ConditionMatcher(condition);
+            }
+
+
+            throw new NotSupportedException();
         }
     }
 }

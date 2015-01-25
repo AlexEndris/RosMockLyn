@@ -44,15 +44,16 @@
   <ItemGroup>
     <Compile Include="Arg.cs" />
     <Compile Include="Assertion\Received.cs" />
-    <Compile Include="Call.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="IoC\IInjector.cs" />
     <Compile Include="IMock.cs" />
     <Compile Include="IoC\IInjectorRegistry.cs" />
     <Compile Include="Assertion\IReceived.cs" />
     <Compile Include="ISetup.cs" />
-    <Compile Include="Matching\ArgumentMatcher.cs" />
-    <Compile Include="Matching\IArgumentMatcher.cs" />
-    <Compile Include="Matching\Match.cs" />
+    <Compile Include="Matching\ConditionMatcher.cs" />
+    <Compile Include="Matching\ConstantMatcher.cs" />
+    <Compile Include="Matching\IMatcher.cs" />
+    <Compile Include="Matching\MatchCondition.cs" />
     <Compile Include="Matching\MatcherFactory.cs" />
     <Compile Include="Mock.cs" />
     <Compile Include="MockBase.cs" />
@@ -63,18 +64,21 @@
     <Compile Include="Routing\IndexerCallReturn.cs" />
     <Compile Include="Routing\Invocations\IndexInvocationHandler.cs" />
     <Compile Include="Routing\Invocations\Interfaces\IHandleIndexInvocation.cs" />
+    <Compile Include="Routing\Invocations\Interfaces\IMethodCallRecorder.cs" />
+    <Compile Include="Routing\Invocations\MethodCallRecorder.cs" />
     <Compile Include="Routing\Invocations\MethodInvocationHandler.cs" />
     <Compile Include="Routing\Invocations\Interfaces\IHandleMethodInvocation.cs" />
     <Compile Include="Routing\Invocations\IndexerInvocationInfo.cs" />
     <Compile Include="Routing\Invocations\Interfaces\IHandlePropertyInvocation.cs" />
     <Compile Include="Routing\Invocations\InvocationInfo.cs" />
+    <Compile Include="Routing\Invocations\MethodInvocationInfo.cs" />
     <Compile Include="Routing\Invocations\PropertyInvocationHandler.cs" />
     <Compile Include="Routing\Invocations\PropertyInvocationInfo.cs" />
     <Compile Include="Routing\Invocations\PropertyMode.cs" />
     <Compile Include="Routing\ISubstitutionContext.cs" />
     <Compile Include="Routing\MethodCall.cs" />
     <Compile Include="Routing\MethodCallReturn.cs" />
-    <Compile Include="Routing\Invocations\MethodInvocationInfo.cs" />
+    <Compile Include="Routing\Invocations\MethodSetupInfo.cs" />
     <Compile Include="Routing\MockSubstitutionContext.cs" />
     <Compile Include="Routing\PropertyCallReturn.cs" />
   </ItemGroup>

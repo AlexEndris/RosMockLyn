@@ -22,62 +22,70 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Collections;
+using System.Collections.Generic;
 
+using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing.Invocations;
 using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 
 namespace RosMockLyn.Mocking.Tests.Mocks
 {
-    public class HandleMethodInvocationMock : IHandleMethodInvocation
+    internal class HandleMethodInvocationMock : IHandleMethodInvocation
     {
-        private MethodInvocationInfo _invocationInfo;
+        private IEnumerable<MethodInvocationInfo> _invocationInfos;
+        private MethodSetupInfo _setupInfo;
 
         private object _returnValue;
 
         public bool Setup_WasCalled { get; private set; }
         public bool SetupGeneric_WasCalled { get; private set; }
-        public bool Get_WasCalled { get; private set; }
+        public bool GetMatches_WasCalled { get; private set; }
         public bool Handle_WasCalled { get; private set; }
         public bool HandleGeneric_WasCalled { get; private set; }
 
-        public MethodInvocationInfo Get(string methodName, IEnumerable arguments)
+        public void SetGetMatchesReturnValue(IEnumerable<MethodInvocationInfo> returnValue)
         {
-            Get_WasCalled = true;
-            return _invocationInfo;
+            _invocationInfos = returnValue;
         }
 
-        public MethodInvocationInfo Setup(string methodName, IEnumerable arguments)
+        public void SetGetMatchesReturnValue(MethodSetupInfo returnValue)
         {
-            Setup_WasCalled = true;
-            return _invocationInfo;
-        }
-
-        public MethodInvocationInfo Setup<TReturn>(string methodName, IEnumerable arguments)
-        {
-            SetupGeneric_WasCalled = true;
-            return _invocationInfo;
-        }
-
-        public void Handle(string methodName, IEnumerable arguments)
-        {
-            Handle_WasCalled = true;
-        }
-
-        public TReturn Handle<TReturn>(string methodName, IEnumerable arguments)
-        {
-            HandleGeneric_WasCalled = true;
-
-            return (TReturn)(_returnValue ?? default(TReturn));
-        }
-
-        public void SetMethodInvocationReturnValue(MethodInvocationInfo returnValue)
-        {
-            _invocationInfo = returnValue;
+            _setupInfo = returnValue;
         }
 
         public void SetHandleReturnValue<TReturn>(TReturn returnValue)
         {
             _returnValue = returnValue;
+        }
+
+        public IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments)
+        {
+            GetMatches_WasCalled = true;
+            return _invocationInfos;
+        }
+
+        public MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments)
+        {
+            Setup_WasCalled = true;
+            return _setupInfo;
+        }
+
+        public MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments)
+        {
+            SetupGeneric_WasCalled = true;
+            return _setupInfo;
+        }
+
+        public void Handle(string methodName, IEnumerable<object> arguments)
+        {
+            Handle_WasCalled = true;
+        }
+
+        public TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments)
+        {
+            HandleGeneric_WasCalled = true;
+
+            return (TReturn)(_returnValue ?? default(TReturn));
         }
     }
 }

@@ -21,22 +21,39 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
+using System;
 
-using RosMockLyn.Mocking.Matching;
-
-namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
+namespace RosMockLyn.Mocking.Matching
 {
-    internal interface IHandleMethodInvocation
+    internal abstract class MatchCondition
     {
-        IEnumerable<MethodInvocationInfo> GetMatches(string methodName, IEnumerable<IMatcher> arguments);
+        internal static MatchCondition LastCreatedCondition { get; private set; }
 
-        MethodSetupInfo Setup(string methodName, IEnumerable<IMatcher> arguments);
+        internal abstract bool Matches(object value);
 
-        MethodSetupInfo Setup<TReturn>(string methodName, IEnumerable<IMatcher> arguments);
+        public static TReturn Create<TReturn>(Predicate<TReturn> predicate)
+        {
+            LastCreatedCondition = new MatchCondition<TReturn>(predicate);
 
-        void Handle(string methodName, IEnumerable<object> arguments);
+            return default(TReturn);
+        }
+    }
 
-        TReturn Handle<TReturn>(string methodName, IEnumerable<object> arguments);
+    internal class MatchCondition<T> : MatchCondition
+    {
+        public MatchCondition(Predicate<T> matchCondition)
+        {
+            Condition = matchCondition;
+        }
+
+        private Predicate<T> Condition { get; set; }
+
+        internal override bool Matches(object value)
+        {
+            if (value != null && !(value is T))
+                return false;
+
+            return Condition((T)value);
+        }
     }
 }
