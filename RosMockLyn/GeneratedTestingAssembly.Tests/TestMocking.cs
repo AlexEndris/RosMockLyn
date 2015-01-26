@@ -75,12 +75,12 @@ namespace GeneratedTestingAssembly.Tests
             var someInterface = Mock.For<ISomeInterface>();
 
             someInterface.Parameters(1,2,"3");
-            someInterface.Parameters(123, 2, "3");
+            someInterface.Parameters(2, 2, "3");
             someInterface.Parameters(123, 3, "31");
             someInterface.Parameters(123, 4, "32");
             someInterface.Parameters(123, 2, "33");
 
-            someInterface.Received(x => x.Parameters(Arg.IsAny<int>(), 3, Arg.IsAny<string>())).Excatly(3);
+            someInterface.Received(x => x.Parameters(Arg.IsInRange(0,5,Range.Inclusive), 2, Arg.IsAny<string>())).Excatly(2);
         }
 
         //[TestMethod]

@@ -14,28 +14,28 @@ namespace RosMockLyn.Mocking.Tests
         [TestInitialize]
         public void Initialize()
         {
-            this._injector = new MockInjector();
+            _injector = new MockInjector();
         }
 
         [TestMethod, TestCategory("Unit Test")]
         public void RegisterSameBaseTypeMultipleTimes_ShouldThrowException()
         {
             // Arrange
-            this._injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
+            _injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
             
             // Act
             // Assert
-            Assert.ThrowsException<InvalidOperationException>(() => this._injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
+            Assert.ThrowsException<InvalidOperationException>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
         }
 
         [TestMethod, TestCategory("Unit Test")]
         public void ResolvingRegisteredType_ShouldReturnInstance()
         {
             // Arrange
-            this._injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
+            _injector.RegisterType<ISomeInterface, SomeInterfaceImpl>();
 
             // Act
-            var instance = this._injector.Resolve<ISomeInterface>();
+            var instance = _injector.Resolve<ISomeInterface>();
             
             // Assert
             Assert.IsNotNull(instance);

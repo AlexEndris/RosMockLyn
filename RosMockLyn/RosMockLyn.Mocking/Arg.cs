@@ -21,6 +21,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using RosMockLyn.Mocking.Matching;
 
 namespace RosMockLyn.Mocking
@@ -31,5 +35,67 @@ namespace RosMockLyn.Mocking
         {
             return MatchCondition.Create<TReturn>(x => x == null || typeof(TReturn).IsAssignableFrom(x.GetType()));
         }
+
+        public static TReturn IsNull<TReturn>()
+        {
+            return MatchCondition.Create<TReturn>(x => x == null);
+        }
+
+        public static TReturn IsNotNull<TReturn>()
+        {
+            return MatchCondition.Create<TReturn>(x => x != null);
+        }
+
+        public static TReturn Is<TReturn>(Predicate<TReturn> predicate)
+        {
+            return MatchCondition.Create<TReturn>(predicate);
+        }
+
+        public static TReturn IsNot<TReturn>(Predicate<TReturn> predicate)
+        {
+            return MatchCondition.Create<TReturn>(x => !predicate(x));
+        }
+
+        public static TReturn IsIn<TReturn>(IEnumerable<TReturn> validMatches)
+        {
+            return MatchCondition.Create<TReturn>(validMatches.Contains);
+        }
+
+        public static TReturn IsIn<TReturn>(params TReturn[] validMatches)
+        {
+            return IsIn(validMatches);
+        }
+
+        public static TReturn IsNotIn<TReturn>(IEnumerable<TReturn> invalidMatches)
+        {
+            return MatchCondition.Create<TReturn>(x => !invalidMatches.Contains(x));
+        }
+
+        public static TReturn IsNotIn<TReturn>(params TReturn[] invalidMatches)
+        {
+            return IsNotIn(invalidMatches);
+        }
+
+        public static TReturn IsInRange<TReturn>(TReturn from, TReturn to, Range range)
+            where TReturn : IComparable
+        {
+            return MatchCondition.Create<TReturn>(
+                x =>
+                    {
+                        if (x == null)
+                            return false;
+
+                        if (range == Range.Exclusive)
+                            return x.CompareTo(from) > 0 && x.CompareTo(to) < 0;
+
+                        return x.CompareTo(from) >= 0 && x.CompareTo(to) <= 0;
+                    });
+        }
+    }
+
+    public enum Range
+    {
+        Inclusive,
+        Exclusive
     }
 }
