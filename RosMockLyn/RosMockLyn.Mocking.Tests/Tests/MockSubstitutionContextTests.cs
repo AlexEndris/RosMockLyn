@@ -27,7 +27,6 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing;
-using RosMockLyn.Mocking.Routing.Invocations.Interfaces;
 using RosMockLyn.Mocking.Tests.Mocks;
 
 namespace RosMockLyn.Mocking.Tests
@@ -51,7 +50,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleIndexInvocationMock = new HandleIndexInvocationMock();
             _handleMethodInvocationMock = new HandleMethodInvocationMock();
             _handlePropertyInvocationMock = new HandlePropertyInvocationMock();
-            //_matcherMock = new MatcherMock();
+            _matcherMock = new MatcherMock();
 
             _substitutionContext = new MockSubstitutionContext(
                 _handleMethodInvocationMock,

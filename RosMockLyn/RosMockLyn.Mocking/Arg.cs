@@ -51,11 +51,6 @@ namespace RosMockLyn.Mocking
             return MatchCondition.Create<TReturn>(predicate);
         }
 
-        public static TReturn IsNot<TReturn>(Predicate<TReturn> predicate)
-        {
-            return MatchCondition.Create<TReturn>(x => !predicate(x));
-        }
-
         public static TReturn IsIn<TReturn>(IEnumerable<TReturn> validMatches)
         {
             return MatchCondition.Create<TReturn>(validMatches.Contains);
@@ -63,7 +58,7 @@ namespace RosMockLyn.Mocking
 
         public static TReturn IsIn<TReturn>(params TReturn[] validMatches)
         {
-            return IsIn(validMatches);
+            return IsIn(validMatches.AsEnumerable());
         }
 
         public static TReturn IsNotIn<TReturn>(IEnumerable<TReturn> invalidMatches)
@@ -73,7 +68,7 @@ namespace RosMockLyn.Mocking
 
         public static TReturn IsNotIn<TReturn>(params TReturn[] invalidMatches)
         {
-            return IsNotIn(invalidMatches);
+            return IsNotIn(invalidMatches.AsEnumerable());
         }
 
         public static TReturn IsInRange<TReturn>(TReturn from, TReturn to, Range range)

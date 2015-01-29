@@ -80,7 +80,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void Setup_ShouldCreateSetup()
         {
             // Arrange
@@ -91,7 +91,7 @@ namespace RosMockLyn.Mocking.Tests
             methodSetupInfo.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void SetupGeneric_ShouldCreateSetup()
         {
             // Arrange
@@ -102,7 +102,7 @@ namespace RosMockLyn.Mocking.Tests
             methodSetupInfo.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void Setup_ShouldMakeSetupAvailableForHandle()
         {
             // Arrange
@@ -119,7 +119,7 @@ namespace RosMockLyn.Mocking.Tests
             called.Should().BeTrue();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void SetupGeneric_ShouldMakeSetupAvailableForHandle()
         {
            // Arrange
@@ -136,7 +136,7 @@ namespace RosMockLyn.Mocking.Tests
             called.Should().BeTrue();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void Handle_ShouldRecord()
         {
             // Arrange
@@ -147,7 +147,7 @@ namespace RosMockLyn.Mocking.Tests
             _recorderMock.Record_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Unit Test")]
         public void HandleGeneric_ShouldRecord()
         {
             // Arrange

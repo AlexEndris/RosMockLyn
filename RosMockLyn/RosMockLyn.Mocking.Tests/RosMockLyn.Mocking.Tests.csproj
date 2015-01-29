@@ -125,6 +125,7 @@
     <Compile Include="Mocks\HandlePropertyInvocationMock.cs" />
     <Compile Include="Mocks\MatcherMock.cs" />
     <Compile Include="Mocks\MethodCallRecorderMock.cs" />
+    <Compile Include="Tests\ArgumentMatcherTests.cs" />
     <Compile Include="Tests\IndexInvocationHandlerTests.cs" />
     <Compile Include="Tests\MatcherFactoryTests.cs" />
     <Compile Include="Tests\MethodInvocationHandlerTests.cs" />
