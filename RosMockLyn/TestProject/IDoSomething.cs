@@ -28,6 +28,7 @@ namespace TestProject
     public interface IDoSomething
     {
         int Flubber { get; }
+        string Flubber2 { get; set; }
 
         void DoSomething(Action action);
     }

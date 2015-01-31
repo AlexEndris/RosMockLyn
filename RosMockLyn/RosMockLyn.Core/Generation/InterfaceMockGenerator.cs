@@ -20,6 +20,9 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+using System;
+
 namespace RosMockLyn.Core
 {
     using System.Linq;
@@ -31,6 +34,8 @@ namespace RosMockLyn.Core
     // TODO : Change name!
     public class InterfaceMockGenerator : CSharpSyntaxRewriter, IInterfaceMockGenerator
     {
+        private NameSyntax _interfaceIdentifier;
+
         private const string AdditionalUsing = "RosMockLyn.Mocking";
         private const string DerivesFrom = "MockBase";
         private const string ClassSuffix = "Mock";
@@ -81,36 +86,67 @@ namespace RosMockLyn.Core
 
         public override SyntaxNode VisitAccessorDeclaration(AccessorDeclarationSyntax node)
         {
-            if (node.CSharpKind() == SyntaxKind.GetAccessorDeclaration)
+            var basePropertyDeclaration = node.FirstAncestorOrSelf<BasePropertyDeclarationSyntax>();
+
+            if (basePropertyDeclaration is IndexerDeclarationSyntax)
             {
-                // TODO: At this point it could also be an indexer!!!
-                node = GeneratePropertyGetter(node);
+                // TODO indexer
+                //node = node.ReplaceNode(node, GeneratePropertyAccessor(node.CSharpKind(), basePropertyDeclaration.Type));
+            }
+            else if (basePropertyDeclaration is PropertyDeclarationSyntax)
+            {
+                node = GeneratePropertyAccessor(node.CSharpKind(), basePropertyDeclaration.Type);
             }
 
             return base.VisitAccessorDeclaration(node);
         }
 
-        private AccessorDeclarationSyntax GeneratePropertyGetter(AccessorDeclarationSyntax node)
+        private AccessorDeclarationSyntax GeneratePropertyAccessor(SyntaxKind syntaxKind, TypeSyntax typeSyntax)
         {
-            var typeSyntax = node.FirstAncestorOrSelf<BasePropertyDeclarationSyntax>().Type;
-            SeparatedSyntaxList<TypeSyntax> list = new SeparatedSyntaxList<TypeSyntax>();
-            list = list.Add(typeSyntax);
+            string substitutionCall = string.Format(
+                "{0}.{1}{2}",
+                SubstitutionContext,
+                GetAccessor(syntaxKind),
+                Property);
+          
+            var typeList = SyntaxFactory.SeparatedList(new[] { typeSyntax });
+            
+            var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.GenericName(substitutionCall)
+                                            .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList)));
 
+            if (syntaxKind == SyntaxKind.SetAccessorDeclaration)
+            {
+                var argument = SyntaxFactory.Argument(SyntaxFactory.IdentifierName("value"));
+                substitution = substitution.WithArgumentList(
+                        SyntaxFactory.ArgumentList(SyntaxFactory.SeparatedList(new[] { argument })));
+            }
+
+            return GenerateAccessor(syntaxKind, substitution);
+        }
+
+        private string GetAccessor(SyntaxKind syntaxKind)
+        {
+            if (syntaxKind == SyntaxKind.GetAccessorDeclaration)
+                return "Get";
+
+            return "Set";
+        }
+
+        private AccessorDeclarationSyntax GenerateAccessor(SyntaxKind accessor, InvocationExpressionSyntax substitutionCall)
+        {
             var accessorDeclarationSyntax = SyntaxFactory.AccessorDeclaration(
-                SyntaxKind.GetAccessorDeclaration,
+                accessor,
                 SyntaxFactory.Block(
-                    SyntaxFactory.ReturnStatement(
-                        SyntaxFactory.InvocationExpression(
-                            SyntaxFactory.GenericName(
-                                string.Format("{0}.Get{1}", SubstitutionContext, Property))
-                                .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(list))))));
+                    SyntaxFactory.ReturnStatement(substitutionCall)));
+
             return accessorDeclarationSyntax;
         }
 
         public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
         {
             // Replace the original property and just change the name of the identifier.
-            var newPropertyToken = node.WithIdentifier(SyntaxFactory.Identifier(node.Identifier.ValueText + "Impl"));
+            var newPropertyToken = node.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(_interfaceIdentifier))
+                                       .WithIdentifier(SyntaxFactory.Identifier(node.Identifier.ValueText));
 
             // Again, call base method to be able to traverse deeper into the tree, if needed/wanted
             return base.VisitPropertyDeclaration(newPropertyToken);
@@ -118,13 +154,15 @@ namespace RosMockLyn.Core
 
         private ClassDeclarationSyntax MockInterface(InterfaceDeclarationSyntax interfaceDeclaration)
         {
+            _interfaceIdentifier = SyntaxFactory.IdentifierName(interfaceDeclaration.Identifier.ValueText);
+            
             return SyntaxFactory.ClassDeclaration(
                 SyntaxFactory.Identifier(interfaceDeclaration.Identifier.ValueText.Substring(1) + ClassSuffix))
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddBaseListTypes(
                     SyntaxFactory.IdentifierName(DerivesFrom), // MockBase, base type
-                    SyntaxFactory.IdentifierName( // Interface that is being implemented
-                        SyntaxFactory.Identifier(interfaceDeclaration.Identifier.ValueText)))
+                    _interfaceIdentifier // Interface that is being implemented
+                    )
                 .AddMembers(interfaceDeclaration.Members.ToArray());
         }
 
