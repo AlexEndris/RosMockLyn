@@ -27,9 +27,20 @@ namespace TestProject
 {
     public interface IDoSomething
     {
-        int Flubber { get; }
-        string Flubber2 { get; set; }
+        int this[int index] { get; }
 
-        void DoSomething(Action action);
+        int this[string index] { get; set; }
+
+        int IntReadonlyProperty { get; }
+
+        int IntNormalProperty { get; set; }
+
+        void VoidCall();
+
+        int IntCall();
+
+        void Parameters(int i, double d, string s);
+
+        int ReturnParameters(int i, double d, string s);
     }
 }

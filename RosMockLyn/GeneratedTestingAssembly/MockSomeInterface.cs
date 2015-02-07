@@ -41,11 +41,11 @@ namespace GeneratedTestingAssembly
         {
             get
             {
-                return SubstitutionContext.GetIndex<string, int>(index);
+                return SubstitutionContext.GetIndex<int, string>(index);
             }
             set
             {
-                SubstitutionContext.SetIndex(index, value);
+                SubstitutionContext.SetIndex(value, index);
             }
         }
 
@@ -71,22 +71,22 @@ namespace GeneratedTestingAssembly
 
         public void VoidCall()
         {
-            SubstitutionContext.CallMethod();
+            SubstitutionContext.Method();
         }
 
         public int IntCall()
         {
-            return SubstitutionContext.CallMethod<int>();
+            return SubstitutionContext.Method<int>();
         }
 
         public void Parameters(int i, double d, string s)
         {
-            SubstitutionContext.CallMethod(arguments: new object[] { i, d, s });
+            SubstitutionContext.Method(arguments: new object[] { i, d, s });
         }
 
         public int ReturnParameters(int i, double d, string s)
         {
-            return SubstitutionContext.CallMethod<int>(arguments: new object[] { i, d, s });
+            return SubstitutionContext.Method<int>(arguments: new object[] { i, d, s });
         }
     }
 }

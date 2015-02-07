@@ -63,7 +63,7 @@ namespace RosMockLyn.Mocking.Tests
         {
             // Arrange
             // Act
-            _substitutionContext.CallMethod(MethodName, Arguments);
+            _substitutionContext.Method(MethodName, Arguments);
 
             // Assert
             _handleMethodInvocationMock.Handle_WasCalled.Should().BeTrue();
@@ -74,7 +74,7 @@ namespace RosMockLyn.Mocking.Tests
         {
             // Arrange
             // Act
-            _substitutionContext.CallMethod<int>(MethodName, Arguments);
+            _substitutionContext.Method<int>(MethodName, Arguments);
 
             // Assert
             _handleMethodInvocationMock.HandleGeneric_WasCalled.Should().BeTrue();

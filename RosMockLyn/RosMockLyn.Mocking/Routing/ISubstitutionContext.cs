@@ -39,17 +39,17 @@ namespace RosMockLyn.Mocking.Routing
 
         PropertyInvocationInfo SetProperty<TValue>([CallerMemberName] string propertyName = "");
 
-        void SetIndex<TIndex, TValue>(TIndex index, TValue value);
+        void SetIndex<TValue, TIndex>(TValue value, TIndex index);
 
         IndexerInvocationInfo SetIndex<TValue>(object index);
 
         TReturn GetProperty<TReturn>([CallerMemberName] string propertyName = "");
 
-        TReturn GetIndex<TIndex, TReturn>(TIndex index);
+        TReturn GetIndex<TReturn, TIndex>(TIndex index);
 
-        void CallMethod([CallerMemberName] string methodName = "", params object[] arguments);
+        void Method([CallerMemberName] string methodName = "", params object[] arguments);
 
-        TReturn CallMethod<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
+        TReturn Method<TReturn>([CallerMemberName] string methodName = "", params object[] arguments);
 
         IEnumerable<MethodInvocationInfo> GetMatchingInvocations(string methodName, IEnumerable<IMatcher> arguments);
     }

@@ -93,17 +93,17 @@ namespace RosMockLyn.Mocking.Routing
             return _propertyInvocationHandler.Handle<TReturn>(propertyName);
         }
 
-        public TReturn GetIndex<TIndex, TReturn>(TIndex index)
+        public TReturn GetIndex<TReturn, TIndex>(TIndex index)
         {
             return _indexInvocationHandler.Handle<TIndex, TReturn>(index);
         }
 
-        public void CallMethod([CallerMemberName] string methodName = "", params object[] arguments)
+        public void Method([CallerMemberName] string methodName = "", params object[] arguments)
         {
             _methodInvocationHandler.Handle(methodName, arguments);
         }
 
-        public TReturn CallMethod<TReturn>([CallerMemberName] string methodName = "", params object[] arguments)
+        public TReturn Method<TReturn>([CallerMemberName] string methodName = "", params object[] arguments)
         {
             return _methodInvocationHandler.Handle<TReturn>(methodName, arguments);
         }
