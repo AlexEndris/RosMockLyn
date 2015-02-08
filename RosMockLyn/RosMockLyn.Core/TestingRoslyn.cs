@@ -34,8 +34,6 @@ namespace RosMockLyn.Core
     {
         public void DoSomething()
         {
-            typeof(CSharpFormattingOptions).ToString();
-
             var workspace = MSBuildWorkspace.Create();
 
             var project =

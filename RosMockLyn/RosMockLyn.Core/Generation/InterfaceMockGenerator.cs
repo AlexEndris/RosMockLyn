@@ -23,14 +23,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
 
 namespace RosMockLyn.Core
 {
-    using System.Linq;
-
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     // TODO : Change name!
     public class InterfaceMockGenerator : CSharpSyntaxRewriter, IInterfaceMockGenerator
@@ -143,8 +143,8 @@ namespace RosMockLyn.Core
                 SyntaxFactory.Identifier(interfaceDeclaration.Identifier.ValueText.Substring(1) + ClassSuffix))
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddBaseListTypes(
-                    SyntaxFactory.IdentifierName(DerivesFrom), // MockBase, base type
-                    _interfaceIdentifier // Interface that is being implemented
+                    SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(DerivesFrom)), // MockBase, base type
+                    SyntaxFactory.SimpleBaseType(_interfaceIdentifier) // Interface that is being implemented
                 )
                 .AddMembers(interfaceDeclaration.Members.ToArray());
         }
@@ -157,7 +157,7 @@ namespace RosMockLyn.Core
                 GetAccessor(syntaxKind),
                 Index);
 
-            var typeList = SyntaxFactory.SeparatedList(new[] { typeSyntax });
+            var typeList = SyntaxFactory.SeparatedList(new[] { typeSyntax, parameters.First().Type });
             var indices = parameters.Select(x => SyntaxFactory.IdentifierName(x.Identifier)).Select(SyntaxFactory.Argument);
             var indicesList = SyntaxFactory.ArgumentList(
                     SyntaxFactory.SeparatedList(indices));
