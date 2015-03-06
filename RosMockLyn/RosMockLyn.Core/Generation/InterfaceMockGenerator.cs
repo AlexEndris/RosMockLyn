@@ -37,7 +37,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
     {
         private NameSyntax _interfaceIdentifier;
 
-        private const string AdditionalUsing = "RosMockLyn.Mocking";
+        private const string AdditionalUsingPart1 = "RosMockLyn";
+        private const string AdditionalUsingPart2 = "Mocking";
         private const string DerivesFrom = "MockBase";
         private const string ClassSuffix = "Mock";
         private const string Namespace = ".RosMockLyn";
@@ -52,18 +53,26 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node)
         {
-            var usings = GenerateAdditionalUsings();
-
+            var usings = GenerateAdditionalUsings(node);
             node = node.AddUsings(usings);
 
             return base.VisitCompilationUnit(node);
         }
 
-        private UsingDirectiveSyntax[] GenerateAdditionalUsings()
+        private UsingDirectiveSyntax[] GenerateAdditionalUsings(CompilationUnitSyntax node)
         {
-            var usingDirective = SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(AdditionalUsing));
+            var namespaceDeclaration = node.DescendantNodes().OfType<NamespaceDeclarationSyntax>().Single();
 
-            return new[] { usingDirective };
+            var additionalUsing =
+                SyntaxFactory.UsingDirective(
+                    SyntaxFactory.QualifiedName(
+                        SyntaxFactory.IdentifierName(AdditionalUsingPart1),
+                        SyntaxFactory.IdentifierName(AdditionalUsingPart2)));
+            var blah =
+                SyntaxFactory.UsingDirective(
+                    SyntaxFactory.IdentifierName(((IdentifierNameSyntax)namespaceDeclaration.Name).Identifier.ValueText));
+
+            return new[] { additionalUsing, blah };
         }
 
         public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
@@ -84,7 +93,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var newMethodSyntax = node.WithBody(GenerateMethodBody(node))
+            var newMethodSyntax = node.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(_interfaceIdentifier))
+                                    .WithBody(GenerateMethodBody(node))
                                       // this removes the trailing semicolon
                                       .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None));
 
@@ -151,9 +161,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         private AccessorDeclarationSyntax GenerateIndexAccessor(SyntaxKind syntaxKind, TypeSyntax typeSyntax, SeparatedSyntaxList<ParameterSyntax> parameters)
         {
-            string substitutionCall = string.Format(
-                "{0}.{1}{2}",
-                SubstitutionContext,
+            string memberName = string.Format(
+                "{0}{1}",
                 GetAccessor(syntaxKind),
                 Index);
 
@@ -162,8 +171,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
             var indicesList = SyntaxFactory.ArgumentList(
                     SyntaxFactory.SeparatedList(indices));
 
-            var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.GenericName(substitutionCall)
-                                                .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList)))
+            var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),
+                        SyntaxFactory.GenericName(memberName)
+                                                .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))))
                                             .WithArgumentList(indicesList);
 
             if (syntaxKind == SyntaxKind.SetAccessorDeclaration)
@@ -178,16 +190,17 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         private AccessorDeclarationSyntax GeneratePropertyAccessor(SyntaxKind syntaxKind, TypeSyntax typeSyntax)
         {
-            string substitutionCall = string.Format(
-                "{0}.{1}{2}",
-                SubstitutionContext,
+            string memberName = string.Format(
+                "{0}{1}",
                 GetAccessor(syntaxKind),
                 Property);
 
             var typeList = SyntaxFactory.SeparatedList(new[] { typeSyntax });
 
-            var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.GenericName(substitutionCall)
-                                            .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList)));
+            var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),SyntaxFactory.GenericName(memberName)
+                                            .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))));
 
             if (syntaxKind == SyntaxKind.SetAccessorDeclaration)
             {
@@ -209,10 +222,15 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         private AccessorDeclarationSyntax GenerateAccessor(SyntaxKind accessor, InvocationExpressionSyntax substitutionCall)
         {
+            StatementSyntax statement;
+            if (accessor == SyntaxKind.SetAccessorDeclaration)
+                statement = SyntaxFactory.ExpressionStatement(substitutionCall);
+            else 
+                statement = SyntaxFactory.ReturnStatement(substitutionCall);
+
             var accessorDeclarationSyntax = SyntaxFactory.AccessorDeclaration(
                 accessor,
-                SyntaxFactory.Block(
-                    SyntaxFactory.ReturnStatement(substitutionCall)));
+                SyntaxFactory.Block(statement));
 
             return accessorDeclarationSyntax;
         }
@@ -252,9 +270,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         private static InvocationExpressionSyntax GenerateMethodSubstitution(MethodDeclarationSyntax node)
         {
-            string substitutionCall = string.Format("{0}.{1}", SubstitutionContext, Method);
-
-            var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(substitutionCall));
+            var substitution =
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),
+                        SyntaxFactory.IdentifierName(Method)));
 
             substitution = AddMethodArguments(node, substitution);
 
@@ -263,15 +284,15 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
         private static InvocationExpressionSyntax GenerateGenericMethodSubstitution(MethodDeclarationSyntax node, TypeSyntax returnType)
         {
-            string substitutionCall = string.Format("{0}.{1}", SubstitutionContext, Method);
-
-
             var typeList = SyntaxFactory.SeparatedList(new[] { returnType });
 
             var substitution =
                 SyntaxFactory.InvocationExpression(
-                    SyntaxFactory.GenericName(substitutionCall)
-                        .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList)));
+                                        SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),
+                        SyntaxFactory.GenericName(Method)
+                        .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))));
 
             substitution = AddMethodArguments(node, substitution);
 
@@ -303,7 +324,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
         {
             return SyntaxFactory.ArrayCreationExpression(SyntaxFactory.ArrayType(
                 SyntaxFactory.PredefinedType(
-                    SyntaxFactory.Token(SyntaxKind.ObjectKeyword))))
+                    SyntaxFactory.Token(SyntaxKind.ObjectKeyword)))
+                    .WithRankSpecifiers(SyntaxFactory.SingletonList(
+                                                            SyntaxFactory.ArrayRankSpecifier(
+                                                                SyntaxFactory.SingletonSeparatedList<ExpressionSyntax>(
+                                                                    SyntaxFactory.OmittedArraySizeExpression())))))
                 .WithInitializer(SyntaxFactory.InitializerExpression(
                     SyntaxKind.ArrayInitializerExpression,
                     SyntaxFactory.SeparatedList<ExpressionSyntax>(arguments)));

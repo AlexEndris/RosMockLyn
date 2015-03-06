@@ -20,13 +20,23 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Dynamic;
+using System.IO;
+using System.Reflection;
+using System.Text;
+
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+
 namespace RosMockLyn.Core
 {
     using System;
     using System.Linq;
 
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp.Formatting;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.MSBuild;
 
@@ -58,8 +68,45 @@ namespace RosMockLyn.Core
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------");
             Console.WriteLine();
-            Console.WriteLine(syntax.ToString());
+            Console.WriteLine();
+
+            StringBuilder builder = new StringBuilder();
+            var split = syntax.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            int lineNr = 0;
+            foreach (var line in split)
+            {
+                builder.AppendFormat("{0}: ",++lineNr);
+                builder.AppendLine(line);
+            }
+                             
+            Console.WriteLine(builder.ToString());
+
+            List<MetadataReference> refs = new List<MetadataReference>();
+
+
+
+            var testProject = MetadataReference.CreateFromFile(@"E:\Important\Eigene Dateien\Visual Studio 2013\Projects\RosMockLyn\TestProjectPort\bin\Debug\TestProjectPort.dll");
+            var mocking = MetadataReference.CreateFromFile(@"E:\Important\Eigene Dateien\Visual Studio 2013\Projects\RosMockLyn\RosMockLyn.Mocking\bin\Debug\RosMockLyn.Mocking.dll");
+            
+            refs.Add(mocking);
+            refs.Add(testProject);
+
+            var strings = Directory.GetFiles(
+                @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile32\")
+                .Where(x => Path.GetExtension(x).EndsWith("dll",StringComparison.InvariantCultureIgnoreCase));
+
+            refs.AddRange(strings.Select(x => MetadataReference.CreateFromFile(x)));
+
+            CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+
+            var csCompilation = CSharpCompilation.Create("TestAssembly", new[] { syntax }, refs, options);
+
+            var emitResult = csCompilation.Emit(@"D:\TestAssembly.dll");
+        
         }
+
+        
 
         private bool HasInterface(SyntaxTree tree)
         {

@@ -20,24 +20,27 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-namespace RosMockLyn.Core
+
+using System;
+
+namespace TestProject
 {
-    using System;
-    using System.Linq;
-
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-
-    public class OutputWalker : CSharpSyntaxWalker
+    public interface IDoSomething
     {
-        private int line = 0;
-        public override void Visit(SyntaxNode node)
-        {
-            var padding = node.Ancestors().Count();
+        int this[int index] { get; }
 
-            Console.WriteLine("{0}{1}",new String(' ', padding), node.CSharpKind());
+        int this[string index] { get; set; }
 
-            base.Visit(node);
-        }
+        int IntReadonlyProperty { get; }
+
+        int IntNormalProperty { get; set; }
+
+        void VoidCall();
+
+        int IntCall();
+
+        void Parameters(int i, double d, string s);
+
+        int ReturnParameters(int i, double d, string s);
     }
 }

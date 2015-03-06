@@ -32,9 +32,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedTestingAssembly.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MockingFramework", "MockingFramework", "{43E8B138-C0CA-4F5B-B20A-C132BC4B8A8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectPort", "TestProjectPort\TestProjectPort.csproj", "{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://namelessone.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -70,6 +72,10 @@ Global
 		SccProjectTopLevelParentUniqueName8 = RosMockLyn.sln
 		SccProjectName8 = RosMockLyn.Mocking.Tests
 		SccLocalPath8 = RosMockLyn.Mocking.Tests
+		SccProjectUniqueName9 = TestProjectPort\\TestProjectPort.csproj
+		SccProjectTopLevelParentUniqueName9 = RosMockLyn.sln
+		SccProjectName9 = TestProjectPort
+		SccLocalPath9 = TestProjectPort
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -190,6 +196,16 @@ Global
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|x86.ActiveCfg = Release|x86
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|x86.Build.0 = Release|x86
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|x86.Deploy.0 = Release|x86
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Release|x64.ActiveCfg = Release|Any CPU
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,5 +219,6 @@ Global
 		{605E59EE-1031-4EA2-9A29-A8FF57B6AB05} = {43E8B138-C0CA-4F5B-B20A-C132BC4B8A8C}
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC} = {CD908017-07B3-4EEC-A2C6-40437F4824FF}
+		{EAE1A96B-22AB-47B6-BC0B-A356F0162B59} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
 	EndGlobalSection
 EndGlobal
