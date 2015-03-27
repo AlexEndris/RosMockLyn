@@ -21,25 +21,19 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Text;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.MSBuild;
 
 namespace RosMockLyn.Core
 {
-    using System;
-    using System.Linq;
-
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Microsoft.CodeAnalysis.MSBuild;
-
     public class TestingRoslyn
     {
         public void DoSomething()
@@ -102,7 +96,7 @@ namespace RosMockLyn.Core
 
             var csCompilation = CSharpCompilation.Create("TestAssembly", new[] { syntax }, refs, options);
 
-            var emitResult = csCompilation.Emit(@"D:\TestAssembly.dll");
+            var emitResult = FileSystemExtensions.Emit(csCompilation, @"D:\TestAssembly.dll");
         
         }
 
