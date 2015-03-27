@@ -1,23 +1,25 @@
 ﻿using System;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.IoC;
 
+using Assert = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.Assert;
+
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MockInjectorTests
     {
         private MockInjector _injector;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _injector = new MockInjector();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void RegisterSameBaseTypeMultipleTimes_ShouldThrowException()
         {
             // Arrange
@@ -28,7 +30,7 @@ namespace RosMockLyn.Mocking.Tests
             Assert.ThrowsException<InvalidOperationException>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ResolvingRegisteredType_ShouldReturnInstance()
         {
             // Arrange
@@ -41,7 +43,7 @@ namespace RosMockLyn.Mocking.Tests
             Assert.IsNotNull(instance);
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ResolvingNotRegisteredType_ShouldReturnNull()
         {
             // Arrange

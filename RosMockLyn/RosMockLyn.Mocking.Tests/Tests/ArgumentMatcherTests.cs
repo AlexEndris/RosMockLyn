@@ -23,18 +23,18 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.Matching;
 
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ArgumentMatcherTests
     {
         #region IsAny
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsAny_CorrectType_ShouldMatch()
         {
             // Arrange
@@ -47,7 +47,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsAny_WrongType_ShouldNotMatch()
         {
             // Arrange
@@ -60,7 +60,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsAny_Null_ShouldMatch()
         {
             // Arrange
@@ -77,7 +77,7 @@ namespace RosMockLyn.Mocking.Tests
 
         #region Is
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIs_FuncReturnsTrue_ShouldMatch()
         {
             // Arrange
@@ -90,7 +90,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIs_FuncReturnsFalse_ShouldNotMatch()
         {
             // Arrange
@@ -103,7 +103,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIs_WrongType_ShouldNotMatch()
         {
             // Arrange
@@ -120,7 +120,7 @@ namespace RosMockLyn.Mocking.Tests
 
         #region IsNull
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNull_NotNull_ShouldNotMatch()
         {
             // Arrange
@@ -133,7 +133,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNull_Null_ShouldMatch()
         {
             // Arrange
@@ -150,7 +150,7 @@ namespace RosMockLyn.Mocking.Tests
 
         #region IsNotNull
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotNull_NotNull_ShouldMatch()
         {
             // Arrange
@@ -163,7 +163,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotNull_Null_ShouldNotMatch()
         {
             // Arrange
@@ -180,7 +180,7 @@ namespace RosMockLyn.Mocking.Tests
 
         #region IsIn
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsIn_ArgumentIsIn_ShouldMatch()
         {
             // Arrange
@@ -193,7 +193,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsIn_ArgumentIsNotIn_ShouldNotMatch()
         {
             // Arrange
@@ -206,7 +206,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsIn_NullIsIn_ShouldMatch()
         {
             // Arrange
@@ -219,7 +219,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsIn_NullIsNotIn_ShouldNotMatch()
         {
             // Arrange
@@ -232,7 +232,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsIn_NothingIsIn_ShouldNotMatch()
         {
             // Arrange
@@ -249,7 +249,7 @@ namespace RosMockLyn.Mocking.Tests
 
         #region IsNotIn
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotIn_ArgumentIsIn_ShouldNotMatch()
         {
             // Arrange
@@ -262,7 +262,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotIn_ArgumentIsNotIn_ShouldMatch()
         {
             // Arrange
@@ -275,7 +275,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotIn_NullIsIn_ShouldNotMatch()
         {
             // Arrange
@@ -288,7 +288,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotIn_NullIsNotIn_ShouldMatch()
         {
             // Arrange
@@ -301,7 +301,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsNotIn_NothingIsIn_ShouldMatch()
         {
             // Arrange
@@ -318,7 +318,7 @@ namespace RosMockLyn.Mocking.Tests
 
         #region IsInRange
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsInRange_IsInRange_ShouldMatch()
         {
             // Arrange
@@ -331,7 +331,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsInRange_IsNotInRange_ShouldMatch()
         {
             // Arrange
@@ -344,7 +344,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeFalse();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsInRange_IsInRangeInclusive_ShouldMatch()
         {
             // Arrange
@@ -357,7 +357,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void ArgIsInRange_IsNotInRangeExclusive_ShouldMatch()
         {
             // Arrange

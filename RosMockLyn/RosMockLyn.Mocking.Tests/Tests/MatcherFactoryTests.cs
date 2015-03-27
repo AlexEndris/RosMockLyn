@@ -24,16 +24,16 @@
 using System;
 using System.Linq.Expressions;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.Matching;
 
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MatcherFactoryTests
     {
-        [TestMethod]
+        [Test]
         public void Method_Scenario_Expected()
         {
             // Arrange

@@ -23,13 +23,13 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class PropertyInvocationHandlerTests
     {
         private const int Value = 1;
@@ -37,13 +37,13 @@ namespace RosMockLyn.Mocking.Tests
 
         private PropertyInvocationHandler _propertyInvocationHandler;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _propertyInvocationHandler = new PropertyInvocationHandler();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Setup_NoMatchingPropertyInvocation_ShouldCreateNew()
         {
             // Arrange
@@ -54,7 +54,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().NotBeNull();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Setup_MatchingPropertyInvocation_ShouldReturnExisting()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().BeSameAs(info2);
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Handle_NoMatchingPropertyInvocation_ShouldReturnDefault()
         {
             // Arrange
@@ -78,7 +78,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().Be(default(int));
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Handle_MatchingPropertyInvocation_ShouldReturnSetValue()
         {
             // Arrange

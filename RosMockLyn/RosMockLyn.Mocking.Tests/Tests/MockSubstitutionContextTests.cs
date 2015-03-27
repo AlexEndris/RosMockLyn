@@ -23,7 +23,7 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.Matching;
 using RosMockLyn.Mocking.Routing;
@@ -31,7 +31,7 @@ using RosMockLyn.Mocking.Tests.Mocks;
 
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MockSubstitutionContextTests
     {
         private const string MethodName = "method";
@@ -44,7 +44,7 @@ namespace RosMockLyn.Mocking.Tests
         private HandlePropertyInvocationMock _handlePropertyInvocationMock;
         private IMatcher _matcherMock;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _handleIndexInvocationMock = new HandleIndexInvocationMock();
@@ -58,7 +58,7 @@ namespace RosMockLyn.Mocking.Tests
                 _handleIndexInvocationMock);
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void MethodCall_ShouldDelegate()
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleMethodInvocationMock.Handle_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void MethodCallWithReturnValue_ShouldDelegate()
         {
             // Arrange
@@ -80,7 +80,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleMethodInvocationMock.HandleGeneric_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetupMethod_ShouldDelegate()
         {
             // Arrange
@@ -91,7 +91,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleMethodInvocationMock.Setup_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetupMethodWithReturnValue_ShouldDelegate()
         {
             // Arrange
@@ -102,7 +102,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleMethodInvocationMock.SetupGeneric_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void GetInvocationMatch_ShouldDelegate()
         {
             // Arrange
@@ -113,7 +113,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleMethodInvocationMock.GetMatches_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetProperty_ShouldDelegate()
         {
             // Arrange
@@ -123,7 +123,7 @@ namespace RosMockLyn.Mocking.Tests
             _handlePropertyInvocationMock.SetupWithReturn_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetProperty_WithoutReturnValue_ShouldDelegate()
         {
             // Arrange
@@ -133,7 +133,7 @@ namespace RosMockLyn.Mocking.Tests
             _handlePropertyInvocationMock.Setup_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void GetProperty_ShouldDelegate()
         {
             // Arrange
@@ -143,7 +143,7 @@ namespace RosMockLyn.Mocking.Tests
             _handlePropertyInvocationMock.Handle_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetIndex_ShouldDelegate()
         {
             // Arrange
@@ -153,7 +153,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleIndexInvocationMock.SetupWithReturn_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetIndex_WithoutReturnValue_ShouldDelegate()
         {
             // Arrange
@@ -163,7 +163,7 @@ namespace RosMockLyn.Mocking.Tests
             _handleIndexInvocationMock.Setup_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void GetIndex_ShouldDelegate()
         {
             // Arrange

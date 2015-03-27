@@ -45,7 +45,7 @@ namespace GeneratedTestingAssembly
             }
             set
             {
-                SubstitutionContext.SetIndex(value, index);
+                SubstitutionContext.SetIndex(index, value);
             }
         }
 

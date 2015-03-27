@@ -23,13 +23,13 @@
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class IndexInvocationHandlerTests
     {
         private const int Index = 1;
@@ -37,13 +37,13 @@ namespace RosMockLyn.Mocking.Tests
 
         private IndexInvocationHandler _indexInvocationHandler;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _indexInvocationHandler = new IndexInvocationHandler();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Setup_NoMatchingIndexInvocation_ShouldCreateNew()
         {
             // Arrange
@@ -54,7 +54,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().NotBeNull();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Setup_MatchingIndexInvocation_ShouldReturnExisting()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().BeSameAs(info2);
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Handle_NoMatchingIndexInvocation_ShouldReturnDefault()
         {
             // Arrange
@@ -78,7 +78,7 @@ namespace RosMockLyn.Mocking.Tests
             result.Should().Be(default(int));
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Handle_MatchingIndexInvocation_ShouldReturnSetValue()
         {
             // Arrange

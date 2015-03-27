@@ -25,14 +25,14 @@ using System.Collections.Generic;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using NUnit.Framework;
 
 using RosMockLyn.Mocking.Routing.Invocations;
 using RosMockLyn.Mocking.Tests.Mocks;
 
 namespace RosMockLyn.Mocking.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MethodInvocationHandlerTests
     {
         private const string MethodName = "method";
@@ -43,7 +43,7 @@ namespace RosMockLyn.Mocking.Tests
         private MethodCallRecorderMock _recorderMock;
         private MatcherMock _matcherMock;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _recorderMock = new MethodCallRecorderMock();
@@ -52,7 +52,7 @@ namespace RosMockLyn.Mocking.Tests
             _invocationHandler = new MethodInvocationHandler(_recorderMock);
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void GetMatches_MatchingMethodInvocation_ShouldReturnInfos()
         {
             // Arrange
@@ -66,7 +66,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().NotBeEmpty();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void GetMatches_NoMatchingMethodInvocation_ShouldReturnEmpty()
         {
             // Arrange
@@ -80,7 +80,7 @@ namespace RosMockLyn.Mocking.Tests
             info.Should().BeEmpty();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Setup_ShouldCreateSetup()
         {
             // Arrange
@@ -91,7 +91,7 @@ namespace RosMockLyn.Mocking.Tests
             methodSetupInfo.Should().NotBeNull();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetupGeneric_ShouldCreateSetup()
         {
             // Arrange
@@ -102,7 +102,7 @@ namespace RosMockLyn.Mocking.Tests
             methodSetupInfo.Should().NotBeNull();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Setup_ShouldMakeSetupAvailableForHandle()
         {
             // Arrange
@@ -119,7 +119,7 @@ namespace RosMockLyn.Mocking.Tests
             called.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void SetupGeneric_ShouldMakeSetupAvailableForHandle()
         {
            // Arrange
@@ -136,7 +136,7 @@ namespace RosMockLyn.Mocking.Tests
             called.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void Handle_ShouldRecord()
         {
             // Arrange
@@ -147,7 +147,7 @@ namespace RosMockLyn.Mocking.Tests
             _recorderMock.Record_WasCalled.Should().BeTrue();
         }
 
-        [TestMethod, TestCategory("Unit Test")]
+        [Test, Category("Unit Test")]
         public void HandleGeneric_ShouldRecord()
         {
             // Arrange
