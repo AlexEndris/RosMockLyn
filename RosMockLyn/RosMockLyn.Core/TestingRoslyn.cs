@@ -32,6 +32,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
 
+using RosMockLyn.Core.Interfaces;
+using RosMockLyn.Core.Transformation;
+
 namespace RosMockLyn.Core
 {
     public class TestingRoslyn
@@ -48,7 +51,7 @@ namespace RosMockLyn.Core
 
             var syntaxTrees = compilation.SyntaxTrees.Where(HasInterface);
 
-            IInterfaceMockGenerator mockingWalker = new InterfaceMockGenerator();
+            IInterfaceMockGenerator mockingWalker = new InterfaceMockGenerator(GenerateTransformers());
             var outputWalker = new OutputWalker();
 
             var syntax = mockingWalker.GenerateMock(syntaxTrees.First());
@@ -100,7 +103,15 @@ namespace RosMockLyn.Core
         
         }
 
-        
+        private IEnumerable<ICodeTransformer> GenerateTransformers()
+        {
+            yield return new UsingsTransformer();
+            yield return new NamespaceTransformer();
+            yield return new MethodTransformer();
+            yield return new InterfaceTransformer();
+            yield return new PropertyTransformer();
+            yield return new IndexerTransformer();
+        }
 
         private bool HasInterface(SyntaxTree tree)
         {
