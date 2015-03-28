@@ -34,7 +34,7 @@ namespace RosMockLyn.Core
         {
             var padding = node.Ancestors().Count();
 
-            Console.WriteLine("{0}{1}", new string(' ', padding), node.CSharpKind());
+            Console.WriteLine("{0}{1}", new string(' ', padding), node.Kind());
 
             base.Visit(node);
         }

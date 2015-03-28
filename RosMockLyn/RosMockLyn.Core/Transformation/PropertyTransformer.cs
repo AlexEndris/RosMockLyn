@@ -57,7 +57,7 @@ namespace RosMockLyn.Core.Transformation
         {
             var basePropertyDeclaration = node.FirstAncestorOrSelf<PropertyDeclarationSyntax>();
 
-            node = GeneratePropertyAccessor(node.CSharpKind(), basePropertyDeclaration.Type);
+            node = GeneratePropertyAccessor(node.Kind(), basePropertyDeclaration.Type);
 
             return base.VisitAccessorDeclaration(node);
         }

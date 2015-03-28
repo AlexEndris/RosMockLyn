@@ -59,7 +59,7 @@ namespace RosMockLyn.Core.Transformation
             var basePropertyDeclaration = node.FirstAncestorOrSelf<BasePropertyDeclarationSyntax>();
             var indexDeclaration = (IndexerDeclarationSyntax)basePropertyDeclaration;
 
-            node = GenerateIndexAccessor(node.CSharpKind(), basePropertyDeclaration.Type, indexDeclaration.ParameterList.Parameters);
+            node = GenerateIndexAccessor(node.Kind(), basePropertyDeclaration.Type, indexDeclaration.ParameterList.Parameters);
 
             return base.VisitAccessorDeclaration(node);
         }
