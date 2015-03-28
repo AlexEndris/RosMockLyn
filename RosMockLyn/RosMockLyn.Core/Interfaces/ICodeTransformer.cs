@@ -29,6 +29,7 @@ namespace RosMockLyn.Core.Interfaces
     internal interface ICodeTransformer
     {
         TransformerType Type { get; }
+
         SyntaxNode Transform(SyntaxNode node);
     }
 }

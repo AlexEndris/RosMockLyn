@@ -56,17 +56,14 @@ namespace RosMockLyn.Mocking.Tests
 
         private interface ISomeInterface
         {
-            
         }
 
         private class SomeInterfaceImpl : ISomeInterface
         {
-            
         }
 
         private class SomeInterfaceOtherImpl : ISomeInterface
         {
-
         }
     }
 }

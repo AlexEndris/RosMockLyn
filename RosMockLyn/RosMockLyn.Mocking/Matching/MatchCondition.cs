@@ -29,14 +29,14 @@ namespace RosMockLyn.Mocking.Matching
     {
         internal static MatchCondition LastCreatedCondition { get; private set; }
 
-        internal abstract bool Matches(object value);
-
         public static TReturn Create<TReturn>(Predicate<TReturn> predicate)
         {
             LastCreatedCondition = new MatchCondition<TReturn>(predicate);
 
             return default(TReturn);
         }
+
+        internal abstract bool Matches(object value);
     }
 
     internal class MatchCondition<T> : MatchCondition

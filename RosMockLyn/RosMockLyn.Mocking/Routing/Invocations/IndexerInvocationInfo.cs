@@ -27,6 +27,14 @@ namespace RosMockLyn.Mocking.Routing.Invocations
 {
     public class IndexerInvocationInfo
     {
+        public Type ReturnType { get; set; }
+
+        public object ReturnValue { get; set; }
+
+        public Type IndexType { get; set; }
+
+        public object Index { get; set; }
+
         public IndexerInvocationInfo(Type returnType, object returnValue, Type indexType, object index)
         {
             ReturnType = returnType;
@@ -34,10 +42,5 @@ namespace RosMockLyn.Mocking.Routing.Invocations
             IndexType = indexType;
             Index = index;
         }
-
-        public Type ReturnType { get; set; }
-        public object ReturnValue { get; set; }
-        public Type IndexType { get; set; }
-        public object Index { get; set; }
     }
 }

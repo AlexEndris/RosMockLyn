@@ -46,7 +46,6 @@ namespace RosMockLyn.Mocking.Matching
                     return new ConditionMatcher(condition);
             }
 
-
             throw new NotSupportedException();
         }
     }

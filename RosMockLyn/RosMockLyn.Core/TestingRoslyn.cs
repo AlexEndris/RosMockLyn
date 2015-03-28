@@ -73,15 +73,13 @@ namespace RosMockLyn.Core
             int lineNr = 0;
             foreach (var line in split)
             {
-                builder.AppendFormat("{0}: ",++lineNr);
+                builder.AppendFormat("{0}: ", ++lineNr);
                 builder.AppendLine(line);
             }
                              
             Console.WriteLine(builder.ToString());
 
             List<MetadataReference> refs = new List<MetadataReference>();
-
-
 
             var testProject = MetadataReference.CreateFromFile(@"E:\Important\Eigene Dateien\Visual Studio 2013\Projects\RosMockLyn\TestProjectPort\bin\Debug\TestProjectPort.dll");
             var mocking = MetadataReference.CreateFromFile(@"E:\Important\Eigene Dateien\Visual Studio 2013\Projects\RosMockLyn\RosMockLyn.Mocking\bin\Debug\RosMockLyn.Mocking.dll");
@@ -91,7 +89,7 @@ namespace RosMockLyn.Core
 
             var strings = Directory.GetFiles(
                 @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile32\")
-                .Where(x => Path.GetExtension(x).EndsWith("dll",StringComparison.InvariantCultureIgnoreCase));
+                .Where(x => Path.GetExtension(x).EndsWith("dll", StringComparison.InvariantCultureIgnoreCase));
 
             refs.AddRange(strings.Select(x => MetadataReference.CreateFromFile(x)));
 
@@ -100,7 +98,6 @@ namespace RosMockLyn.Core
             var csCompilation = CSharpCompilation.Create("TestAssembly", new[] { syntax }, refs, options);
 
             var emitResult = FileSystemExtensions.Emit(csCompilation, @"D:\TestAssembly.dll");
-        
         }
 
         private IEnumerable<ICodeTransformer> GenerateTransformers()
@@ -118,7 +115,6 @@ namespace RosMockLyn.Core
             var root = tree.GetRoot();
 
             var interfaceBlockSyntaxs = from node in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>() select node;
-
 
             return interfaceBlockSyntaxs.Any();
         }

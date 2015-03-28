@@ -9,7 +9,7 @@ namespace RosMockLyn.Mocking.IoC
         /// </summary>
         /// <typeparam name="TInterface">Interface or base type.</typeparam>
         /// <typeparam name="TConcrete">Concrete type.</typeparam>
-        void RegisterType<TInterface, TConcrete>() where TInterface: class 
+        void RegisterType<TInterface, TConcrete>() where TInterface : class 
             where TConcrete : TInterface, new();
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace RosMockLyn.Mocking.IoC
         /// <summary>
         /// Scans all available assemblies for all<see cref="IInjectorRegistry"/>.
         /// </summary>
-        /// <returns>Task to wair for.</returns>
+        /// <returns>Task to wait for.</returns>
         Task ScanAssemblies();
     }
 }

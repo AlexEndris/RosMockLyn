@@ -113,6 +113,7 @@ namespace RosMockLyn.Mocking
             {
                 throw new InvalidOperationException("mock is no mock"); // TODO: Better Exception!
             }
+
             return realMock;
         }
 
@@ -136,6 +137,5 @@ namespace RosMockLyn.Mocking
                 }
             }
         }
-
     }
 }

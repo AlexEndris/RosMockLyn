@@ -376,6 +376,5 @@ namespace RosMockLyn.Mocking.Tests
         {
             return MatchCondition.LastCreatedCondition;
         }
-
     }
 }

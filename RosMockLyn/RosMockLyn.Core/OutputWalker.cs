@@ -30,12 +30,11 @@ namespace RosMockLyn.Core
 
     public class OutputWalker : CSharpSyntaxWalker
     {
-        private int line = 0;
         public override void Visit(SyntaxNode node)
         {
             var padding = node.Ancestors().Count();
 
-            Console.WriteLine("{0}{1}",new String(' ', padding), node.CSharpKind());
+            Console.WriteLine("{0}{1}", new string(' ', padding), node.CSharpKind());
 
             base.Visit(node);
         }

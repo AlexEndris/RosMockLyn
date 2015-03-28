@@ -27,19 +27,18 @@ namespace RosMockLyn.Mocking
 {
     public static class Mock
     {
-        private static readonly IInjector injector;
+        private static readonly IInjector Injector;
 
         static Mock()
         {
-            injector = new MockInjector();
-            injector.ScanAssemblies()
+            Injector = new MockInjector();
+            Injector.ScanAssemblies()
                     .Wait();
         }
 
-
         public static T For<T>() where T : class
         {
-            return injector.Resolve<T>();
+            return Injector.Resolve<T>();
         }
     }
 }

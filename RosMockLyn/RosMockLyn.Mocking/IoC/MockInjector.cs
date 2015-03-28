@@ -15,20 +15,20 @@ namespace RosMockLyn.Mocking.IoC
         public void RegisterType<TInterface, TConcrete>() where TInterface : class
                                                           where TConcrete : TInterface, new()
         {
-            Type baseType = typeof (TInterface);
-            Type mappedType = typeof (TConcrete);
+            Type baseType = typeof(TInterface);
+            Type mappedType = typeof(TConcrete);
 
-            if (this._typeMapper.ContainsKey(baseType))
+            if (_typeMapper.ContainsKey(baseType))
                 throw new InvalidOperationException("You can't map two different types to the same base type.");
 
-            this._typeMapper[baseType] = mappedType;
+            _typeMapper[baseType] = mappedType;
         }
 
         public T Resolve<T>() where T : class
         {
             Type mappedType;
 
-            if (!this._typeMapper.TryGetValue(typeof (T), out mappedType))
+            if (!_typeMapper.TryGetValue(typeof(T), out mappedType))
                 return null;
 
             return InstantiateType<T>(mappedType);
@@ -47,7 +47,7 @@ namespace RosMockLyn.Mocking.IoC
                         var assemblyName = new AssemblyName(file.DisplayName);
                         var assembly = Assembly.Load(assemblyName);
 
-                        this.RegisterAssembly(assembly);
+                        RegisterAssembly(assembly);
                     }
                     catch (Exception)
                     {
@@ -72,7 +72,7 @@ namespace RosMockLyn.Mocking.IoC
                                                     .SingleOrDefault(x => !x.GetParameters().Any());
 
             return constructor != null 
-                    ? (T) constructor.Invoke(new object[] {})
+                    ? (T)constructor.Invoke(new object[] {})
                     : null;
         }
 
@@ -83,6 +83,5 @@ namespace RosMockLyn.Mocking.IoC
                 .Select(Activator.CreateInstance)
                 .OfType<IInjectorRegistry>();
         }
-
     }
 }

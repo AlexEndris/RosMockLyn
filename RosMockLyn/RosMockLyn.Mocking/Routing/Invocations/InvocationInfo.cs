@@ -30,7 +30,5 @@ namespace RosMockLyn.Mocking.Routing.Invocations
         public InvocationInfo(string methodName, Type returnType, object returnValue)
         {
         }
-
- 
     }
 }

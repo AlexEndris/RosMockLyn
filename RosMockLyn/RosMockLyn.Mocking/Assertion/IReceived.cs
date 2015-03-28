@@ -31,6 +31,5 @@ namespace RosMockLyn.Mocking.Assertion
         void Excatly(int expectedCalls);
 
         void None();
-
     }
 }

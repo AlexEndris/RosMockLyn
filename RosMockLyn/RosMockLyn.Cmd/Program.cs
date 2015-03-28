@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RosMockLyn.Core;
 
 namespace RosMockLyn.Cmd
 {
-    using RosMockLyn.Core;
-
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             var testingRoslyn = new TestingRoslyn();
 

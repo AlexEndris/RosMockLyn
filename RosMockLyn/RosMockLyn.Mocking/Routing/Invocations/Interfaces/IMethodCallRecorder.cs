@@ -28,6 +28,7 @@ namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
     internal interface IMethodCallRecorder
     {
         IEnumerable<MethodInvocationInfo> RecordedInvocations { get; }
+ 
         void Record(string methodName, IEnumerable<object> arguments);
     }
 }

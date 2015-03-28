@@ -58,8 +58,7 @@ namespace RosMockLyn.Core.Transformation
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddBaseListTypes(
                     SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(DerivesFrom)), // MockBase, base type
-                    SyntaxFactory.SimpleBaseType(interfaceIdentifier) // Interface that is being implemented
-                )
+                    SyntaxFactory.SimpleBaseType(interfaceIdentifier)) // Interface that is being implemented
                 .AddMembers(interfaceDeclaration.Members.ToArray());
         }
     }

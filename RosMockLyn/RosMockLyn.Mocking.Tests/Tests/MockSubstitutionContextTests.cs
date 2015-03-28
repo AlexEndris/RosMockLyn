@@ -35,13 +35,17 @@ namespace RosMockLyn.Mocking.Tests
     public class MockSubstitutionContextTests
     {
         private const string MethodName = "method";
+ 
         private static readonly object[] Arguments = { 1, 2.0f, "test" };
 
-
         private MockSubstitutionContext _substitutionContext;
+        
         private HandleIndexInvocationMock _handleIndexInvocationMock;
+        
         private HandleMethodInvocationMock _handleMethodInvocationMock;
+        
         private HandlePropertyInvocationMock _handlePropertyInvocationMock;
+        
         private IMatcher _matcherMock;
 
         [SetUp]
@@ -119,6 +123,7 @@ namespace RosMockLyn.Mocking.Tests
             // Arrange
             // Act
             _substitutionContext.SetProperty(1, MethodName);
+      
             // Assert
             _handlePropertyInvocationMock.SetupWithReturn_WasCalled.Should().BeTrue();
         }
@@ -129,6 +134,7 @@ namespace RosMockLyn.Mocking.Tests
             // Arrange
             // Act
             _substitutionContext.SetProperty<int>(MethodName);
+    
             // Assert
             _handlePropertyInvocationMock.Setup_WasCalled.Should().BeTrue();
         }
@@ -139,6 +145,7 @@ namespace RosMockLyn.Mocking.Tests
             // Arrange
             // Act
             _substitutionContext.GetProperty<int>(MethodName);
+      
             // Assert
             _handlePropertyInvocationMock.Handle_WasCalled.Should().BeTrue();
         }
@@ -149,6 +156,7 @@ namespace RosMockLyn.Mocking.Tests
             // Arrange
             // Act
             _substitutionContext.SetIndex(1, MethodName);
+      
             // Assert
             _handleIndexInvocationMock.SetupWithReturn_WasCalled.Should().BeTrue();
         }
@@ -159,6 +167,7 @@ namespace RosMockLyn.Mocking.Tests
             // Arrange
             // Act
             _substitutionContext.SetIndex<int>(1);
+      
             // Assert
             _handleIndexInvocationMock.Setup_WasCalled.Should().BeTrue();
         }
@@ -168,7 +177,8 @@ namespace RosMockLyn.Mocking.Tests
         {
             // Arrange
             // Act
-            _substitutionContext.GetIndex<int,int>(1);
+            _substitutionContext.GetIndex<int, int>(1);
+     
             // Assert
             _handleIndexInvocationMock.Handle_WasCalled.Should().BeTrue();
         }

@@ -28,12 +28,15 @@ namespace RosMockLyn.Mocking.Tests.Mocks
 {
     public class HandlePropertyInvocationMock : IHandlePropertyInvocation
     {
-        public bool SetupWithReturn_WasCalled { get; private set; }
-        public bool Setup_WasCalled { get; private set; }
-        public bool Handle_WasCalled { get; private set; }
-
         private PropertyInvocationInfo _invocationInfo;
+
         private object _returnValue;
+        
+        public bool SetupWithReturn_WasCalled { get; private set; }
+        
+        public bool Setup_WasCalled { get; private set; }
+        
+        public bool Handle_WasCalled { get; private set; }
 
         public PropertyInvocationInfo Setup<TReturn>(TReturn value, string propertyName)
         {

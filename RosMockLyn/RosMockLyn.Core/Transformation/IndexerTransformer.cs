@@ -64,7 +64,6 @@ namespace RosMockLyn.Core.Transformation
             return base.VisitAccessorDeclaration(node);
         }
 
-
         private AccessorDeclarationSyntax GenerateIndexAccessor(SyntaxKind syntaxKind, TypeSyntax typeSyntax, SeparatedSyntaxList<ParameterSyntax> parameters)
         {
             string memberName = string.Format(

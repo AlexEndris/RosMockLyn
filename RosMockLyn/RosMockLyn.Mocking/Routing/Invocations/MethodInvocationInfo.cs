@@ -35,6 +35,7 @@ namespace RosMockLyn.Mocking.Routing.Invocations
         }
 
         public string MethodName { get; private set; }
+
         public IEnumerable<object> Arguments { get; private set; }
     }
 }

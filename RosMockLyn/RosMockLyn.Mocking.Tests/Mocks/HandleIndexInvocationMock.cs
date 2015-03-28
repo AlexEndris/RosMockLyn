@@ -28,12 +28,15 @@ namespace RosMockLyn.Mocking.Tests.Mocks
 {
     public class HandleIndexInvocationMock : IHandleIndexInvocation
     {
-        public bool SetupWithReturn_WasCalled { get; private set; }
-        public bool Setup_WasCalled { get; private set; }
-        public bool Handle_WasCalled { get; private set; }
-
         private IndexerInvocationInfo _invocationInfo;
+        
         private object _returnValue;
+
+        public bool SetupWithReturn_WasCalled { get; private set; }
+        
+        public bool Setup_WasCalled { get; private set; }
+        
+        public bool Handle_WasCalled { get; private set; }
 
         public IndexerInvocationInfo Setup<TIndex, TReturn>(TIndex index, TReturn value)
         {
@@ -65,6 +68,5 @@ namespace RosMockLyn.Mocking.Tests.Mocks
         {
             _returnValue = returnValue;
         }
-
     }
 }

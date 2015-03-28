@@ -21,7 +21,6 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections;
 using System.Collections.Generic;
 
 using RosMockLyn.Mocking.Matching;
@@ -33,14 +32,19 @@ namespace RosMockLyn.Mocking.Tests.Mocks
     internal class HandleMethodInvocationMock : IHandleMethodInvocation
     {
         private IEnumerable<MethodInvocationInfo> _invocationInfos;
+
         private MethodSetupInfo _setupInfo;
 
         private object _returnValue;
 
         public bool Setup_WasCalled { get; private set; }
+ 
         public bool SetupGeneric_WasCalled { get; private set; }
+ 
         public bool GetMatches_WasCalled { get; private set; }
+
         public bool Handle_WasCalled { get; private set; }
+ 
         public bool HandleGeneric_WasCalled { get; private set; }
 
         public void SetGetMatchesReturnValue(IEnumerable<MethodInvocationInfo> returnValue)

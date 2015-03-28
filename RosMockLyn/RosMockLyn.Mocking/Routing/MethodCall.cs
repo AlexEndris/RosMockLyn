@@ -45,6 +45,5 @@ namespace RosMockLyn.Mocking.Routing
         {
             _setupInfo.WhenCalled = action;
         }
-
     }
 }

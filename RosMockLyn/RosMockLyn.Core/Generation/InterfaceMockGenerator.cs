@@ -37,13 +37,7 @@ namespace RosMockLyn.Core
     {
         private readonly IEnumerable<ICodeTransformer> _transformers;
 
-        private ICodeTransformer GetTransformer(TransformerType type)
-        {
-            return _transformers.Single(x => x.Type == type);
-        }
-
-        public InterfaceMockGenerator(IEnumerable<ICodeTransformer> transformers)
-            : base(false)
+        public InterfaceMockGenerator(IEnumerable<ICodeTransformer> transformers) : base(false)
         {
             _transformers = transformers;
         }
@@ -93,6 +87,11 @@ namespace RosMockLyn.Core
         public SyntaxTree GenerateMock(SyntaxTree treeToGenerateMockFrom)
         {
             return SyntaxFactory.SyntaxTree(Visit(treeToGenerateMockFrom.GetRoot()).NormalizeWhitespace());
+        }
+
+        private ICodeTransformer GetTransformer(TransformerType type)
+        {
+            return _transformers.Single(x => x.Type == type);
         }
     }
 }

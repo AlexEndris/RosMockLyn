@@ -69,6 +69,5 @@ namespace RosMockLyn.Core.Transformation
 
             return new[] { additionalUsing, blah };
         }
-
     }
 }

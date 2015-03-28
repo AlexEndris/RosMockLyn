@@ -30,6 +30,20 @@ namespace RosMockLyn.Mocking.Routing.Invocations
 {
     public class MethodSetupInfo
     {
+        public string MethodName { get; private set; }
+     
+        public int Calls { get; private set; }
+      
+        public Type ReturnType { get; private set; }
+        
+        public object ReturnValue { get; set; }
+        
+        public Action WhenCalled { get; set; }
+        
+        public IEnumerable<IMatcher> Arguments { get; private set; }
+        
+        public Exception ExcpetionToThrow { get; set; }
+
         public MethodSetupInfo(string methodName, IEnumerable<IMatcher> arguments)
             : this(methodName, null, null, arguments)
         {
@@ -43,14 +57,6 @@ namespace RosMockLyn.Mocking.Routing.Invocations
             Arguments = arguments;
             Calls = 0;
         }
-
-        public string MethodName { get; private set; }
-        public int Calls { get; private set; }
-        public Type ReturnType { get; private set; }
-        public object ReturnValue { get; set; }
-        public Action WhenCalled { get; set; }
-        public IEnumerable<IMatcher> Arguments { get; private set; }
-        public Exception ExcpetionToThrow { get; set; }
 
         public void Execute()
         {

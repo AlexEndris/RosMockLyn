@@ -29,6 +29,6 @@ namespace RosMockLyn.Mocking.Routing.Invocations.Interfaces
 
         IndexerInvocationInfo Setup<TReturn>(object index);
 
-        TReturn Handle<TIndex, TReturn>(TIndex  index);
+        TReturn Handle<TIndex, TReturn>(TIndex index);
     }
 }

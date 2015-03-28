@@ -54,8 +54,8 @@ namespace RosMockLyn.Core.Transformation
 
             var newMethodSyntax = methodDeclaration.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(interfaceIdentifier))
                                .WithBody(GenerateMethodBody(methodDeclaration))
-                                // this removes the trailing semicolon
-                                .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None));
+                               .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None)); // this removes the trailing semicolon
+
             return newMethodSyntax;
         }
 
@@ -136,6 +136,7 @@ namespace RosMockLyn.Core.Transformation
 
                 substitution = substitution.WithArgumentList(SyntaxFactory.ArgumentList(argumentList));
             }
+
             return substitution;
         }
 

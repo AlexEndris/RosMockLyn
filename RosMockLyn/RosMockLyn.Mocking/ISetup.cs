@@ -34,7 +34,6 @@ namespace RosMockLyn.Mocking
 
     public interface ISetup<TMock> : ISetup
     {
-        
     }
 
     public interface ISetup<TMock, in TReturn> : ISetup

@@ -26,16 +26,17 @@ namespace RosMockLyn.Mocking.Routing.Invocations
 {
     public class PropertyInvocationInfo
     {
+        public string PropertyName { get; set; }
+        
+        public Type ReturnType { get; set; }
+        
+        public object ReturnValue { get; set; }
+
         public PropertyInvocationInfo(string propertyName, Type returnType, object returnValue)
         {
             PropertyName = propertyName;
             ReturnType = returnType;
             ReturnValue = returnValue;
         }
-
-        public string PropertyName { get; set; }
-        public Type ReturnType { get; set; }
-        public object ReturnValue { get; set; }
-
     }
 }
