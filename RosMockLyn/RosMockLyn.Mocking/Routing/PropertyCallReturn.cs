@@ -47,5 +47,10 @@ namespace RosMockLyn.Mocking.Routing
         {
             throw new NotSupportedException("It is not supported to make a property throw an exception.");
         }
+
+        public void WhenCalled(Action action)
+        {
+            throw new NotSupportedException("It is not supported to execute code when the property is called.");
+        }
     }
 }

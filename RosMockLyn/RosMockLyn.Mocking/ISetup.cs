@@ -28,6 +28,8 @@ namespace RosMockLyn.Mocking
     public interface ISetup
     {
         void Throws<T>() where T : Exception;
+
+        void WhenCalled(Action action);
     }
 
     public interface ISetup<TMock> : ISetup

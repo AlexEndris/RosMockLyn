@@ -45,8 +45,12 @@ namespace RosMockLyn.Mocking.Routing
 
         public void Throws<T>() where T : Exception
         {
-            throw new NotSupportedException("It is not supported to make a property throw an exception.");
+            throw new NotSupportedException("It is not supported to make an indexer throw an exception.");
         }
 
+        public void WhenCalled(Action action)
+        {
+            throw new NotSupportedException("It is not supported to execute code when the indexer is called.");
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 using AssemblyWithInterfaces;
 
@@ -103,6 +104,20 @@ namespace GeneratedTestingAssembly.Tests
             someInterface.VoidCall();
 
             someInterface.Received(x => x.VoidCall()).AtLeastOne();
+        }
+
+        [TestMethod, TestCategory("Using mocking framework")]
+        public void WhenCalled()
+        {
+           var someInterface = Mock.For<ISomeInterface>();
+
+            bool called = false;
+            someInterface.Setup(x => x.IntCall())
+                .WhenCalled(() => called = true );
+
+            someInterface.IntCall();
+
+            Assert.IsTrue(called);
         }
 
         //[TestMethod]

@@ -50,10 +50,14 @@ namespace RosMockLyn.Mocking.Routing.Invocations
         public object ReturnValue { get; set; }
         public Action WhenCalled { get; set; }
         public IEnumerable<IMatcher> Arguments { get; private set; }
+        public Exception ExcpetionToThrow { get; set; }
 
         public void Execute()
         {
             Calls++;
+
+            if (ExcpetionToThrow != null)
+                throw ExcpetionToThrow;
 
             if (WhenCalled != null)
                 WhenCalled();

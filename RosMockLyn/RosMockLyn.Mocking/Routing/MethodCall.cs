@@ -38,7 +38,13 @@ namespace RosMockLyn.Mocking.Routing
 
         public void Throws<T>() where T : Exception
         {
-            _setupInfo.WhenCalled = () => { throw Activator.CreateInstance<T>(); };
+            _setupInfo.ExcpetionToThrow = Activator.CreateInstance<T>();
         }
+
+        public void WhenCalled(Action action)
+        {
+            _setupInfo.WhenCalled = action;
+        }
+
     }
 }
