@@ -20,24 +20,10 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using System.Linq;
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace RosMockLyn.Core.Transformation
+namespace TestProject
 {
-    public static class InterfaceIdentifierRetriever
+    public interface IDoSomethingDifferent
     {
-        public static IdentifierNameSyntax GetInterfaceIdentifier(SyntaxNode node)
-        {
-            var typeDeclarationSyntax = (TypeDeclarationSyntax)(node.AncestorsAndSelf().FirstOrDefault(x => x is ClassDeclarationSyntax)
-                                                             ?? node.AncestorsAndSelf().FirstOrDefault(x => x is InterfaceDeclarationSyntax));
-
-            var identifierNameSyntax = (IdentifierNameSyntax)typeDeclarationSyntax.BaseList.Types[1].Type;
-
-            return identifierNameSyntax;
-        }
+        void BlahBlah();
     }
 }

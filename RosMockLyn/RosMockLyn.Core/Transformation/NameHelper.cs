@@ -24,44 +24,32 @@
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation
 {
-    internal sealed class InterfaceTransformer : ICodeTransformer
+    public static class NameHelper
     {
-        private const string DerivesFrom = "MockBase";
-
-        public TransformerType Type
+        public static IdentifierNameSyntax GetInterfaceIdentifier(SyntaxNode node)
         {
-            get
-            {
-                return TransformerType.Interface;
-            }
+            var typeDeclarationSyntax = (TypeDeclarationSyntax)(node.AncestorsAndSelf().FirstOrDefault(x => x is ClassDeclarationSyntax)
+                                                             ?? node.AncestorsAndSelf().FirstOrDefault(x => x is InterfaceDeclarationSyntax));
+
+            var identifierNameSyntax = (IdentifierNameSyntax)typeDeclarationSyntax.BaseList.Types[1].Type;
+
+            return identifierNameSyntax;
         }
 
-        public SyntaxNode Transform(SyntaxNode node)
+        public static string GetImplementationName(string interfaceName, string suffix = "Mock")
         {
-            return MockInterface((InterfaceDeclarationSyntax)node);
+            return interfaceName.Substring(1) + suffix;
         }
 
-        private ClassDeclarationSyntax MockInterface(InterfaceDeclarationSyntax interfaceDeclaration)
+        public static string GetInterfaceName(SyntaxNode node)
         {
-            var interfaceIdentifier = SyntaxFactory.IdentifierName(interfaceDeclaration.Identifier.ValueText);
+            var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf().FirstOrDefault(x => x is InterfaceDeclarationSyntax);
 
-            var implementationName =
-                NameHelper.GetImplementationName(interfaceDeclaration.Identifier.ToString());
-
-            return SyntaxFactory.ClassDeclaration(
-                SyntaxFactory.Identifier(implementationName))
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                .AddBaseListTypes(
-                    SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(DerivesFrom)), // MockBase, base type
-                    SyntaxFactory.SimpleBaseType(interfaceIdentifier)) // Interface that is being implemented
-                .AddMembers(interfaceDeclaration.Members.ToArray());
+            return typeDeclarationSyntax.Identifier.ToString();
         }
     }
 }

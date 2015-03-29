@@ -20,13 +20,10 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using Microsoft.CodeAnalysis;
-
-namespace RosMockLyn.Core.Interfaces
+namespace TestProject
 {
-    internal interface IInterfaceMockGenerator
+    public interface IDoSomethingDifferent
     {
-        SyntaxTree GenerateMock(SyntaxTree treeToGenerateMockFrom);
+        void BlahBlah();
     }
 }

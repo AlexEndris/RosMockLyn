@@ -46,7 +46,7 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
-            var interfaceIdentifier = InterfaceIdentifierRetriever.GetInterfaceIdentifier(node);
+            var interfaceIdentifier = NameHelper.GetInterfaceIdentifier(node);
             var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
             var newPropertyToken = indexerDeclaration.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(interfaceIdentifier));

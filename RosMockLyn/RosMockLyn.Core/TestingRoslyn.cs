@@ -51,7 +51,7 @@ namespace RosMockLyn.Core
 
             var syntaxTrees = compilation.SyntaxTrees.Where(HasInterface);
 
-            IInterfaceMockGenerator mockingWalker = new InterfaceMockGenerator(GenerateTransformers());
+            InterfaceMockGenerator mockingWalker = new InterfaceMockGenerator(GenerateTransformers());
             var outputWalker = new OutputWalker();
 
             var syntax = mockingWalker.GenerateMock(syntaxTrees.First());
@@ -92,6 +92,10 @@ namespace RosMockLyn.Core
                 .Where(x => Path.GetExtension(x).EndsWith("dll", StringComparison.InvariantCultureIgnoreCase));
 
             refs.AddRange(strings.Select(x => MetadataReference.CreateFromFile(x)));
+
+            var generator = new MockRegistryGenerator();
+
+            var generatesRegistry = generator.GenerateRegistry(syntaxTrees);
 
             CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
