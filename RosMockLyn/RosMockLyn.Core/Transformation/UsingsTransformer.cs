@@ -64,8 +64,7 @@ namespace RosMockLyn.Core.Transformation
                         SyntaxFactory.IdentifierName(AdditionalUsingPart1),
                         SyntaxFactory.IdentifierName(AdditionalUsingPart2)));
             var blah =
-                SyntaxFactory.UsingDirective(
-                    SyntaxFactory.IdentifierName(((IdentifierNameSyntax)namespaceDeclaration.Name).Identifier.ValueText));
+                SyntaxFactory.UsingDirective(namespaceDeclaration.Name);
 
             return new[] { additionalUsing, blah };
         }

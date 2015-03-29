@@ -20,33 +20,10 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-using RosMockLyn.Core.Interfaces;
-
-namespace RosMockLyn.Core.Transformation
+namespace TestProject.Lower
 {
-    public class NamespaceTransformer : ICodeTransformer
+    public interface IDoSomethingElsewhere
     {
-        private const string Namespace = "RosMockLyn";
-
-        public TransformerType Type
-        {
-            get
-            {
-                return TransformerType.Namespace;
-            }
-        }
-
-        public SyntaxNode Transform(SyntaxNode node)
-        {
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
-            var namespaceName = SyntaxFactory.QualifiedName(namespaceDeclaration.Name, SyntaxFactory.IdentifierName(Namespace));
-
-            return namespaceDeclaration.WithName(namespaceName);
-        }
+        void Flubber();
     }
 }

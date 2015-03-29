@@ -35,15 +35,64 @@ namespace RosMockLyn.Core
 {
     public class MockRegistryGenerator
     {
+        private const string RegistryInterfaceNamespace = "RosMockLyn.Mocking.IoC";
+
+        private const string InjectorType = "IInjector";
+
         private const string InjectorName = "injector";
+        
         private const string RegisterType = "RegisterType";
+        
+        private const string NamespaceName = "MockRegistry";
+
+        private const string MockNamespace = "RosMockLyn";
+
+        private const string RegistryName = "GeneratedRegistry";
+        
+        private const string RegistryType = "IInjectorRegistry";
+
+        private const string Register = "Register";
 
         public SyntaxTree GenerateRegistry(IEnumerable<SyntaxTree> interfaces)
         {
             var usingDirectiveSyntaxes = GenerateUsings(interfaces);
             var generateRegisterStatements = GenerateRegisterStatements(interfaces).ToList();
 
-            return null;
+            var publicModifier = SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
+
+            var baseTypeList = SyntaxFactory.BaseList(
+                                SyntaxFactory.SeparatedList(new BaseTypeSyntax[]
+                            {
+                                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(RegistryType))
+                            }));
+
+            var returnType = SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword));
+
+            var parameter = SyntaxFactory.Parameter(SyntaxFactory.Identifier(InjectorName))
+                .WithType(SyntaxFactory.IdentifierName(InjectorType));
+
+            var parameters = SyntaxFactory.ParameterList(SyntaxFactory.SingletonSeparatedList(parameter));
+
+            var methodBlock = SyntaxFactory.Block(SyntaxFactory.List(generateRegisterStatements));
+
+            var methodDeclaration = SyntaxFactory.MethodDeclaration(returnType, Register)
+                .WithModifiers(publicModifier)
+                .WithParameterList(parameters)
+                .WithBody(methodBlock);
+            
+            var classDeclaration = SyntaxFactory.ClassDeclaration(RegistryName)
+                .WithModifiers(publicModifier)
+                .WithBaseList(baseTypeList)
+                .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(methodDeclaration));
+
+            var namespaceDeclaration = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName(NamespaceName))
+                .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(classDeclaration));
+
+            var compilationUnit = SyntaxFactory.CompilationUnit()
+                .WithUsings(usingDirectiveSyntaxes)
+                .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(namespaceDeclaration));
+
+            return compilationUnit.SyntaxTree;
         }
 
         private SyntaxList<UsingDirectiveSyntax> GenerateUsings(IEnumerable<SyntaxTree> interfaces)
@@ -52,16 +101,37 @@ namespace RosMockLyn.Core
 
             foreach (var tree in interfaces)
             {
-                var usingDirective = (from node in tree.GetRoot().DescendantNodes().OfType<NamespaceDeclarationSyntax>()
-                                      select CreateUsingDirective(node)).First();
+                var namespaceDeclaration = (from node in tree.GetRoot().DescendantNodes().OfType<NamespaceDeclarationSyntax>()
+                                      select node).First();
 
+                var usingDirective = CreateUsingDirective(namespaceDeclaration.Name);
+                var mockUsingDirective =
+                    CreateUsingDirective(
+                        SyntaxFactory.QualifiedName(
+                            namespaceDeclaration.Name,
+                            SyntaxFactory.IdentifierName(MockNamespace)));
+                
                 string name = usingDirective.Name.ToString();
 
                 if (usings.Select(x => x.Name.ToString()).All(x => x != name))
+                {
                     usings.Add(usingDirective);
+                    usings.Add(mockUsingDirective);
+                }
             }
+            usings.Add(SyntaxFactory.UsingDirective(CreateMockingUsing()));
 
             return SyntaxFactory.List(usings);
+        }
+
+        private static QualifiedNameSyntax CreateMockingUsing()
+        {
+            var namespaceParts = RegistryInterfaceNamespace.Split('.');
+            return SyntaxFactory.QualifiedName(
+                        SyntaxFactory.QualifiedName(
+                            SyntaxFactory.IdentifierName(namespaceParts[0]),
+                            SyntaxFactory.IdentifierName(namespaceParts[1])),
+                        SyntaxFactory.IdentifierName(namespaceParts[2]));
         }
 
         private IEnumerable<StatementSyntax> GenerateRegisterStatements(IEnumerable<SyntaxTree> interfaces)
@@ -71,9 +141,9 @@ namespace RosMockLyn.Core
             return dictionary.Select(x => GenerateStatement(x.Key, x.Value));
         }
 
-        private UsingDirectiveSyntax CreateUsingDirective(NamespaceDeclarationSyntax node)
+        private UsingDirectiveSyntax CreateUsingDirective(NameSyntax name)
         {
-            return SyntaxFactory.UsingDirective(node.Name);
+            return SyntaxFactory.UsingDirective(name);
         }
 
         private Tuple<string, string> CreateNameMapping(SyntaxTree tree)

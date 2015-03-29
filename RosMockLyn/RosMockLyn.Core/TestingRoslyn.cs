@@ -44,7 +44,7 @@ namespace RosMockLyn.Core
             var workspace = MSBuildWorkspace.Create();
 
             var project =
-                workspace.OpenProjectAsync(@"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\TestProject\TestProject.csproj")
+                workspace.OpenProjectAsync(@"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\TestProjectPort\TestProjectPort.csproj")
                     .Result;
 
             var compilation = project.GetCompilationAsync().Result;
@@ -54,13 +54,13 @@ namespace RosMockLyn.Core
             InterfaceMockGenerator mockingWalker = new InterfaceMockGenerator(GenerateTransformers());
             var outputWalker = new OutputWalker();
 
-            var syntax = mockingWalker.GenerateMock(syntaxTrees.First());
+            var syntax = syntaxTrees.Select(x => mockingWalker.GenerateMock(x)).ToList();
 
             outputWalker.Visit(syntaxTrees.First().GetRoot());
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------");
             Console.WriteLine();
-            outputWalker.Visit(syntax.GetRoot());
+            outputWalker.Visit(syntax.First().GetRoot());
 
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------");
@@ -99,7 +99,9 @@ namespace RosMockLyn.Core
 
             CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
-            var csCompilation = CSharpCompilation.Create("TestAssembly", new[] { syntax }, refs, options);
+            syntax.Add(generatesRegistry);
+
+            var csCompilation = CSharpCompilation.Create("TestAssembly", syntax, refs, options);
 
             var emitResult = FileSystemExtensions.Emit(csCompilation, @"D:\TestAssembly.dll");
         }
