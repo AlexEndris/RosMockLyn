@@ -1,18 +1,15 @@
 ﻿using FluentAssertions;
-
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using NUnit.Framework;
 using RosMockLyn.Core.Helpers;
-using RosMockLyn.Core.Transformation;
 
-namespace RosMockLyn.Core.Tests
+namespace RosMockLyn.Core.Tests.Helpers
 {
-    [TestClass]
+    [TestFixture]
     public class IdentifierHelperTests
     {
-        [TestMethod]
-        public void ShouldCreateQualifiedNameSyntax()
+        [Test, Category("Unit Test")]
+        public void GetIdentifier_ShouldCreateQualifiedNameSyntax()
         {
             // Arrange
             const string QualifiedName = "This.Is.A.Test";
@@ -25,8 +22,8 @@ namespace RosMockLyn.Core.Tests
             qualifiedNameSyntax.ToString().Should().Be(QualifiedName);
         }
 
-        [TestMethod]
-        public void ShouldCreateIdentifierNameSyntax()
+        [Test, Category("Unit Test")]
+        public void GetIdentifier_ShouldCreateIdentifierNameSyntax()
         {
             // Arrange
             const string IdentifierName = "Test";
@@ -37,6 +34,19 @@ namespace RosMockLyn.Core.Tests
             // Assert
             qualifiedNameSyntax.Should().BeOfType<IdentifierNameSyntax>();
             qualifiedNameSyntax.ToString().Should().Be(IdentifierName);
+        }
+
+        [Test, Category("Unit Test")]
+        public void AppendIdentifier_ShouldJoinPartsByDot()
+        {
+            // Arrange
+            string expected = "This.Is.A.Test";
+
+            // Act
+            string actual = IdentifierHelper.AppendIdentifier("This", "Is", "A", "Test");
+
+            // Assert
+            actual.Should().Be(expected);
         }
     }
 }

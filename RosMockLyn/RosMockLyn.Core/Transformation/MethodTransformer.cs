@@ -49,7 +49,7 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
-            var interfaceIdentifier = NameHelper.GetInterfaceIdentifier(node);
+            var interfaceIdentifier = NameHelper.GetBaseInterfaceIdentifier(node);
 
             var methodDeclaration = (MethodDeclarationSyntax)node;
 

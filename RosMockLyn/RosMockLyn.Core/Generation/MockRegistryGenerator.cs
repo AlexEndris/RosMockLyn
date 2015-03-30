@@ -106,7 +106,7 @@ namespace RosMockLyn.Core.Generation
             string mockName = IdentifierHelper.AppendIdentifier(
                 fullyQualifiedNamespace,
                 MockNamespace,
-                NameHelper.GetImplementationName(tree.GetRoot()));
+                NameHelper.GetMockImplementationName(tree.GetRoot()));
 
             return Tuple.Create(interfaceName, mockName);
         }

@@ -54,7 +54,7 @@ namespace RosMockLyn.Core.Transformation
             var interfaceIdentifier = SyntaxFactory.IdentifierName(interfaceDeclaration.Identifier.ValueText);
 
             var implementationName =
-                NameHelper.GetImplementationName(interfaceDeclaration);
+                NameHelper.GetMockImplementationName(interfaceDeclaration);
 
             return SyntaxFactory.ClassDeclaration(
                 SyntaxFactory.Identifier(implementationName))
