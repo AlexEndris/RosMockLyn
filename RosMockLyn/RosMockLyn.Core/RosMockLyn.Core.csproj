@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generation\MockRegistryGenerator.cs" />
-    <Compile Include="Generation\InterfaceMockGenerator.cs" />
+    <Compile Include="Generation\MockGenerator.cs" />
     <Compile Include="Helpers\IdentifierHelper.cs" />
     <Compile Include="OutputWalker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

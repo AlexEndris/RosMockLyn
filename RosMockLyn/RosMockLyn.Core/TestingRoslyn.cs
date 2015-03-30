@@ -52,7 +52,7 @@ namespace RosMockLyn.Core
 
             var syntaxTrees = compilation.SyntaxTrees.Where(HasInterface);
 
-            InterfaceMockGenerator mockingWalker = new InterfaceMockGenerator(GenerateTransformers());
+            MockGenerator mockingWalker = new MockGenerator(GenerateTransformers());
             var outputWalker = new OutputWalker();
 
             var syntax = syntaxTrees.Select(x => mockingWalker.GenerateMock(x)).ToList();

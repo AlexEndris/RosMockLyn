@@ -33,11 +33,11 @@ using RosMockLyn.Core.Transformation;
 
 namespace RosMockLyn.Core.Generation
 {
-    internal class InterfaceMockGenerator : CSharpSyntaxRewriter
+    internal class MockGenerator : CSharpSyntaxRewriter
     {
         private readonly IEnumerable<ICodeTransformer> _transformers;
 
-        public InterfaceMockGenerator(IEnumerable<ICodeTransformer> transformers) : base(false)
+        public MockGenerator(IEnumerable<ICodeTransformer> transformers) : base(false)
         {
             _transformers = transformers;
         }
