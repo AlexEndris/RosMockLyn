@@ -32,6 +32,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
 
+using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Interfaces;
 using RosMockLyn.Core.Transformation;
 

@@ -30,9 +30,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Helpers;
-using RosMockLyn.Core.Transformation;
 
-namespace RosMockLyn.Core
+namespace RosMockLyn.Core.Generation
 {
     public class MockRegistryGenerator
     {
@@ -54,48 +53,43 @@ namespace RosMockLyn.Core
 
         private const string Register = "Register";
 
+        private static readonly SyntaxTokenList PublicModifier = SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
+
         public SyntaxTree GenerateRegistry(IEnumerable<SyntaxTree> interfaces)
         {
-            var generateRegisterStatements = GenerateRegisterStatements(interfaces).ToList();
+            var methodDeclaration = CreateMethodDeclaration(interfaces);
+            var classDeclaration = CreateClassDeclaration(methodDeclaration);
 
-            var publicModifier = SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
+            return CreateSyntaxTree(classDeclaration);
+        }
 
-            var registryType = IdentifierHelper.AppendIdentifier(RegistryInterfaceNamespace, RegistryType);
-
-            var baseTypeList = SyntaxFactory.BaseList(
-                                SyntaxFactory.SeparatedList(new BaseTypeSyntax[]
-                            {
-                                SyntaxFactory.SimpleBaseType(IdentifierHelper.GetIdentifier(registryType))
-                            }));
-
+        private MethodDeclarationSyntax CreateMethodDeclaration(IEnumerable<SyntaxTree> interfaces)
+        {
             var returnType = SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword));
+            var parameters = CreateParameters();
+            var methodBlock = CreateMethodBlock(interfaces);
 
+            return SyntaxFactory.MethodDeclaration(returnType, Register)
+                    .WithModifiers(PublicModifier)
+                    .WithParameterList(parameters)
+                    .WithBody(methodBlock);
+        }
+
+        private static ParameterListSyntax CreateParameters()
+        {
             var injectorType = IdentifierHelper.AppendIdentifier(RegistryInterfaceNamespace, InjectorType);
-
             var parameter = SyntaxFactory.Parameter(SyntaxFactory.Identifier(InjectorName))
-                .WithType(IdentifierHelper.GetIdentifier(injectorType));
+                                         .WithType(IdentifierHelper.GetIdentifier(injectorType));
+            
+            return SyntaxFactory.ParameterList(SyntaxFactory.SingletonSeparatedList(parameter));
+        }
 
-            var parameters = SyntaxFactory.ParameterList(SyntaxFactory.SingletonSeparatedList(parameter));
-
+        private BlockSyntax CreateMethodBlock(IEnumerable<SyntaxTree> interfaces)
+        {
+            var generateRegisterStatements = GenerateRegisterStatements(interfaces).ToList();
             var methodBlock = SyntaxFactory.Block(SyntaxFactory.List(generateRegisterStatements));
 
-            var methodDeclaration = SyntaxFactory.MethodDeclaration(returnType, Register)
-                .WithModifiers(publicModifier)
-                .WithParameterList(parameters)
-                .WithBody(methodBlock);
-            
-            var classDeclaration = SyntaxFactory.ClassDeclaration(RegistryName)
-                .WithModifiers(publicModifier)
-                .WithBaseList(baseTypeList)
-                .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(methodDeclaration));
-
-            var namespaceDeclaration = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName(NamespaceName))
-                .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(classDeclaration));
-
-            var compilationUnit = SyntaxFactory.CompilationUnit()
-                .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(namespaceDeclaration));
-
-            return compilationUnit.SyntaxTree;
+            return methodBlock;
         }
 
         private IEnumerable<StatementSyntax> GenerateRegisterStatements(IEnumerable<SyntaxTree> interfaces)
@@ -110,28 +104,70 @@ namespace RosMockLyn.Core
             string fullyQualifiedNamespace = NameHelper.GetFullyQualifiedNamespace(tree.GetRoot());
             string interfaceName = IdentifierHelper.AppendIdentifier(fullyQualifiedNamespace, NameHelper.GetInterfaceName(tree.GetRoot()));
             string mockName = IdentifierHelper.AppendIdentifier(
-                                                    fullyQualifiedNamespace,
-                                                    MockNamespace,
-                                                    NameHelper.GetImplementationName(tree.GetRoot()));
+                fullyQualifiedNamespace,
+                MockNamespace,
+                NameHelper.GetImplementationName(tree.GetRoot()));
 
             return Tuple.Create(interfaceName, mockName);
         }
 
         private StatementSyntax GenerateStatement(string interfaceName, string mockName)
         {
+            var typeArguments = CreateTypeArguments(interfaceName, mockName);
+            var invocation = SyntaxFactory.InvocationExpression(CreateMemberAccessExpression(typeArguments));
+
+            return SyntaxFactory.ExpressionStatement(invocation);
+        }
+
+        private static TypeArgumentListSyntax CreateTypeArguments(string interfaceName, string mockName)
+        {
             TypeSyntax interfaceNameSyntax = IdentifierHelper.GetIdentifier(interfaceName);
             TypeSyntax mockNameSyntax = IdentifierHelper.GetIdentifier(mockName);
 
-            var typeArguments = SyntaxFactory.TypeArgumentList(SyntaxFactory.SeparatedList(new[] { interfaceNameSyntax, mockNameSyntax }));
+            return SyntaxFactory.TypeArgumentList(SyntaxFactory.SeparatedList(new[] { interfaceNameSyntax, mockNameSyntax }));
+        }
 
-            var invocation = SyntaxFactory.InvocationExpression(
-                                SyntaxFactory.MemberAccessExpression(
-                                    SyntaxKind.SimpleMemberAccessExpression,
-                                    SyntaxFactory.IdentifierName(InjectorName),
-                                    SyntaxFactory.GenericName(RegisterType)
-                                        .WithTypeArgumentList(typeArguments)));
+        private static MemberAccessExpressionSyntax CreateMemberAccessExpression(TypeArgumentListSyntax typeArguments)
+        {
+            return SyntaxFactory.MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxFactory.IdentifierName(InjectorName),
+                SyntaxFactory.GenericName(RegisterType)
+                    .WithTypeArgumentList(typeArguments));
+        }
 
-            return SyntaxFactory.ExpressionStatement(invocation);
+        private static ClassDeclarationSyntax CreateClassDeclaration(MemberDeclarationSyntax methodDeclaration)
+        {
+            var baseTypeList = CreateBaseTypes();
+            var classDeclaration =
+                SyntaxFactory.ClassDeclaration(RegistryName)
+                    .WithModifiers(PublicModifier)
+                    .WithBaseList(baseTypeList)
+                    .WithMembers(SyntaxFactory.SingletonList(methodDeclaration));
+
+            return classDeclaration;
+        }
+
+        private static BaseListSyntax CreateBaseTypes()
+        {
+            var registryType = IdentifierHelper.AppendIdentifier(RegistryInterfaceNamespace, RegistryType);
+
+            return SyntaxFactory.BaseList(
+                    SyntaxFactory.SeparatedList(
+                        new BaseTypeSyntax[] { SyntaxFactory.SimpleBaseType(IdentifierHelper.GetIdentifier(registryType)) }));
+        }
+
+        private static SyntaxTree CreateSyntaxTree(ClassDeclarationSyntax classDeclaration)
+        {
+            var namespaceDeclaration =
+                SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName(NamespaceName))
+                    .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(classDeclaration));
+
+            var compilationUnit =
+                SyntaxFactory.CompilationUnit()
+                    .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(namespaceDeclaration));
+
+            return compilationUnit.SyntaxTree;
         }
     }
 }

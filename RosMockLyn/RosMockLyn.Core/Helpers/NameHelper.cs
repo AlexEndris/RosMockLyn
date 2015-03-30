@@ -45,7 +45,7 @@ namespace RosMockLyn.Core.Helpers
         {
             var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf().First(x => x is InterfaceDeclarationSyntax);
 
-            var interfaceName =  typeDeclarationSyntax.Identifier.ToString();
+            var interfaceName = typeDeclarationSyntax.Identifier.ToString();
 
             return interfaceName.Substring(1) + suffix;
         }

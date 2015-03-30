@@ -31,7 +31,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using RosMockLyn.Core.Interfaces;
 using RosMockLyn.Core.Transformation;
 
-namespace RosMockLyn.Core
+namespace RosMockLyn.Core.Generation
 {
     internal class InterfaceMockGenerator : CSharpSyntaxRewriter
     {
