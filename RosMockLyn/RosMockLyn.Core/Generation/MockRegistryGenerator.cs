@@ -29,6 +29,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Transformation;
 
 namespace RosMockLyn.Core
@@ -55,21 +56,24 @@ namespace RosMockLyn.Core
 
         public SyntaxTree GenerateRegistry(IEnumerable<SyntaxTree> interfaces)
         {
-            var usingDirectiveSyntaxes = GenerateUsings(interfaces);
             var generateRegisterStatements = GenerateRegisterStatements(interfaces).ToList();
 
             var publicModifier = SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
 
+            var registryType = IdentifierHelper.AppendIdentifier(RegistryInterfaceNamespace, RegistryType);
+
             var baseTypeList = SyntaxFactory.BaseList(
                                 SyntaxFactory.SeparatedList(new BaseTypeSyntax[]
                             {
-                                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(RegistryType))
+                                SyntaxFactory.SimpleBaseType(IdentifierHelper.GetIdentifier(registryType))
                             }));
 
             var returnType = SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword));
 
+            var injectorType = IdentifierHelper.AppendIdentifier(RegistryInterfaceNamespace, InjectorType);
+
             var parameter = SyntaxFactory.Parameter(SyntaxFactory.Identifier(InjectorName))
-                .WithType(SyntaxFactory.IdentifierName(InjectorType));
+                .WithType(IdentifierHelper.GetIdentifier(injectorType));
 
             var parameters = SyntaxFactory.ParameterList(SyntaxFactory.SingletonSeparatedList(parameter));
 
@@ -89,75 +93,34 @@ namespace RosMockLyn.Core
                 .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(classDeclaration));
 
             var compilationUnit = SyntaxFactory.CompilationUnit()
-                .WithUsings(usingDirectiveSyntaxes)
                 .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(namespaceDeclaration));
 
             return compilationUnit.SyntaxTree;
         }
 
-        private SyntaxList<UsingDirectiveSyntax> GenerateUsings(IEnumerable<SyntaxTree> interfaces)
-        {
-            List<UsingDirectiveSyntax> usings = new List<UsingDirectiveSyntax>();
-
-            foreach (var tree in interfaces)
-            {
-                var namespaceDeclaration = (from node in tree.GetRoot().DescendantNodes().OfType<NamespaceDeclarationSyntax>()
-                                      select node).First();
-
-                var usingDirective = CreateUsingDirective(namespaceDeclaration.Name);
-                var mockUsingDirective =
-                    CreateUsingDirective(
-                        SyntaxFactory.QualifiedName(
-                            namespaceDeclaration.Name,
-                            SyntaxFactory.IdentifierName(MockNamespace)));
-                
-                string name = usingDirective.Name.ToString();
-
-                if (usings.Select(x => x.Name.ToString()).All(x => x != name))
-                {
-                    usings.Add(usingDirective);
-                    usings.Add(mockUsingDirective);
-                }
-            }
-            usings.Add(SyntaxFactory.UsingDirective(CreateMockingUsing()));
-
-            return SyntaxFactory.List(usings);
-        }
-
-        private static QualifiedNameSyntax CreateMockingUsing()
-        {
-            var namespaceParts = RegistryInterfaceNamespace.Split('.');
-            return SyntaxFactory.QualifiedName(
-                        SyntaxFactory.QualifiedName(
-                            SyntaxFactory.IdentifierName(namespaceParts[0]),
-                            SyntaxFactory.IdentifierName(namespaceParts[1])),
-                        SyntaxFactory.IdentifierName(namespaceParts[2]));
-        }
-
         private IEnumerable<StatementSyntax> GenerateRegisterStatements(IEnumerable<SyntaxTree> interfaces)
         {
-            var dictionary = interfaces.Select(CreateNameMapping).ToDictionary(x => x.Item1, x => x.Item2);
+            var tuples = interfaces.Select(CreateNameMapping);
 
-            return dictionary.Select(x => GenerateStatement(x.Key, x.Value));
-        }
-
-        private UsingDirectiveSyntax CreateUsingDirective(NameSyntax name)
-        {
-            return SyntaxFactory.UsingDirective(name);
+            return tuples.Select(x => GenerateStatement(x.Item1, x.Item2));
         }
 
         private Tuple<string, string> CreateNameMapping(SyntaxTree tree)
         {
-            string interfaceName = NameHelper.GetInterfaceName(tree.GetRoot());
-            string mockName = NameHelper.GetImplementationName(interfaceName);
+            string fullyQualifiedNamespace = NameHelper.GetFullyQualifiedNamespace(tree.GetRoot());
+            string interfaceName = IdentifierHelper.AppendIdentifier(fullyQualifiedNamespace, NameHelper.GetInterfaceName(tree.GetRoot()));
+            string mockName = IdentifierHelper.AppendIdentifier(
+                                                    fullyQualifiedNamespace,
+                                                    MockNamespace,
+                                                    NameHelper.GetImplementationName(tree.GetRoot()));
 
             return Tuple.Create(interfaceName, mockName);
         }
 
         private StatementSyntax GenerateStatement(string interfaceName, string mockName)
         {
-            TypeSyntax interfaceNameSyntax = SyntaxFactory.IdentifierName(interfaceName);
-            TypeSyntax mockNameSyntax = SyntaxFactory.IdentifierName(mockName);
+            TypeSyntax interfaceNameSyntax = IdentifierHelper.GetIdentifier(interfaceName);
+            TypeSyntax mockNameSyntax = IdentifierHelper.GetIdentifier(mockName);
 
             var typeArguments = SyntaxFactory.TypeArgumentList(SyntaxFactory.SeparatedList(new[] { interfaceNameSyntax, mockNameSyntax }));
 

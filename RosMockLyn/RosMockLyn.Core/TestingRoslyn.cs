@@ -67,18 +67,13 @@ namespace RosMockLyn.Core
             Console.WriteLine();
             Console.WriteLine();
 
-            StringBuilder builder = new StringBuilder();
-            var split = syntax.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            PrintSyntaxTrees(syntax);
 
-            int lineNr = 0;
-            foreach (var line in split)
-            {
-                builder.AppendFormat("{0}: ", ++lineNr);
-                builder.AppendLine(line);
-            }
-                             
-            Console.WriteLine(builder.ToString());
-
+            Console.WriteLine();
+            Console.WriteLine("-----------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine();
+            
             List<MetadataReference> refs = new List<MetadataReference>();
 
             var testProject = MetadataReference.CreateFromFile(@"E:\Important\Eigene Dateien\Visual Studio 2013\Projects\RosMockLyn\TestProjectPort\bin\Debug\TestProjectPort.dll");
@@ -95,15 +90,40 @@ namespace RosMockLyn.Core
 
             var generator = new MockRegistryGenerator();
 
-            var generatesRegistry = generator.GenerateRegistry(syntaxTrees);
+            var generatedRegistry = generator.GenerateRegistry(syntaxTrees);
+
+            PrintSyntaxTree(generatedRegistry.GetRoot().NormalizeWhitespace().SyntaxTree);
 
             CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
-            syntax.Add(generatesRegistry);
+            syntax.Add(generatedRegistry);
 
             var csCompilation = CSharpCompilation.Create("TestAssembly", syntax, refs, options);
 
             var emitResult = FileSystemExtensions.Emit(csCompilation, @"D:\TestAssembly.dll");
+        }
+
+        private static void PrintSyntaxTrees(List<SyntaxTree> syntax)
+        {
+            foreach (var tree in syntax)
+            {
+                PrintSyntaxTree(tree);
+            }
+        }
+
+        private static void PrintSyntaxTree(SyntaxTree tree)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            var split = tree.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            int lineNr = 0;
+            foreach (var line in split)
+            {
+                builder.AppendFormat("{0}: ", ++lineNr);
+                builder.AppendLine(line);
+            }
+
+            Console.WriteLine(builder.ToString());
         }
 
         private IEnumerable<ICodeTransformer> GenerateTransformers()

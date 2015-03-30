@@ -28,6 +28,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation

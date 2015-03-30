@@ -105,12 +105,13 @@
   <ItemGroup>
     <Compile Include="Generation\MockRegistryGenerator.cs" />
     <Compile Include="Generation\InterfaceMockGenerator.cs" />
+    <Compile Include="Helpers\IdentifierHelper.cs" />
     <Compile Include="OutputWalker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestingRoslyn.cs" />
     <Compile Include="Interfaces\ICodeTransformer.cs" />
     <Compile Include="Transformation\IndexerTransformer.cs" />
-    <Compile Include="Transformation\NameHelper.cs" />
+    <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Transformation\InterfaceTransformer.cs" />
     <Compile Include="Transformation\MethodTransformer.cs" />
     <Compile Include="Transformation\NamespaceTransformer.cs" />

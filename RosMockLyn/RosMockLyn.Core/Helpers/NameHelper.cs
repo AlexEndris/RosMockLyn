@@ -24,9 +24,10 @@
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace RosMockLyn.Core.Transformation
+namespace RosMockLyn.Core.Helpers
 {
     public static class NameHelper
     {
@@ -40,16 +41,38 @@ namespace RosMockLyn.Core.Transformation
             return identifierNameSyntax;
         }
 
-        public static string GetImplementationName(string interfaceName, string suffix = "Mock")
+        public static string GetImplementationName(SyntaxNode node, string suffix = "Mock")
         {
+            var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf().First(x => x is InterfaceDeclarationSyntax);
+
+            var interfaceName =  typeDeclarationSyntax.Identifier.ToString();
+
             return interfaceName.Substring(1) + suffix;
         }
 
         public static string GetInterfaceName(SyntaxNode node)
         {
-            var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf().FirstOrDefault(x => x is InterfaceDeclarationSyntax);
+            var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf().First(x => x is InterfaceDeclarationSyntax);
 
             return typeDeclarationSyntax.Identifier.ToString();
+        }
+
+        public static string GetFullyQualifiedInterfaceName(SyntaxNode node)
+        {
+            var namespaceDeclaration = node.DescendantNodesAndSelf().OfType<NamespaceDeclarationSyntax>().First();
+            var typeDeclaration = (TypeDeclarationSyntax)node.DescendantNodesAndSelf().First(x => x is InterfaceDeclarationSyntax);
+
+            return
+                SyntaxFactory.QualifiedName(
+                    namespaceDeclaration.Name,
+                    SyntaxFactory.IdentifierName(typeDeclaration.Identifier)).ToString();
+        }
+
+        public static string GetFullyQualifiedNamespace(SyntaxNode node)
+        {
+            var namespaceDeclaration = node.DescendantNodesAndSelf().OfType<NamespaceDeclarationSyntax>().First();
+
+            return namespaceDeclaration.Name.ToString();
         }
     }
 }

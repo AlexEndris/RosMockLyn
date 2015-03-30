@@ -21,48 +21,39 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Linq;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using RosMockLyn.Core.Helpers;
-using RosMockLyn.Core.Interfaces;
-
-namespace RosMockLyn.Core.Transformation
+namespace RosMockLyn.Core.Helpers
 {
-    internal sealed class InterfaceTransformer : ICodeTransformer
+    public static class IdentifierHelper
     {
-        private const string DerivesFrom = "MockBase";
-
-        public TransformerType Type
+        public static NameSyntax GetIdentifier(string fullyQualifiedName)
         {
-            get
-            {
-                return TransformerType.Interface;
-            }
+            if (string.IsNullOrWhiteSpace(fullyQualifiedName))
+                throw new ArgumentNullException("fullyQualifiedName");
+
+            var identifiers = fullyQualifiedName.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                                                .Select(SyntaxFactory.IdentifierName);
+
+            if (identifiers.Count() == 1)
+                return identifiers.First();
+
+            var seed = identifiers.First();
+            identifiers = identifiers.Skip(1);
+
+            return identifiers.Aggregate<IdentifierNameSyntax, NameSyntax, QualifiedNameSyntax>(
+                seed,
+                SyntaxFactory.QualifiedName,
+                syntax => (QualifiedNameSyntax)syntax);
         }
 
-        public SyntaxNode Transform(SyntaxNode node)
+        public static string AppendIdentifier(params string[] parts)
         {
-            return MockInterface((InterfaceDeclarationSyntax)node);
-        }
-
-        private ClassDeclarationSyntax MockInterface(InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            var interfaceIdentifier = SyntaxFactory.IdentifierName(interfaceDeclaration.Identifier.ValueText);
-
-            var implementationName =
-                NameHelper.GetImplementationName(interfaceDeclaration);
-
-            return SyntaxFactory.ClassDeclaration(
-                SyntaxFactory.Identifier(implementationName))
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                .AddBaseListTypes(
-                    SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(DerivesFrom)), // MockBase, base type
-                    SyntaxFactory.SimpleBaseType(interfaceIdentifier)) // Interface that is being implemented
-                .AddMembers(interfaceDeclaration.Members.ToArray());
+            return string.Join(".", parts);
         }
     }
 }
