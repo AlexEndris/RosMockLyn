@@ -38,7 +38,6 @@ namespace RosMockLyn.Core.Tests
     [TestFixture]
     public class NameHelperTests
     {
-
         #region GetBaseInterfaceIdentifier
 
         [Test, Category("Unit Test")]
@@ -94,20 +93,19 @@ namespace RosMockLyn.Core.Tests
         public void GetBaseInterfaceIdentifier_ShouldThrowException_WhenMultipleClasses()
         {
             // Arrange
-
             var firstType = SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName("SomeBase"));
             var secondType = SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName("SomeOtherBase"));
 
-            var firstClass =SyntaxFactory.ClassDeclaration("MyClass")
+            var firstClass = SyntaxFactory.ClassDeclaration("MyClass")
                     .WithBaseList(SyntaxFactory.BaseList(
                             SyntaxFactory.SeparatedList<BaseTypeSyntax>(new[] { firstType, secondType })));
 
-            var secondClass =SyntaxFactory.ClassDeclaration("MyClass")
+            var secondClass = SyntaxFactory.ClassDeclaration("MyClass")
                     .WithBaseList(SyntaxFactory.BaseList(
                             SyntaxFactory.SeparatedList<BaseTypeSyntax>(new[] { firstType, secondType })));
 
             var namespaceDeclaration = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName("Namespace"))
-                .WithMembers(SyntaxFactory.List<MemberDeclarationSyntax>(new [] {firstClass, secondClass}));
+                .WithMembers(SyntaxFactory.List<MemberDeclarationSyntax>(new[] {firstClass, secondClass}));
             
             // Act
             Action actual = () => NameHelper.GetBaseInterfaceIdentifier(namespaceDeclaration);
