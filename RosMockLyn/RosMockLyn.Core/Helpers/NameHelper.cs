@@ -78,7 +78,8 @@ namespace RosMockLyn.Core.Helpers
             if (node == null)
                 throw new ArgumentNullException("node");
             
-            var namespaceDeclaration = node.DescendantNodesAndSelf()
+            var namespaceDeclaration = node.SyntaxTree.GetRoot()
+                                        .DescendantNodesAndSelf()
                                         .OfType<NamespaceDeclarationSyntax>()
                                         .Single();
 

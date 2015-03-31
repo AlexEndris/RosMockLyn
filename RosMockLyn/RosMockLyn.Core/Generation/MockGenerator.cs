@@ -29,7 +29,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Interfaces;
-using RosMockLyn.Core.Transformation;
 
 namespace RosMockLyn.Core.Generation
 {

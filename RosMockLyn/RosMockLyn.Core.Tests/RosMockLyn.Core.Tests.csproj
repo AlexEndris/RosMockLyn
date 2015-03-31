@@ -84,6 +84,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Generation\MockRegistryGeneratorTests.cs" />
     <Compile Include="Helpers\IdentifierHelperTests.cs" />
     <Compile Include="Helpers\NameHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,7 +100,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Generation\" />
     <Folder Include="Transformation\" />
   </ItemGroup>
   <Choose>

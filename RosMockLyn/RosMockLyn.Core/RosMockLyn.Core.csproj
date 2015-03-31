@@ -117,7 +117,7 @@
     <Compile Include="Transformation\MethodTransformer.cs" />
     <Compile Include="Transformation\NamespaceTransformer.cs" />
     <Compile Include="Transformation\PropertyTransformer.cs" />
-    <Compile Include="Transformation\TransformerType.cs" />
+    <Compile Include="Interfaces\TransformerType.cs" />
     <Compile Include="Transformation\UsingsTransformer.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,4 +1,4 @@
-﻿namespace RosMockLyn.Core.Transformation
+﻿namespace RosMockLyn.Core.Interfaces
 {
     public enum TransformerType
     {
