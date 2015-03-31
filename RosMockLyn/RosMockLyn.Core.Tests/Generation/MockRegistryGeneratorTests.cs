@@ -57,7 +57,7 @@ namespace RosMockLyn.Core.Tests.Generation
             SyntaxTree syntaxTree = GenerateSyntaxTree(interfaceName, namespaceName);
 
             // Act
-            var result = _generator.GenerateRegistry(new [] {syntaxTree});
+            var result = _generator.GenerateRegistry(new[] {syntaxTree});
 
             // Assert
             var typeArgumentLists = result.GetRoot().DescendantNodesAndSelf().OfType<TypeArgumentListSyntax>();
@@ -79,7 +79,7 @@ namespace RosMockLyn.Core.Tests.Generation
             SyntaxTree syntaxTree = GenerateSyntaxTree(interfaceName, namespaceName);
 
             // Act
-            var result = _generator.GenerateRegistry(new [] {syntaxTree});
+            var result = _generator.GenerateRegistry(new[] {syntaxTree});
 
             // Assert
             var typeArgumentLists = result.GetRoot().DescendantNodesAndSelf().OfType<TypeArgumentListSyntax>();
@@ -101,7 +101,7 @@ namespace RosMockLyn.Core.Tests.Generation
             SyntaxTree syntaxTree = GenerateSyntaxTree(interfaceName, namespaceName);
 
             // Act
-            var result = _generator.GenerateRegistry(new [] {syntaxTree});
+            var result = _generator.GenerateRegistry(new[] {syntaxTree});
 
             // Assert
             var typeArgumentLists = result.GetRoot().DescendantNodesAndSelf().OfType<ClassDeclarationSyntax>();
@@ -116,7 +116,6 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             var classDeclaration = SyntaxFactory.InterfaceDeclaration(interfaceName);
             
-
             var namespaceDeclaration = SyntaxFactory.NamespaceDeclaration(IdentifierHelper.GetIdentifier(namespaceName))
                 .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(classDeclaration));
 
