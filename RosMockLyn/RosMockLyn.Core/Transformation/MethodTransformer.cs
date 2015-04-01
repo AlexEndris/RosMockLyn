@@ -64,14 +64,19 @@ namespace RosMockLyn.Core.Transformation
         {
             var returnType = node.ReturnType;
 
-            var predefinedType = returnType as PredefinedTypeSyntax;
-
-            if (predefinedType != null && predefinedType.Keyword.IsKind(SyntaxKind.VoidKeyword))
+            if (IsReturnTypeVoid(returnType))
             {
                 return SyntaxFactory.Block(GenerateVoidMethodBody(node));
             }
 
             return SyntaxFactory.Block(GenerateReturnMethodBody(node, returnType));
+        }
+
+        private static bool IsReturnTypeVoid(TypeSyntax returnType)
+        {
+            var predefinedType = returnType as PredefinedTypeSyntax;
+
+            return predefinedType != null && predefinedType.Keyword.IsKind(SyntaxKind.VoidKeyword);
         }
 
         private StatementSyntax GenerateReturnMethodBody(MethodDeclarationSyntax node, TypeSyntax returnType)
@@ -106,13 +111,7 @@ namespace RosMockLyn.Core.Transformation
         {
             var typeList = SyntaxFactory.SeparatedList(new[] { returnType });
 
-            var substitution =
-                SyntaxFactory.InvocationExpression(
-                                        SyntaxFactory.MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        SyntaxFactory.IdentifierName(SubstitutionContext),
-                        SyntaxFactory.GenericName(Method)
-                        .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))));
+            var substitution = CreateInvocationExpression(typeList);
 
             substitution = AddMethodArguments(node, substitution);
 
@@ -138,6 +137,17 @@ namespace RosMockLyn.Core.Transformation
                 substitution = substitution.WithArgumentList(SyntaxFactory.ArgumentList(argumentList));
             }
 
+            return substitution;
+        }
+
+        private static InvocationExpressionSyntax CreateInvocationExpression(SeparatedSyntaxList<TypeSyntax> typeList)
+        {
+            var substitution =
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),
+                        SyntaxFactory.GenericName(Method).WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))));
             return substitution;
         }
 

@@ -52,13 +52,9 @@ namespace RosMockLyn.Core.Helpers
             if (string.IsNullOrWhiteSpace(suffix))
                 throw new ArgumentNullException("suffix");
 
-            var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf()
-                                        .OfType<InterfaceDeclarationSyntax>()
-                                        .Single();
+            var typeDeclarationSyntax = GetTypeDeclaration(node);
 
-            var interfaceName = typeDeclarationSyntax.Identifier.ToString();
-
-            return interfaceName.Substring(1) + suffix;
+            return GenerateMockName(suffix, typeDeclarationSyntax);
         }
 
         public static string GetInterfaceName(SyntaxNode node)
@@ -84,6 +80,20 @@ namespace RosMockLyn.Core.Helpers
                                         .Single();
 
             return namespaceDeclaration.Name.ToString();
+        }
+
+        private static string GenerateMockName(string suffix, TypeDeclarationSyntax typeDeclarationSyntax)
+        {
+            var interfaceName = typeDeclarationSyntax.Identifier.ToString();
+
+            return interfaceName.Substring(1) + suffix;
+        }
+
+        private static TypeDeclarationSyntax GetTypeDeclaration(SyntaxNode node)
+        {
+            var typeDeclarationSyntax =
+                (TypeDeclarationSyntax)node.DescendantNodesAndSelf().OfType<InterfaceDeclarationSyntax>().Single();
+            return typeDeclarationSyntax;
         }
     }
 }

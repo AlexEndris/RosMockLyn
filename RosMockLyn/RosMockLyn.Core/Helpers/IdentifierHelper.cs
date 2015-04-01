@@ -22,6 +22,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.CodeAnalysis.CSharp;
@@ -36,24 +37,34 @@ namespace RosMockLyn.Core.Helpers
             if (string.IsNullOrWhiteSpace(fullyQualifiedName))
                 throw new ArgumentNullException("fullyQualifiedName");
 
-            var identifiers = fullyQualifiedName.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)
-                                                .Select(SyntaxFactory.IdentifierName);
+            var identifiers = CreateIdentifiers(fullyQualifiedName);
 
-            if (identifiers.Count() == 1)
-                return identifiers.First();
-
-            var seed = identifiers.First();
-            identifiers = identifiers.Skip(1);
-
-            return identifiers.Aggregate<IdentifierNameSyntax, NameSyntax, QualifiedNameSyntax>(
-                seed,
-                SyntaxFactory.QualifiedName,
-                syntax => (QualifiedNameSyntax)syntax);
+            return identifiers.Count() == 1 
+                ? identifiers.First() 
+                : AggregateIdentifiers(identifiers);
         }
 
         public static string AppendIdentifier(params string[] parts)
         {
             return string.Join(".", parts);
+        }
+
+        private static IEnumerable<IdentifierNameSyntax> CreateIdentifiers(string fullyQualifiedName)
+        {
+            var identifiers =
+                fullyQualifiedName.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(SyntaxFactory.IdentifierName);
+            return identifiers;
+        }
+
+        private static NameSyntax AggregateIdentifiers(IEnumerable<IdentifierNameSyntax> identifiers)
+        {
+            var seed = identifiers.First();
+
+            return identifiers.Skip(1).Aggregate<IdentifierNameSyntax, NameSyntax, QualifiedNameSyntax>(
+                seed,
+                SyntaxFactory.QualifiedName,
+                syntax => (QualifiedNameSyntax)syntax);
         }
     }
 }
