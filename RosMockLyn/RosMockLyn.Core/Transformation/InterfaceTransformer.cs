@@ -21,6 +21,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
@@ -46,7 +47,15 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
-            return MockInterface((InterfaceDeclarationSyntax)node);
+            if (node == null)
+                throw new ArgumentNullException("node");
+
+            var interfaceDeclaration = node as InterfaceDeclarationSyntax;
+
+            if (interfaceDeclaration == null)
+                throw new InvalidOperationException("Provided node múst be an InterfaceDeclaration.");
+
+            return MockInterface(interfaceDeclaration);
         }
 
         private ClassDeclarationSyntax MockInterface(InterfaceDeclarationSyntax interfaceDeclaration)

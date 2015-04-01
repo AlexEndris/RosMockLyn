@@ -21,6 +21,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -43,7 +45,14 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
-            var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
+            if (node == null)
+                throw new ArgumentNullException("node");
+
+            var namespaceDeclaration = node as NamespaceDeclarationSyntax;
+
+            if (namespaceDeclaration == null)
+                throw new InvalidOperationException("Provided node must be a NamespaceDeclaration.");
+
             var namespaceName = SyntaxFactory.QualifiedName(namespaceDeclaration.Name, SyntaxFactory.IdentifierName(Namespace));
 
             return namespaceDeclaration.WithName(namespaceName);

@@ -21,20 +21,21 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation
 {
     internal sealed class UsingsTransformer : ICodeTransformer
     {
-        private const string AdditionalUsingPart1 = "RosMockLyn";
-        private const string AdditionalUsingPart2 = "Mocking";
+        private const string AdditionalUsing = "RosMockLyn.Mocking";
 
         public TransformerType Type
         {
@@ -46,7 +47,13 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
+            if (node == null)
+                throw new ArgumentNullException("node");
+
             var compilationUnit = node as CompilationUnitSyntax;
+
+            if (compilationUnit == null)
+                throw new InvalidOperationException("Provided node must be a CompilationUnit.");
 
             var usings = GenerateAdditionalUsings(compilationUnit);
             compilationUnit = compilationUnit.AddUsings(usings);
@@ -59,14 +66,12 @@ namespace RosMockLyn.Core.Transformation
             var namespaceDeclaration = node.DescendantNodes().OfType<NamespaceDeclarationSyntax>().Single();
 
             var additionalUsing =
-                SyntaxFactory.UsingDirective(
-                    SyntaxFactory.QualifiedName(
-                        SyntaxFactory.IdentifierName(AdditionalUsingPart1),
-                        SyntaxFactory.IdentifierName(AdditionalUsingPart2)));
-            var blah =
+                SyntaxFactory.UsingDirective(IdentifierHelper.GetIdentifier(AdditionalUsing));
+
+            var originalUsing =
                 SyntaxFactory.UsingDirective(namespaceDeclaration.Name);
 
-            return new[] { additionalUsing, blah };
+            return new[] { additionalUsing, originalUsing };
         }
     }
 }
