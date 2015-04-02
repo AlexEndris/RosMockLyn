@@ -21,6 +21,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,9 +50,15 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
-            var interfaceIdentifier = NameHelper.GetBaseInterfaceIdentifier(node);
+            if (node == null)
+                throw new ArgumentNullException("node");
 
-            var methodDeclaration = (MethodDeclarationSyntax)node;
+            var methodDeclaration = node as MethodDeclarationSyntax;
+
+            if (methodDeclaration == null)
+                throw new InvalidOperationException("Provided node must be a MethodDeclaration.");
+
+            var interfaceIdentifier = NameHelper.GetBaseInterfaceIdentifier(node);
 
             var newMethodSyntax = methodDeclaration.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(interfaceIdentifier))
                                .WithBody(GenerateMethodBody(methodDeclaration))
