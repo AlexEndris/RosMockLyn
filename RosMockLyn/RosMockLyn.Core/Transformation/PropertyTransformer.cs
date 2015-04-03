@@ -21,6 +21,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
+using System.ComponentModel;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -30,7 +33,7 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation
 {
-    public class PropertyTransformer : CSharpSyntaxRewriter, ICodeTransformer
+    internal sealed class PropertyTransformer : CSharpSyntaxRewriter, ICodeTransformer
     {
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Property = "Property";
@@ -45,8 +48,15 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
+            if (node == null)
+                throw new ArgumentNullException("node");
+
+            var propertyDeclaration = node as PropertyDeclarationSyntax;
+
+            if (propertyDeclaration == null)
+                throw new InvalidOperationException("Provided node must be a PropertyDeclaration.");
+
             var interfaceIdentifier = NameHelper.GetBaseInterfaceIdentifier(node);
-            var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
             var newPropertyToken = propertyDeclaration.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(interfaceIdentifier))
                                         .WithIdentifier(SyntaxFactory.Identifier(propertyDeclaration.Identifier.ValueText));
@@ -70,7 +80,7 @@ namespace RosMockLyn.Core.Transformation
                 GetAccessor(syntaxKind),
                 Property);
 
-            var typeList = SyntaxFactory.SeparatedList(new[] { typeSyntax });
+            var typeList = SyntaxFactory.SingletonSeparatedList(typeSyntax);
 
             var substitution = SyntaxFactory.InvocationExpression(SyntaxFactory.MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,

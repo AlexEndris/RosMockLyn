@@ -22,7 +22,6 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using Microsoft.CodeAnalysis;
-using RosMockLyn.Core.Transformation;
 
 namespace RosMockLyn.Core.Interfaces
 {

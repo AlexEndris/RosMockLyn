@@ -31,7 +31,7 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation
 {
-    public class NamespaceTransformer : ICodeTransformer
+    internal sealed class NamespaceTransformer : ICodeTransformer
     {
         private const string Namespace = "RosMockLyn";
 

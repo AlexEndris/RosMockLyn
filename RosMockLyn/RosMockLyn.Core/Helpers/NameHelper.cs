@@ -29,7 +29,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace RosMockLyn.Core.Helpers
 {
-    public static class NameHelper
+    internal static class NameHelper
     {
         public static IdentifierNameSyntax GetBaseInterfaceIdentifier(SyntaxNode node)
         {

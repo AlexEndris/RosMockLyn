@@ -33,7 +33,7 @@ using RosMockLyn.Core.Helpers;
 
 namespace RosMockLyn.Core.Generation
 {
-    internal class MockRegistryGenerator
+    internal sealed class MockRegistryGenerator
     {
         private const string RegistryInterfaceNamespace = "RosMockLyn.Mocking.IoC";
 

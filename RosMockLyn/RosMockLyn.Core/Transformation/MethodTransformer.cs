@@ -34,7 +34,7 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation
 {
-    public class MethodTransformer : ICodeTransformer
+    internal sealed class MethodTransformer : ICodeTransformer
     {
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Method = "Method";

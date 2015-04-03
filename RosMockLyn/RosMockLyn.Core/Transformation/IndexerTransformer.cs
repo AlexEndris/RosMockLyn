@@ -21,6 +21,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
@@ -32,7 +33,7 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Transformation
 {
-    public class IndexerTransformer : CSharpSyntaxRewriter, ICodeTransformer
+    internal sealed class IndexerTransformer : CSharpSyntaxRewriter, ICodeTransformer
     {
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Index = "Index";
@@ -47,8 +48,15 @@ namespace RosMockLyn.Core.Transformation
 
         public SyntaxNode Transform(SyntaxNode node)
         {
+            if (node == null)
+                throw new ArgumentNullException("node");
+
+            var indexerDeclaration = node as IndexerDeclarationSyntax;
+
+            if (indexerDeclaration == null)
+                throw new InvalidOperationException("Provided node must be an IndexerDeclaration.");
+
             var interfaceIdentifier = NameHelper.GetBaseInterfaceIdentifier(node);
-            var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
             var newPropertyToken = indexerDeclaration.WithExplicitInterfaceSpecifier(SyntaxFactory.ExplicitInterfaceSpecifier(interfaceIdentifier));
 

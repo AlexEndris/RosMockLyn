@@ -92,9 +92,11 @@
     <Compile Include="Helpers\IdentifierHelperTests.cs" />
     <Compile Include="Helpers\NameHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformation\IndexerTransformerTests.cs" />
     <Compile Include="Transformation\InterfaceTransformerTests.cs" />
     <Compile Include="Transformation\MethodTransformerTests.cs" />
     <Compile Include="Transformation\NamespaceTransformerTests.cs" />
+    <Compile Include="Transformation\PropertyTransformerTests.cs" />
     <Compile Include="Transformation\UsingsTransformerTests.cs" />
   </ItemGroup>
   <ItemGroup>
