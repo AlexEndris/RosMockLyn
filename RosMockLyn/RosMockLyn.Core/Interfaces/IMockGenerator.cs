@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015, Alexander Endris
+// Copyright (c) 2015, Alexander Endris
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -25,10 +25,8 @@ using Microsoft.CodeAnalysis;
 
 namespace RosMockLyn.Core.Interfaces
 {
-    public interface ICodeTransformer
+    public interface IMockGenerator
     {
-        TransformerType Type { get; }
-
-        SyntaxNode Transform(SyntaxNode node);
+        SyntaxTree GenerateMock(SyntaxTree treeToGenerateMockFrom);
     }
 }

@@ -21,14 +21,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 
 namespace RosMockLyn.Core.Interfaces
 {
-    public interface ICodeTransformer
+    public interface IAssemblyGenerator
     {
-        TransformerType Type { get; }
-
-        SyntaxNode Transform(SyntaxNode node);
+        void GenerateMockAssembly(IEnumerable<string> assemblyNames, GenerationOptions options);
     }
 }

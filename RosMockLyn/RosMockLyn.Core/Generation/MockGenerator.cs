@@ -32,7 +32,7 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-    internal sealed class MockGenerator : CSharpSyntaxRewriter
+    internal sealed class MockGenerator : CSharpSyntaxRewriter, IMockGenerator
     {
         private readonly IEnumerable<ICodeTransformer> _transformers;
 

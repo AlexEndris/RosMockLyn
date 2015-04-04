@@ -1,4 +1,7 @@
-﻿using RosMockLyn.Core;
+﻿using Autofac;
+
+using RosMockLyn.Core.Interfaces;
+using RosMockLyn.Core.IoC;
 
 namespace RosMockLyn.Cmd
 {
@@ -6,9 +9,16 @@ namespace RosMockLyn.Cmd
     {
         public static void Main()
         {
-            var testingRoslyn = new TestingRoslyn();
+            var buildContainer = BuildContainer();
 
-            testingRoslyn.DoSomething();
+            var assemblyGenerator = buildContainer.Resolve<IAssemblyGenerator>();
+        }
+
+        private static IContainer BuildContainer()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterModule<ModuleRegistry>();
+            return builder.Build();
         }
     }
 }

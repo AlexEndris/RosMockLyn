@@ -21,14 +21,32 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 
-namespace RosMockLyn.Core.Interfaces
+using RosMockLyn.Core.Interfaces;
+
+namespace RosMockLyn.Core
 {
-    public interface ICodeTransformer
+    internal sealed class InterfaceExtractor : IInterfaceExtractor
     {
-        TransformerType Type { get; }
+        private readonly MSBuildWorkspace _workspace;
 
-        SyntaxNode Transform(SyntaxNode node);
+        public InterfaceExtractor()
+        {
+            _workspace = MSBuildWorkspace.Create();
+        }
+
+        public async Task<IEnumerable<SyntaxTree>> ExtractAsync(string projectPath)
+        {
+            var project = await _workspace.OpenProjectAsync(projectPath);
+
+            var compilation = await project.GetCompilationAsync();
+
+            return compilation.SyntaxTrees;
+        }
     }
 }

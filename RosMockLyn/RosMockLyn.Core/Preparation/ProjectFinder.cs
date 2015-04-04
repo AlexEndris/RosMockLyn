@@ -21,14 +21,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.CodeAnalysis;
+using RosMockLyn.Core.Interfaces;
 
-namespace RosMockLyn.Core.Interfaces
+namespace RosMockLyn.Core
 {
-    public interface ICodeTransformer
+    internal sealed class ProjectFinder : IProjectFinder
     {
-        TransformerType Type { get; }
-
-        SyntaxNode Transform(SyntaxNode node);
+         
     }
 }

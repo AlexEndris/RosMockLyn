@@ -1,6 +1,6 @@
 ﻿namespace RosMockLyn.Core.Interfaces
 {
-    internal enum TransformerType
+    public enum TransformerType
     {
         Using,
         Namespace,

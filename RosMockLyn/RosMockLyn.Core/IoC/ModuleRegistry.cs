@@ -21,14 +21,30 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.CodeAnalysis;
+using System.Reflection;
 
-namespace RosMockLyn.Core.Interfaces
+using Autofac;
+
+using RosMockLyn.Core.Generation;
+using RosMockLyn.Core.Interfaces;
+
+using Module = Autofac.Module;
+
+namespace RosMockLyn.Core.IoC
 {
-    public interface ICodeTransformer
+    public class ModuleRegistry : Module
     {
-        TransformerType Type { get; }
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .AssignableTo<ICodeTransformer>()
+                .AsImplementedInterfaces();
 
-        SyntaxNode Transform(SyntaxNode node);
+            builder.RegisterType<MockAssemblyGenerator>().As<IAssemblyGenerator>();
+            builder.RegisterType<MockGenerator>().As<IMockGenerator>();
+            builder.RegisterType<MockRegistryGenerator>().As<IMockRegistryGenerator>();
+
+            base.Load(builder);
+        }
     }
 }

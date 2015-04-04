@@ -25,7 +25,6 @@ using System;
 
 using FluentAssertions;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -33,7 +32,7 @@ using NUnit.Framework;
 
 using RosMockLyn.Core.Helpers;
 
-namespace RosMockLyn.Core.Tests
+namespace RosMockLyn.Core.Tests.Helpers
 {
     [TestFixture]
     public class NameHelperTests

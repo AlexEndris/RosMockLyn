@@ -21,14 +21,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.CodeAnalysis;
+using System;
+using System.IO;
 
-namespace RosMockLyn.Core.Interfaces
+namespace RosMockLyn.Core
 {
-    public interface ICodeTransformer
+    public class GenerationOptions
     {
-        TransformerType Type { get; }
+        public static readonly GenerationOptions Default = new GenerationOptions();
 
-        SyntaxNode Transform(SyntaxNode node);
+        public TextWriter CodeOutput { get; set; }
+
+        public string WorkingDirectory { get; set; }
+
+        public string SolutionRoot { get; set; }
+
+        public GenerationOptions()
+        {
+            CodeOutput = Console.Out;
+            WorkingDirectory = Environment.CurrentDirectory;
+            SolutionRoot = Environment.CurrentDirectory;
+        }
     }
 }

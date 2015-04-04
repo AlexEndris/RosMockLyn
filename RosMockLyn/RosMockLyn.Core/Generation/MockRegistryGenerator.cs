@@ -30,10 +30,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Helpers;
+using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-    internal sealed class MockRegistryGenerator
+    internal sealed class MockRegistryGenerator : IMockRegistryGenerator
     {
         private const string RegistryInterfaceNamespace = "RosMockLyn.Mocking.IoC";
 
