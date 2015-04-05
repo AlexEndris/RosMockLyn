@@ -36,7 +36,7 @@ namespace RosMockLyn.Core
 
         public string SolutionRoot { get; set; }
 
-        public string OutputFileName { get; set; }
+        public string OutputFilePath { get; set; }
 
         public GenerationOptions()
         {

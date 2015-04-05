@@ -88,7 +88,7 @@ namespace RosMockLyn.Core
 
             List<SyntaxTree> finalTrees = new List<SyntaxTree>(mocks) { registry };
             
-            _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFileName);
+            _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
         }
     }
 }

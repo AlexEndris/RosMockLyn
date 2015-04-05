@@ -36,25 +36,23 @@ namespace RosMockLyn.Core.Preparation
 {
     internal sealed class AssemblyCompiler : IAssemblyCompiler
     {
-        public void Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFileName)
+        public void Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFilePath)
         {
             var project = CreateSolution(mainProject, referencedProjects);
 
             trees.Select(x => x.GetRoot())
                 .Apply(x => project = project.AddDocument(GetClassNameFromTree(x), x).Project);
 
-            Compile(mainProject, project, outputFileName);
+            Compile(mainProject, project, outputFilePath);
         }
 
-        private static void Compile(Project mainProject, Project project, string outputFileName)
+        private static void Compile(Project mainProject, Project project, string outputFilePath)
         {
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
             var compilation = project.GetCompilationAsync().Result.WithOptions(options);
 
-            var outputDirectory = Path.GetDirectoryName(mainProject.OutputFilePath);
-
-            var emitResult = compilation.Emit(Path.Combine(outputDirectory, outputFileName));
+            var emitResult = compilation.Emit(outputFilePath);
         }
 
         private Project CreateSolution(Project mainProject, IEnumerable<Project> referencedProjects)

@@ -20,6 +20,9 @@ namespace RosMockLyn.Cmd
                 @"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\GeneratedTestingAssembly.Tests\GeneratedTestingAssembly.Tests.csproj";
             options.SolutionRoot = @"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\";
 
+            options.OutputFilePath =
+                @"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\GeneratedTestingAssembly.Tests\bin\Debug\MockAssembly.dll";
+
             assemblyGenerator.GenerateMockAssembly(options);
         }
 
