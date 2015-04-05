@@ -21,6 +21,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Collections.Generic;
 
 using Microsoft.CodeAnalysis;
@@ -29,10 +30,13 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Preparation
 {
-    public class ReferenceResolver : IReferenceResolver
+    internal sealed class ReferenceResolver : IReferenceResolver
     {
         public IEnumerable<MetadataReference> GetReferences(Project mainProject)
         {
+            if (mainProject == null)
+                throw new ArgumentNullException("mainProject");
+
             return mainProject.MetadataReferences;
         }
     }

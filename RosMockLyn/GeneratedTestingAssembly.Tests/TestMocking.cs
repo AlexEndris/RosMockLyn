@@ -49,7 +49,7 @@ namespace GeneratedTestingAssembly.Tests
         {
             var someInterface = Mock.For<ISomeInterface>();
 
-            someInterface["1"] = 100;
+            someInterface.Setup(x => x["1"]).Returns(100);
             someInterface.Setup(x => x[1]).Returns(200);
 
             Assert.AreEqual(100, someInterface["1"]);

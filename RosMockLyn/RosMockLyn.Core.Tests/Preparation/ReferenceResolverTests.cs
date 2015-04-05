@@ -22,43 +22,63 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Reflection;
+
+using FluentAssertions;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
 
-using RosMockLyn.Core.Interfaces;
+using NUnit.Framework;
 
-namespace RosMockLyn.Core.Preparation
+using RosMockLyn.Core.Preparation;
+
+namespace RosMockLyn.Core.Tests.Preparation
 {
-    internal sealed class ProjectRetriever : IProjectRetriever
+    [TestFixture]
+    public class ReferenceResolverTests
     {
-        private readonly MSBuildWorkspace _workspace;
+        private ReferenceResolver _resolver;
 
-        public ProjectRetriever()
+        [SetUp]
+        public void SetUp()
         {
-            _workspace = MSBuildWorkspace.Create();
+            _resolver = new ReferenceResolver();
         }
 
-        public IEnumerable<Project> GetReferencedProjects(Project project)
+        [Test, Category("Unit Test")]
+        public void GetReferences_ShouldEmptyEnumerable_WhenNoReferences()
         {
-            var projectReferences = project.ProjectReferences;
+            // Arrange
+            var project = CreateProject();
 
-            return projectReferences
-                .Select(x => GetProjectPath(x.ProjectId.ToString()))
-                .Select(OpenProject);
+            // Act
+            var result = _resolver.GetReferences(project);
+
+            // Assert
+            result.Should().BeEmpty();
         }
 
-        public Project OpenProject(string projectPath)
+        [Test, Category("Unit Test")]
+        public void GetReferences_ShouldReturnReferencesFromProvidedProject()
         {
-            return _workspace.OpenProjectAsync(projectPath).Result;
+            // Arrange
+            var reference = MetadataReference.CreateFromAssembly(Assembly.GetExecutingAssembly());
+
+            var project = CreateProject()
+                .AddMetadataReference(reference);
+
+            // Act
+            var result = _resolver.GetReferences(project);
+
+            // Assert
+            result.Should().NotBeEmpty();
+            result.Should().Contain(reference);
         }
 
-        private string GetProjectPath(string projectIdDebugName)
+        private Project CreateProject()
         {
-            var match = Regex.Match(projectIdDebugName, @".* - (.*\.csproj)");
-            return match.Groups[1].Value;
+            var workspace = new AdhocWorkspace();
+            return workspace.AddProject("Project", "C#");
         }
     }
 }

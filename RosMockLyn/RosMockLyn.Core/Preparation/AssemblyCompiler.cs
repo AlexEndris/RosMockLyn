@@ -34,19 +34,19 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Preparation
 {
-    public class AssemblyCompiler : IAssemblyCompiler
+    internal sealed class AssemblyCompiler : IAssemblyCompiler
     {
-        public void Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees)
+        public void Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFileName)
         {
             var project = CreateSolution(mainProject, referencedProjects);
 
             trees.Select(x => x.GetRoot())
                 .Apply(x => project = project.AddDocument(GetClassNameFromTree(x), x).Project);
 
-            Compile(mainProject, project);
+            Compile(mainProject, project, outputFileName);
         }
 
-        private static void Compile(Project mainProject, Project project)
+        private static void Compile(Project mainProject, Project project, string outputFileName)
         {
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
@@ -54,7 +54,7 @@ namespace RosMockLyn.Core.Preparation
 
             var outputDirectory = Path.GetDirectoryName(mainProject.OutputFilePath);
 
-            var emitResult = compilation.Emit(Path.Combine(outputDirectory, "MockAssembly.dll"));
+            var emitResult = compilation.Emit(Path.Combine(outputDirectory, outputFileName));
         }
 
         private Project CreateSolution(Project mainProject, IEnumerable<Project> referencedProjects)

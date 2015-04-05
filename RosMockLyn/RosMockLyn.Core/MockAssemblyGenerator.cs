@@ -76,33 +76,19 @@ namespace RosMockLyn.Core
 
         public void GenerateMockAssembly(GenerationOptions options)
         {
-            var mainProject = _projectRetriever.GetMainProject(options.ProjectPath);
+            var mainProject = _projectRetriever.OpenProject(options.ProjectPath);
             
             var referencedProjects = _projectRetriever.GetReferencedProjects(mainProject);
 
             var trees = referencedProjects.SelectMany(_interfaceExtractor.Extract).ToList();
 
-            // var references = _referenceResolver.GetReferences(mainProject);
             var mocks = trees.Select(_mockGenerator.GenerateMock);
 
             var registry = _mockRegistryGenerator.GenerateRegistry(trees);
 
             List<SyntaxTree> finalTrees = new List<SyntaxTree>(mocks) { registry };
             
-            _compiler.Compile(mainProject, referencedProjects, finalTrees);
-
-            // GenerateAssembly(mainProject.OutputFilePath, mocks, registry, references);
-        }
-
-        private void GenerateAssembly(string outputPath, IEnumerable<SyntaxTree> mocks, SyntaxTree registry, IEnumerable<MetadataReference> references)
-        {
-            List<SyntaxTree> trees = new List<SyntaxTree>(mocks) { registry };
-
-            CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
-            
-            var compilation = CSharpCompilation.Create("RosMockLyn.Mocks", trees, references, options);
-
-            var emitResult = compilation.Emit(outputPath);
+            _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFileName);
         }
     }
 }

@@ -29,8 +29,8 @@ namespace RosMockLyn.Core.Interfaces
 {
     public interface IProjectRetriever
     {
-        IEnumerable<Project> GetReferencedProjects(Project mainProject);
+        IEnumerable<Project> GetReferencedProjects(Project project);
 
-        Project GetMainProject(string mainProject);
+        Project OpenProject(string mainProject);
     }
 }
