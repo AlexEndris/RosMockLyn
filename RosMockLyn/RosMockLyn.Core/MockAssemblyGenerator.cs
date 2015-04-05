@@ -27,7 +27,6 @@ using System.Linq;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
 
 using RosMockLyn.Core.Interfaces;
 
@@ -35,51 +34,73 @@ namespace RosMockLyn.Core
 {
     public sealed class MockAssemblyGenerator : IAssemblyGenerator
     {
-        private readonly IProjectFinder _projectFinder;
+        private readonly IProjectRetriever _projectRetriever;
 
         private readonly IInterfaceExtractor _interfaceExtractor;
+
+        private readonly IReferenceResolver _referenceResolver;
 
         private readonly IMockGenerator _mockGenerator;
 
         private readonly IMockRegistryGenerator _mockRegistryGenerator;
 
-        public MockAssemblyGenerator(IProjectFinder projectFinder, IInterfaceExtractor interfaceExtractor, 
-            IMockGenerator mockGenerator, IMockRegistryGenerator mockRegistryGenerator)
+        private readonly IAssemblyCompiler _compiler;
+
+        public MockAssemblyGenerator(IProjectRetriever projectRetriever, 
+            IInterfaceExtractor interfaceExtractor,
+            IReferenceResolver referenceResolver,
+            IMockGenerator mockGenerator, 
+            IMockRegistryGenerator mockRegistryGenerator,
+            IAssemblyCompiler compiler)
         {
-            if (projectFinder == null)
-                throw new ArgumentNullException("projectFinder");
+            if (projectRetriever == null)
+                throw new ArgumentNullException("projectRetriever");
             if (interfaceExtractor == null)
                 throw new ArgumentNullException("interfaceExtractor");
+            if (referenceResolver == null)
+                throw new ArgumentNullException("referenceResolver");
             if (mockGenerator == null)
                 throw new ArgumentNullException("mockGenerator");
             if (mockRegistryGenerator == null)
                 throw new ArgumentNullException("mockRegistryGenerator");
+            if (compiler == null)
+                throw new ArgumentNullException("compiler");
 
-            _projectFinder = projectFinder;
+            _projectRetriever = projectRetriever;
             _interfaceExtractor = interfaceExtractor;
+            _referenceResolver = referenceResolver;
             _mockGenerator = mockGenerator;
             _mockRegistryGenerator = mockRegistryGenerator;
+            _compiler = compiler;
         }
 
-        public void GenerateMockAssembly(IEnumerable<string> assemblyNames, GenerationOptions options)
+        public void GenerateMockAssembly(GenerationOptions options)
         {
-            var mocks = assemblyNames.AsParallel()
-                .SelectMany(x => _projectFinder.GetProjects(options.SolutionRoot, x))
-                .SelectMany(x => _interfaceExtractor.ExtractAsync(x).Result)
-                .Select(_mockGenerator.GenerateMock).ToList();
+            var mainProject = _projectRetriever.GetMainProject(options.ProjectPath);
+            
+            var referencedProjects = _projectRetriever.GetReferencedProjects(mainProject);
 
-            var registry = _mockRegistryGenerator.GenerateRegistry(mocks);
+            var trees = referencedProjects.SelectMany(_interfaceExtractor.Extract).ToList();
 
-            GenerateAssembly(options.WorkingDirectory, mocks, registry);
+            // var references = _referenceResolver.GetReferences(mainProject);
+            var mocks = trees.Select(_mockGenerator.GenerateMock);
+
+            var registry = _mockRegistryGenerator.GenerateRegistry(trees);
+
+            List<SyntaxTree> finalTrees = new List<SyntaxTree>(mocks) { registry };
+            
+            _compiler.Compile(mainProject, referencedProjects, finalTrees);
+
+            // GenerateAssembly(mainProject.OutputFilePath, mocks, registry, references);
         }
 
-        private void GenerateAssembly(string outputPath, IEnumerable<SyntaxTree> mocks, SyntaxTree registry)
+        private void GenerateAssembly(string outputPath, IEnumerable<SyntaxTree> mocks, SyntaxTree registry, IEnumerable<MetadataReference> references)
         {
             List<SyntaxTree> trees = new List<SyntaxTree>(mocks) { registry };
 
             CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
-
-            var compilation = CSharpCompilation.Create("RosMockLyn.Mocks", trees, null, options);
+            
+            var compilation = CSharpCompilation.Create("RosMockLyn.Mocks", trees, references, options);
 
             var emitResult = compilation.Emit(outputPath);
         }

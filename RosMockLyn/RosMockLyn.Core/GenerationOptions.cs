@@ -32,15 +32,13 @@ namespace RosMockLyn.Core
 
         public TextWriter CodeOutput { get; set; }
 
-        public string WorkingDirectory { get; set; }
+        public string ProjectPath { get; set; }
 
         public string SolutionRoot { get; set; }
 
         public GenerationOptions()
         {
             CodeOutput = Console.Out;
-            WorkingDirectory = Environment.CurrentDirectory;
-            SolutionRoot = Environment.CurrentDirectory;
         }
     }
 }

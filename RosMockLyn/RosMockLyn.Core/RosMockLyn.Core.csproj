@@ -107,8 +107,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="GenerationOptions.cs" />
-    <Compile Include="Interfaces\IProjectFinder.cs" />
+    <Compile Include="Interfaces\IAssemblyCompiler.cs" />
+    <Compile Include="Interfaces\IProjectRetriever.cs" />
+    <Compile Include="Interfaces\IReferenceResolver.cs" />
+    <Compile Include="Preparation\AssemblyCompiler.cs" />
     <Compile Include="Preparation\InterfaceExtractor.cs" />
     <Compile Include="Interfaces\IInterfaceExtractor.cs" />
     <Compile Include="Interfaces\IMockGenerator.cs" />
@@ -120,7 +124,8 @@
     <Compile Include="IoC\ModuleRegistry.cs" />
     <Compile Include="MockAssemblyGenerator.cs" />
     <Compile Include="OutputWalker.cs" />
-    <Compile Include="Preparation\ProjectFinder.cs" />
+    <Compile Include="Preparation\ProjectRetriever.cs" />
+    <Compile Include="Preparation\ReferenceResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestingRoslyn.cs" />
     <Compile Include="Interfaces\ICodeTransformer.cs" />

@@ -148,14 +148,16 @@
       <Project>{597007ab-7ec8-48aa-884c-86d8a90a12f7}</Project>
       <Name>AssemblyWithInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GeneratedTestingAssembly\GeneratedTestingAssembly.csproj">
-      <Project>{98bd449f-64cc-4193-a76c-1a517cf42632}</Project>
-      <Name>GeneratedTestingAssembly</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RosMockLyn.Mocking\RosMockLyn.Mocking.csproj">
       <Project>{8304e31c-400e-47ba-a083-0b1abd72f1a6}</Project>
       <Name>RosMockLyn.Mocking</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MockAssembly, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\MockAssembly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

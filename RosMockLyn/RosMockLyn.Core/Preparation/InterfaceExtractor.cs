@@ -22,31 +22,42 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Interfaces;
 
-namespace RosMockLyn.Core
+namespace RosMockLyn.Core.Preparation
 {
     internal sealed class InterfaceExtractor : IInterfaceExtractor
     {
-        private readonly MSBuildWorkspace _workspace;
-
-        public InterfaceExtractor()
+        public IEnumerable<SyntaxTree> Extract(Project project)
         {
-            _workspace = MSBuildWorkspace.Create();
+            var compilation = project.GetCompilationAsync().Result;
+
+            return compilation.SyntaxTrees.Where(HasInterface).Where(NotRosMockLyn);
         }
 
-        public async Task<IEnumerable<SyntaxTree>> ExtractAsync(string projectPath)
+        private bool NotRosMockLyn(SyntaxTree tree)
         {
-            var project = await _workspace.OpenProjectAsync(projectPath);
+            var root = tree.GetRoot();
 
-            var compilation = await project.GetCompilationAsync();
+            var interfaceBlockSyntaxs = from node in root.DescendantNodes().OfType<NamespaceDeclarationSyntax>()
+                                        where node.Name.ToString().Contains("RosMockLyn.Mocking")
+                                        select node;
 
-            return compilation.SyntaxTrees;
+            return !interfaceBlockSyntaxs.Any();
+        }
+
+        private bool HasInterface(SyntaxTree tree)
+        {
+            var root = tree.GetRoot();
+
+            var interfaceBlockSyntaxs = from node in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>() select node;
+
+            return interfaceBlockSyntaxs.Any();
         }
     }
 }

@@ -21,35 +21,49 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
-using Autofac;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 
-using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Interfaces;
-using RosMockLyn.Core.Preparation;
 
-using Module = Autofac.Module;
-
-namespace RosMockLyn.Core.IoC
+namespace RosMockLyn.Core.Preparation
 {
-    public class ModuleRegistry : Module
+    internal sealed class ProjectRetriever : IProjectRetriever
     {
-        protected override void Load(ContainerBuilder builder)
+        private readonly MSBuildWorkspace _workspace;
+
+        public ProjectRetriever()
         {
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .AssignableTo<ICodeTransformer>()
-                .AsImplementedInterfaces();
+            _workspace = MSBuildWorkspace.Create();
+        }
 
-            builder.RegisterType<MockAssemblyGenerator>().As<IAssemblyGenerator>();
-            builder.RegisterType<ProjectRetriever>().As<IProjectRetriever>();
-            builder.RegisterType<InterfaceExtractor>().As<IInterfaceExtractor>();
-            builder.RegisterType<ReferenceResolver>().As<IReferenceResolver>();
-            builder.RegisterType<MockGenerator>().As<IMockGenerator>();
-            builder.RegisterType<MockRegistryGenerator>().As<IMockRegistryGenerator>();
-            builder.RegisterType<AssemblyCompiler>().As<IAssemblyCompiler>();
+        public IEnumerable<Project> GetReferencedProjects(Project mainProject)
+        {
+            var projectReferences = mainProject.ProjectReferences;
 
-            base.Load(builder);
+            return projectReferences
+                .Select(x => GetProjectPath(x.ProjectId.ToString()))
+                .Select(OpenProject);
+        }
+
+        public Project GetMainProject(string mainProject)
+        {
+            return _workspace.OpenProjectAsync(mainProject).Result;
+        }
+
+        private string GetProjectPath(string projectId)
+        {
+            var match = Regex.Match(projectId, @".* - (.*\.csproj)");
+            return match.Groups[1].Value;
+        }
+
+        private Project OpenProject(string projectPath)
+        {
+            return _workspace.OpenProjectAsync(projectPath).Result;
         }
     }
 }

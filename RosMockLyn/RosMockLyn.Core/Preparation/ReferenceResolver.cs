@@ -21,35 +21,19 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Reflection;
+using System.Collections.Generic;
 
-using Autofac;
+using Microsoft.CodeAnalysis;
 
-using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Interfaces;
-using RosMockLyn.Core.Preparation;
 
-using Module = Autofac.Module;
-
-namespace RosMockLyn.Core.IoC
+namespace RosMockLyn.Core.Preparation
 {
-    public class ModuleRegistry : Module
+    public class ReferenceResolver : IReferenceResolver
     {
-        protected override void Load(ContainerBuilder builder)
+        public IEnumerable<MetadataReference> GetReferences(Project mainProject)
         {
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .AssignableTo<ICodeTransformer>()
-                .AsImplementedInterfaces();
-
-            builder.RegisterType<MockAssemblyGenerator>().As<IAssemblyGenerator>();
-            builder.RegisterType<ProjectRetriever>().As<IProjectRetriever>();
-            builder.RegisterType<InterfaceExtractor>().As<IInterfaceExtractor>();
-            builder.RegisterType<ReferenceResolver>().As<IReferenceResolver>();
-            builder.RegisterType<MockGenerator>().As<IMockGenerator>();
-            builder.RegisterType<MockRegistryGenerator>().As<IMockRegistryGenerator>();
-            builder.RegisterType<AssemblyCompiler>().As<IAssemblyCompiler>();
-
-            base.Load(builder);
+            return mainProject.MetadataReferences;
         }
     }
 }

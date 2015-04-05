@@ -22,7 +22,6 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 
@@ -30,6 +29,6 @@ namespace RosMockLyn.Core.Interfaces
 {
     public interface IInterfaceExtractor
     {
-        Task<IEnumerable<SyntaxTree>> ExtractAsync(string projectPath);
+        IEnumerable<SyntaxTree> Extract(Project project);
     }
 }

@@ -45,7 +45,8 @@ namespace RosMockLyn.Core
             var workspace = MSBuildWorkspace.Create();
 
             var project =
-                workspace.OpenProjectAsync(@"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\TestProjectPort\TestProjectPort.csproj")
+                workspace.OpenProjectAsync(
+                    @"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\TestProjectPort\TestProjectPort.csproj")
                     .Result;
 
             var compilation = project.GetCompilationAsync().Result;

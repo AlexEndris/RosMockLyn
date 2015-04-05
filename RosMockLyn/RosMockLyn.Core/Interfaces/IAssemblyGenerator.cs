@@ -21,12 +21,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
-
 namespace RosMockLyn.Core.Interfaces
 {
     public interface IAssemblyGenerator
     {
-        void GenerateMockAssembly(IEnumerable<string> assemblyNames, GenerationOptions options);
+        void GenerateMockAssembly(GenerationOptions options);
     }
 }

@@ -23,10 +23,14 @@
 
 using System.Collections.Generic;
 
+using Microsoft.CodeAnalysis;
+
 namespace RosMockLyn.Core.Interfaces
 {
-    public interface IProjectFinder
+    public interface IProjectRetriever
     {
-        IEnumerable<string> GetProjects(string solutionDirectory, string assemblyName);
+        IEnumerable<Project> GetReferencedProjects(Project mainProject);
+
+        Project GetMainProject(string mainProject);
     }
 }

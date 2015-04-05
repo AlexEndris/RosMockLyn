@@ -21,12 +21,17 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using RosMockLyn.Core.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace RosMockLyn.Core
 {
-    internal sealed class ProjectFinder : IProjectFinder
+    public static class EnumerableExtensions
     {
-         
+        internal static void Apply<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            foreach (var item in items)
+                action(item);
+        }
     }
 }
