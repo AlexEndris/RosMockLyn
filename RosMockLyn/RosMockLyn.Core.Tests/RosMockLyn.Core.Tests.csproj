@@ -122,7 +122,6 @@
     <Compile Include="Helpers\NameHelperTests.cs" />
     <Compile Include="Preparation\InterfaceExtractorTests.cs" />
     <Compile Include="Preparation\ProjectRetrieverTests.cs" />
-    <Compile Include="Preparation\ReferenceResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transformation\IndexerTransformerTests.cs" />
     <Compile Include="Transformation\InterfaceTransformerTests.cs" />

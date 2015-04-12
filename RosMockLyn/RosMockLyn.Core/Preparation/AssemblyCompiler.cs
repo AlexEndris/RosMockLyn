@@ -36,34 +36,38 @@ namespace RosMockLyn.Core.Preparation
 {
     internal sealed class AssemblyCompiler : IAssemblyCompiler
     {
-        public void Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFilePath)
+        public bool Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFilePath)
         {
-            var project = CreateSolution(mainProject, referencedProjects);
+            var assemblyName = Path.GetFileNameWithoutExtension(outputFilePath);
+
+            var project = CreateSolution(mainProject, referencedProjects, assemblyName);
 
             trees.Select(x => x.GetRoot())
                 .Apply(x => project = project.AddDocument(GetClassNameFromTree(x), x).Project);
 
-            Compile(mainProject, project, outputFilePath);
+            return Compile(project, outputFilePath);
         }
 
-        private static void Compile(Project mainProject, Project project, string outputFilePath)
+        private static bool Compile(Project project, string outputFilePath)
         {
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
             var compilation = project.GetCompilationAsync().Result.WithOptions(options);
 
             var emitResult = compilation.Emit(outputFilePath);
+
+            return emitResult.Success;
         }
 
-        private Project CreateSolution(Project mainProject, IEnumerable<Project> referencedProjects)
+        private Project CreateSolution(Project mainProject, IEnumerable<Project> referencedProjects, string assemblyName)
         {
             var workspace = new AdhocWorkspace(MefHostServices.DefaultHost);
 
-            ProjectId id = ProjectId.CreateNewId("MockAssembly");
+            ProjectId id = ProjectId.CreateNewId(assemblyName);
 
             SolutionInfo solutionInfo = SolutionInfo.Create(SolutionId.CreateNewId(), VersionStamp.Default);
 
-            ProjectInfo projectInfo = ProjectInfo.Create(id, VersionStamp.Default, "MockAssembly", "MockAssembly", "C#");
+            ProjectInfo projectInfo = ProjectInfo.Create(id, VersionStamp.Default, assemblyName, assemblyName, "C#");
 
             var solution = workspace.AddSolution(solutionInfo)
                 .AddProject(projectInfo)

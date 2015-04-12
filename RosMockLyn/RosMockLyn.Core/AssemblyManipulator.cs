@@ -21,14 +21,39 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System.Collections.Generic;
+using System;
 
-using Microsoft.CodeAnalysis;
+using Mono.Cecil;
 
-namespace RosMockLyn.Core.Interfaces
+using RosMockLyn.Core.Interfaces;
+
+namespace RosMockLyn.Core
 {
-    public interface IReferenceResolver
+    internal sealed class AssemblyManipulator : IAssemblyManipulator
     {
-        IEnumerable<MetadataReference> GetReferences(Project mainProject);
+        public bool AddReferenceToAssembly(string assemblyPath, string referencePath)
+        {
+            try
+            {
+                var readerParamters = new ReaderParameters { ReadSymbols = true };
+
+                var assemblyModule = AssemblyDefinition.ReadAssembly(assemblyPath, readerParamters).MainModule;
+                var referenceAssembly = AssemblyDefinition.ReadAssembly(referencePath);
+
+                var assemblyNameReference = AssemblyNameReference.Parse(referenceAssembly.Name.FullName);
+
+                assemblyModule.AssemblyReferences.Add(assemblyNameReference);
+
+                var writerParameters = new WriterParameters { WriteSymbols = true };
+
+                assemblyModule.Write(assemblyPath, writerParameters);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

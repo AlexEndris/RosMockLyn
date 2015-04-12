@@ -29,6 +29,6 @@ namespace RosMockLyn.Core.Interfaces
 {
     public interface IAssemblyCompiler
     {
-        void Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFileName);
+        bool Compile(Project mainProject, IEnumerable<Project> referencedProjects, IEnumerable<SyntaxTree> trees, string outputFileName);
     }
 }

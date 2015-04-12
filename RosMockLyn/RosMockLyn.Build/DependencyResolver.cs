@@ -22,22 +22,38 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
-using Microsoft.CodeAnalysis;
-
-using RosMockLyn.Core.Interfaces;
-
-namespace RosMockLyn.Core.Preparation
+namespace RosMockLyn.Build
 {
-    internal sealed class ReferenceResolver : IReferenceResolver
+    internal static class DependencyResolver
     {
-        public IEnumerable<MetadataReference> GetReferences(Project mainProject)
+        internal static Assembly GetAssembly(string name)
         {
-            if (mainProject == null)
-                throw new ArgumentNullException("mainProject");
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(
+                    x => string.Equals(x.FullName, name, StringComparison.OrdinalIgnoreCase));
 
-            return mainProject.MetadataReferences;
+            if (assembly == null)
+            {
+                var assemblyDir = Path.GetDirectoryName(typeof(MockBuildTask).Assembly.Location);
+                var assemblyFileName = name.Split(',')[0] + ".dll";
+                var assemblyPath = Path.Combine(assemblyDir, assemblyFileName);
+
+                try
+                {
+                    assembly = Assembly.LoadFile(assemblyPath);
+
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            return assembly;
         }
     }
 }

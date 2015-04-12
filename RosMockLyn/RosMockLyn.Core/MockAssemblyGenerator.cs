@@ -26,19 +26,16 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core
 {
-    public sealed class MockAssemblyGenerator : IAssemblyGenerator
+    internal sealed class MockAssemblyGenerator : IAssemblyGenerator
     {
         private readonly IProjectRetriever _projectRetriever;
 
         private readonly IInterfaceExtractor _interfaceExtractor;
-
-        private readonly IReferenceResolver _referenceResolver;
 
         private readonly IMockGenerator _mockGenerator;
 
@@ -48,7 +45,6 @@ namespace RosMockLyn.Core
 
         public MockAssemblyGenerator(IProjectRetriever projectRetriever, 
             IInterfaceExtractor interfaceExtractor,
-            IReferenceResolver referenceResolver,
             IMockGenerator mockGenerator, 
             IMockRegistryGenerator mockRegistryGenerator,
             IAssemblyCompiler compiler)
@@ -57,8 +53,6 @@ namespace RosMockLyn.Core
                 throw new ArgumentNullException("projectRetriever");
             if (interfaceExtractor == null)
                 throw new ArgumentNullException("interfaceExtractor");
-            if (referenceResolver == null)
-                throw new ArgumentNullException("referenceResolver");
             if (mockGenerator == null)
                 throw new ArgumentNullException("mockGenerator");
             if (mockRegistryGenerator == null)
@@ -68,13 +62,12 @@ namespace RosMockLyn.Core
 
             _projectRetriever = projectRetriever;
             _interfaceExtractor = interfaceExtractor;
-            _referenceResolver = referenceResolver;
             _mockGenerator = mockGenerator;
             _mockRegistryGenerator = mockRegistryGenerator;
             _compiler = compiler;
         }
 
-        public void GenerateMockAssembly(GenerationOptions options)
+        public bool GenerateMockAssembly(GenerationOptions options)
         {
             var mainProject = _projectRetriever.OpenProject(options.ProjectPath);
             
@@ -88,7 +81,7 @@ namespace RosMockLyn.Core
 
             List<SyntaxTree> finalTrees = new List<SyntaxTree>(mocks) { registry };
             
-            _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
+            return _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
         }
     }
 }

@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratedTestingAssembly.Tests", "GeneratedTestingAssembly.Tests\GeneratedTestingAssembly.Tests.csproj", "{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MockingFramework", "MockingFramework", "{43E8B138-C0CA-4F5B-B20A-C132BC4B8A8C}"
+	ProjectSection(SolutionItems) = preProject
+		RosMockLyn.Core\TestingRoslyn.cs = RosMockLyn.Core\TestingRoslyn.cs
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectPort", "TestProjectPort\TestProjectPort.csproj", "{EAE1A96B-22AB-47B6-BC0B-A356F0162B59}"
 EndProject
@@ -188,8 +191,6 @@ Global
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|x64.ActiveCfg = Release|Any CPU
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|ARM.ActiveCfg = Debug|ARM
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|ARM.Build.0 = Debug|ARM
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -200,8 +201,6 @@ Global
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|x86.Build.0 = Debug|x86
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|x86.Deploy.0 = Debug|x86
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|ARM.ActiveCfg = Release|ARM
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|ARM.Build.0 = Release|ARM
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Release|ARM.Deploy.0 = Release|ARM
