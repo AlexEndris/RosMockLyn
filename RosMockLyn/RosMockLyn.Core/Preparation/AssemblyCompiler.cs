@@ -21,6 +21,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -73,17 +74,14 @@ namespace RosMockLyn.Core.Preparation
                 .AddProject(projectInfo)
                 .AddMetadataReferences(id, mainProject.MetadataReferences);
 
-            var outputDirectory = Path.GetDirectoryName(mainProject.OutputFilePath);
-            referencedProjects.Apply(x => solution = solution.AddMetadataReference(id, GetReferenceFromProject(outputDirectory, x)));
+            referencedProjects.Apply(x => solution = solution.AddMetadataReference(id, GetReferenceFromProject(x)));
 
             return solution.GetProject(id);
         }
 
-        private MetadataReference GetReferenceFromProject(string outputDirectory, Project project)
+        private MetadataReference GetReferenceFromProject(Project project)
         {
-            var fileName = Path.GetFileName(project.OutputFilePath);
-
-            return MetadataReference.CreateFromFile(Path.Combine(outputDirectory, fileName));
+            return MetadataReference.CreateFromFile(project.OutputFilePath);
         }
 
         private string GetClassNameFromTree(SyntaxNode rootNode)
