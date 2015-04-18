@@ -144,12 +144,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)*.dll" "$(SolutionDir)RosMockLyn\lib" /Y
-xcopy "$(TargetDir)*.xml" "$(SolutionDir)RosMockLyn\lib" /Y
-xcopy "$(TargetDir)*.pdb" "$(SolutionDir)RosMockLyn\lib" /Y
-xcopy "$(TargetDir)*targets" "$(SolutionDir)RosMockLyn\build" /Y</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
