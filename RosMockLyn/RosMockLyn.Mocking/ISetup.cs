@@ -27,17 +27,36 @@ namespace RosMockLyn.Mocking
 {
     public interface ISetup
     {
+        /// <summary>
+        /// Makes the method throw the specified exception when called.
+        /// </summary>
+        /// <typeparam name="T">The exception that should be thrown when called.</typeparam>
         void Throws<T>() where T : Exception;
-
-        void WhenCalled(Action action);
     }
 
     public interface ISetup<TMock> : ISetup
     {
+        /// <summary>
+        /// Makes the method execute the specified action when called.
+        /// </summary>
+        /// <param name="action">The action that should be executed when called.</param>
+        void WhenCalled(Action action);
     }
 
     public interface ISetup<TMock, in TReturn> : ISetup
     {
+        /// <summary>
+        /// Makes the method return the specifies value.
+        /// </summary>
+        /// <param name="value">The value that should be returned.</param>
+        /// <returns>The setup object.</returns>
         ISetup<TMock, TReturn> Returns(TReturn value);
+
+        /// <summary>
+        /// Makes the method execute the specified action when called.
+        /// </summary>
+        /// <param name="action">The action that should be executed when called.</param>
+        /// <returns>The setup object.</returns>
+        ISetup<TMock, TReturn> WhenCalled(Action action);
     }
 }

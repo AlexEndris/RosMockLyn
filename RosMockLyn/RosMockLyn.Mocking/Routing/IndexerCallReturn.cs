@@ -48,7 +48,7 @@ namespace RosMockLyn.Mocking.Routing
             throw new NotSupportedException("It is not supported to make an indexer throw an exception.");
         }
 
-        public void WhenCalled(Action action)
+        public ISetup<TMock, TReturn> WhenCalled(Action action)
         {
             throw new NotSupportedException("It is not supported to execute code when the indexer is called.");
         }

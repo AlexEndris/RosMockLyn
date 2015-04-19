@@ -35,11 +35,21 @@ namespace RosMockLyn.Mocking
 {
     public static class MockExtensions
     {
+        /// <summary>
+        /// Sets up a method call.
+        /// </summary>
+        /// <typeparam name="TMock">The mock type.</typeparam>
+        /// <param name="mock">The mocked object.</param>
+        /// <param name="expression">The method that should be setup.</param>
+        /// <returns>A setup object to add some more settings.</returns>
         public static ISetup<TMock> Setup<TMock>(this TMock mock, Expression<Action<TMock>> expression)
         {
             var realMock = TryGetMock(mock);
 
-            var methodCallExpression = (MethodCallExpression)expression.Body;
+            var methodCallExpression = expression.Body as MethodCallExpression;
+
+            if (methodCallExpression == null)
+                throw new InvalidOperationException("The expression must be a method call expression!");
 
             var arguments = CreateMatchersFromArguments(methodCallExpression.Arguments);
 
@@ -48,6 +58,14 @@ namespace RosMockLyn.Mocking
             return new MethodCall<TMock>(methodInvocationInfo);
         }
 
+        /// <summary>
+        /// Sets up a method call with a return value.
+        /// </summary>
+        /// <typeparam name="TMock">The mock type.</typeparam>
+        /// <typeparam name="TReturn">The return type.</typeparam>
+        /// <param name="mock">The mocked object</param>
+        /// <param name="expression">The method that should be setup.</param>
+        /// <returns>A setup object to add some more settings.</returns>
         public static ISetup<TMock, TReturn> Setup<TMock, TReturn>(this TMock mock, Expression<Func<TMock, TReturn>> expression)
         {
             var realMock = TryGetMock(mock);
@@ -58,12 +76,27 @@ namespace RosMockLyn.Mocking
             return Setup<TMock, TReturn>(realMock, (dynamic)expression.Body);
         }
         
-        public static IReceived Received<T>(this T mock, Expression<Action<T>> expression)
+        /// <summary>
+        /// Asserts if the provided method has been called.
+        /// </summary>
+        /// <typeparam name="TMock">The mock type.</typeparam>
+        /// <param name="mock">The mocked object</param>
+        /// <param name="expression">The method that should be checked.</param>
+        /// <returns>A received object to do the actual assertion with.</returns>
+        public static IReceived Received<TMock>(this TMock mock, Expression<Action<TMock>> expression)
         {
             return Received(mock, (MethodCallExpression)expression.Body);
         }
 
-        public static IReceived Received<T, TReturn>(this T mock, Expression<Func<T, TReturn>> expression)
+        /// <summary>
+        /// Asserts if the provided method with a return value has been called.
+        /// </summary>
+        /// <typeparam name="TMock">The mock type.</typeparam>
+        /// <typeparam name="TReturn">The return type.</typeparam>
+        /// <param name="mock">The mocked object</param>
+        /// <param name="expression">The method that should be checked.</param>
+        /// <returns>A received object to do the actual assertion with.</returns>
+        public static IReceived Received<TMock, TReturn>(this TMock mock, Expression<Func<TMock, TReturn>> expression)
         {
             return Received(mock, (MethodCallExpression)expression.Body);
         }

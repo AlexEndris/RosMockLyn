@@ -21,10 +21,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
+using System.Reflection;
+
 using RosMockLyn.Mocking.IoC;
 
 namespace RosMockLyn.Mocking
 {
+    /// <summary>
+    /// The main repository for getting mock objects.
+    /// </summary>
     public static class Mock
     {
         private static readonly IInjector Injector;
@@ -36,8 +42,17 @@ namespace RosMockLyn.Mocking
                     .Wait();
         }
 
+        /// <summary>
+        /// Creates a mock instance for the provided type.
+        /// </summary>
+        /// <typeparam name="T">The interface of which the mock should be creates.</typeparam>
+        /// <exception cref="InvalidOperationException">If the provided type is not an interface.</exception>
+        /// <returns>The created mock if registered; otherwise null</returns>
         public static T For<T>() where T : class
         {
+            if (!typeof(T).GetTypeInfo().IsInterface)
+                throw new InvalidOperationException("The provided type must be an interface.");
+
             return Injector.Resolve<T>();
         }
     }

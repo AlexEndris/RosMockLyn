@@ -31,9 +31,9 @@ namespace RosMockLyn.Mocking.Routing
     {
         private readonly MethodSetupInfo _setupInfo;
 
-        internal MethodCallReturn(MethodSetupInfo _setupInfo)
+        internal MethodCallReturn(MethodSetupInfo setupInfo)
         {
-            this._setupInfo = _setupInfo;
+            _setupInfo = setupInfo;
         }
 
         public ISetup<TMock, TReturn> Returns(TReturn value)
@@ -48,9 +48,11 @@ namespace RosMockLyn.Mocking.Routing
             _setupInfo.ExcpetionToThrow = Activator.CreateInstance<T>();
         }
 
-        public void WhenCalled(Action action)
+        public ISetup<TMock, TReturn> WhenCalled(Action action)
         {
             _setupInfo.WhenCalled = action;
+
+            return this;
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace RosMockLyn.Mocking
+﻿namespace RosMockLyn.Mocking
 {
     public enum Range
     {

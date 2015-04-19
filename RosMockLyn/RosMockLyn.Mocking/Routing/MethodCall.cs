@@ -31,9 +31,9 @@ namespace RosMockLyn.Mocking.Routing
     {
         private readonly MethodSetupInfo _setupInfo;
 
-        internal MethodCall(MethodSetupInfo _setupInfo)
+        internal MethodCall(MethodSetupInfo setupInfo)
         {
-            this._setupInfo = _setupInfo;
+            _setupInfo = setupInfo;
         }
 
         public void Throws<T>() where T : Exception

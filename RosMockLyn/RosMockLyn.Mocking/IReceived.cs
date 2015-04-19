@@ -20,16 +20,43 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-namespace RosMockLyn.Mocking.Assertion
+namespace RosMockLyn.Mocking
 {
+    /// <summary>
+    /// Asserts that a specific amount of calls have been made to amount.
+    /// </summary>
     public interface IReceived
     {
+        /// <summary>
+        /// Gets the amount of times the method has been called.
+        /// </summary>
+        int Calls { get; }
+
+        /// <summary>
+        /// Asserts that the method has been called exactly once.
+        /// </summary>
         void One();
 
+        /// <summary>
+        /// Asserts that the method has been called at least once.
+        /// </summary>
         void AtLeastOne();
         
+        /// <summary>
+        /// Asserts that the method has been called exactly the specified amount of times.
+        /// </summary>
+        /// <param name="expectedCalls">The amount of times the method has been called.</param>
         void Excatly(int expectedCalls);
 
+        /// <summary>
+        /// Asserts that the method has been called at least as often as specified.
+        /// </summary>
+        /// <param name="amountOfCalls">The amount of times the method has to be called at least.</param>
+        void AtLeast(int amountOfCalls);
+
+        /// <summary>
+        /// Asserts that the method has never been called.
+        /// </summary>
         void None();
     }
 }

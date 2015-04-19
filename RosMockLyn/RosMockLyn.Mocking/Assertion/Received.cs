@@ -30,7 +30,7 @@ using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking.Assertion
 {
-    public class Received : IReceived
+    public sealed class Received : IReceived
     {
         private readonly string _methodName;
         private readonly IEnumerable<MethodInvocationInfo> _setupInfo;
@@ -41,6 +41,14 @@ namespace RosMockLyn.Mocking.Assertion
             _setupInfo = setupInfo;
         }
 
+        public int Calls
+        {
+            get
+            {
+                return _setupInfo.Count();
+            }
+        }
+
         public void One()
         {
             Excatly(1);
@@ -48,18 +56,28 @@ namespace RosMockLyn.Mocking.Assertion
 
         public void AtLeastOne()
         {
-            Assert.AreNotEqual(0, _setupInfo.Count(), string.Format("There were no calls made for method '{0}'.", _methodName));
+            Assert.AreNotEqual(0, Calls, string.Format("There were no calls made for method '{0}'.", _methodName));
         }
 
         public void Excatly(int expectedCalls)
         {
             Assert.AreEqual(
                 expectedCalls,
-                _setupInfo.Count(),
-                string.Format("There were {0} calls to method '{1}' but {2} were expected.",
-                    _setupInfo.Count(),
+                Calls,
+                string.Format("There were {0} calls to method '{1}', but {2} were expected.",
+                    Calls,
                     _methodName,
                     expectedCalls));
+        }
+
+        public void AtLeast(int amountOfCalls)
+        {
+            Assert.IsTrue(
+                Calls >= amountOfCalls,
+                string.Format("There were {0} calls to method '{1}', but at least {2} were expected.",
+                    Calls,
+                    _methodName,
+                    amountOfCalls));
         }
 
         public void None()
