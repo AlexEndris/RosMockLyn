@@ -26,40 +26,40 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  	<PropertyGroup>
-        <NuGetCmd Condition="$(NuGetCmd) == '' Or $(NuGetCmd) == '*Undefined*'">$(SolutionDir).nuget\NuGet.exe</NuGetCmd>
-        <NuGetOutput Condition="$(NuGetOutput) == '' Or $(NuGetOutput) == '*Undefined*'">$(SolutionDir)bin\NuGet</NuGetOutput>
-		<NuGetPackageTemp Condition="$(NuGetPackageTemp) == '' Or $(NuGetPackageTemp) == '*Undefined*'">$(NuGetOutput)\Temp\</NuGetPackageTemp>
-        <NuGetPackageTempLib Condition="$(NuGetPackageTempLib) == '' Or $(NuGetPackageTempLib) == '*Undefined*'">$(NuGetPackageTemp)lib\</NuGetPackageTempLib>
-        <NuGetPackageTempBuild Condition="$(NuGetPackageTempBuild) == '' Or $(NuGetPackageTempBuild) == '*Undefined*'">$(NuGetPackageTemp)build\</NuGetPackageTempBuild>
-        <NuSpecFileName Condition="$(NuSpecFileName) == '' Or $(NuSpecFileName) == '*Undefined*'">$(NuGetPackageTemp)RosMockLyn.nuspec</NuSpecFileName>
-        <RosMockLynBuildOutput Condition="$(RosMockLynBuildOutput) == '' Or $(RosMockLynBuildOutput) == '*Undefined*'">$(SolutionDir)bin\Build\$(Configuration)\</RosMockLynBuildOutput>
-        <RosMockLynMockingOutput Condition="$(RosMockLynMockingOutput) == '' Or $(RosMockLynMockingOutput) == '*Undefined*'">$(SolutionDir)bin\Mocking\$(Configuration)\</RosMockLynMockingOutput>
-	</PropertyGroup>
+  <PropertyGroup>
+    <NuGetCmd Condition="$(NuGetCmd) == '' Or $(NuGetCmd) == '*Undefined*'">$(SolutionDir).nuget\NuGet.exe</NuGetCmd>
+    <NuGetOutput Condition="$(NuGetOutput) == '' Or $(NuGetOutput) == '*Undefined*'">$(SolutionDir)bin\NuGet</NuGetOutput>
+    <NuGetPackageTemp Condition="$(NuGetPackageTemp) == '' Or $(NuGetPackageTemp) == '*Undefined*'">$(NuGetOutput)\Temp\</NuGetPackageTemp>
+    <NuGetPackageTempLib Condition="$(NuGetPackageTempLib) == '' Or $(NuGetPackageTempLib) == '*Undefined*'">$(NuGetPackageTemp)lib\</NuGetPackageTempLib>
+    <NuGetPackageTempBuild Condition="$(NuGetPackageTempBuild) == '' Or $(NuGetPackageTempBuild) == '*Undefined*'">$(NuGetPackageTemp)build\</NuGetPackageTempBuild>
+    <NuSpecFileName Condition="$(NuSpecFileName) == '' Or $(NuSpecFileName) == '*Undefined*'">$(NuGetPackageTemp)RosMockLyn.nuspec</NuSpecFileName>
+    <RosMockLynBuildOutput Condition="$(RosMockLynBuildOutput) == '' Or $(RosMockLynBuildOutput) == '*Undefined*'">$(SolutionDir)bin\Build\$(Configuration)\</RosMockLynBuildOutput>
+    <RosMockLynMockingOutput Condition="$(RosMockLynMockingOutput) == '' Or $(RosMockLynMockingOutput) == '*Undefined*'">$(SolutionDir)bin\Mocking\$(Configuration)\</RosMockLynMockingOutput>
+  </PropertyGroup>
   <Target Name="Clean">
     <RemoveDir Directories="$(NuGetOutput)" />
   </Target>
   <Target Name="Build" DependsOnTargets="NuGetBuild" />
   <Target Name="ReBuild" DependsOnTargets="NuGetBuild" />
   <Target Name="NuGetBuild" DependsOnTargets="Clean">
-	<ItemGroup>
-		<Directories Include="$(NuGetOutput)\" />
-		<Directories Include="$(NuGetPackageTemp)" />
-		<Directories Include="$(NuGetPackageTempLib)" />
-		<Directories Include="$(NuGetPackageTempBuild)" />
-	</ItemGroup>
-	<ItemGroup>
-		<FilesToCopy Include="$(RosMockLynBuildOutput)*.*" Exclude="*.targets"/>
-		<FilesToCopy Include="$(RosMockLynMockingOutput)*.*" />
-		<BuildTargetsFile Include="$(RosMockLynBuildOutput)*.targets" />
-		<NuSpecFile Include="$(ProjectDir)RosMockLyn.nuspec" />
-	</ItemGroup>
-    <MakeDir Directories="@(Directories) "/>
-	<Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(NuGetPackageTempLib)" />
-	<Copy SourceFiles="@(BuildTargetsFile)" DestinationFolder="$(NuGetPackageTempBuild)" />
-	<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(NuGetPackageTemp)" />
-	<Exec WorkingDirectory="$(NuGetPackageTemp)" Command="&quot;$(NuGetCmd)&quot; pack &quot;$(NuSpecFileName)&quot; -OutputDirectory &quot;$(NuGetOutput)&quot; -Verbosity normal" />
-	<RemoveDir Directories="$(NuGetPackageTemp)" />
+    <ItemGroup>
+      <Directories Include="$(NuGetOutput)\" />
+      <Directories Include="$(NuGetPackageTemp)" />
+      <Directories Include="$(NuGetPackageTempLib)" />
+      <Directories Include="$(NuGetPackageTempBuild)" />
+    </ItemGroup>
+    <ItemGroup>
+      <FilesToCopy Include="$(RosMockLynBuildOutput)*.*" Exclude="*.targets" />
+      <FilesToCopy Include="$(RosMockLynMockingOutput)*.*" />
+      <BuildTargetsFile Include="$(RosMockLynBuildOutput)*.targets" />
+      <NuSpecFile Include="$(ProjectDir)RosMockLyn.nuspec" />
+    </ItemGroup>
+    <MakeDir Directories="@(Directories) " />
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(NuGetPackageTempLib)" />
+    <Copy SourceFiles="@(BuildTargetsFile)" DestinationFolder="$(NuGetPackageTempBuild)" />
+    <Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(NuGetPackageTemp)" />
+    <Exec WorkingDirectory="$(NuGetPackageTemp)" Command="&quot;$(NuGetCmd)&quot; pack &quot;$(NuSpecFileName)&quot; -OutputDirectory &quot;$(NuGetOutput)&quot; -Verbosity normal" />
+    <RemoveDir Directories="$(NuGetPackageTemp)" />
   </Target>
   <ItemGroup>
     <ProjectReference Include="..\RosMockLyn.Build\RosMockLyn.Build.csproj">

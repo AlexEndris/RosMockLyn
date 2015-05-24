@@ -46,7 +46,7 @@ namespace RosMockLyn.Core.Tests.Preparation
             _retriever = new ProjectRetriever();
         }
 
-        [Test, Category("Unit Test")]
+        [Test, Category("Local")]
         public void OpenProject_ShouldOpenProject()
         {
             // Arrange
@@ -59,7 +59,7 @@ namespace RosMockLyn.Core.Tests.Preparation
             result.Should().NotBeNull();
         }
 
-        [Test, Category("Unit Test")]
+        [Test, Category("Local")]
         public void GetReferencedProjects_ShouldGetReferencedProjects()
         {
             // Arrange
@@ -77,7 +77,7 @@ namespace RosMockLyn.Core.Tests.Preparation
         private static string GetProjectPath()
         {
             var fileName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location) + ".csproj";
-            var projectPath = Path.Combine(Environment.CurrentDirectory, "..", "..", fileName);
+            var projectPath = Path.Combine(Environment.CurrentDirectory, "..", "..", "RosMockLyn.Core.Tests", fileName);
             return projectPath;
         }
 

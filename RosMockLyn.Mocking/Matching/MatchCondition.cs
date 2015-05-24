@@ -27,7 +27,7 @@ namespace RosMockLyn.Mocking.Matching
 {
     internal abstract class MatchCondition
     {
-        private static object locker = new object();
+        private static readonly object Locker = new object();
 
         private static MatchCondition lastCreatedCondition;
 
@@ -35,14 +35,15 @@ namespace RosMockLyn.Mocking.Matching
         {
             get
             {
-                lock (locker)
+                lock (Locker)
                 {
                     return lastCreatedCondition;
                 }
             }
+
             private set
             {
-                lock (locker)
+                lock (Locker)
                 {
                     lastCreatedCondition = value;
                 }
