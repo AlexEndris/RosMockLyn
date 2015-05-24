@@ -32,7 +32,7 @@
 		<NuGetPackageTemp Condition="$(NuGetPackageTemp) == '' Or $(NuGetPackageTemp) == '*Undefined*'">$(NuGetOutput)\Temp\</NuGetPackageTemp>
         <NuGetPackageTempLib Condition="$(NuGetPackageTempLib) == '' Or $(NuGetPackageTempLib) == '*Undefined*'">$(NuGetPackageTemp)lib\</NuGetPackageTempLib>
         <NuGetPackageTempBuild Condition="$(NuGetPackageTempBuild) == '' Or $(NuGetPackageTempBuild) == '*Undefined*'">$(NuGetPackageTemp)build\</NuGetPackageTempBuild>
-        <NuSpecFileName Condition="$(NuSpecFile) == '' Or $(NuSpecFile) == '*Undefined*'">$(NuGetPackageTemp)RosMockLyn.nuspec</NuSpecFileName>
+        <NuSpecFileName Condition="$(NuSpecFileName) == '' Or $(NuSpecFileName) == '*Undefined*'">$(NuGetPackageTemp)RosMockLyn.nuspec</NuSpecFileName>
         <RosMockLynBuildOutput Condition="$(RosMockLynBuildOutput) == '' Or $(RosMockLynBuildOutput) == '*Undefined*'">$(SolutionDir)bin\Build\$(Configuration)\</RosMockLynBuildOutput>
         <RosMockLynMockingOutput Condition="$(RosMockLynMockingOutput) == '' Or $(RosMockLynMockingOutput) == '*Undefined*'">$(SolutionDir)bin\Mocking\$(Configuration)\</RosMockLynMockingOutput>
 	</PropertyGroup>

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<package >
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
   <metadata>
     <id>RosMockLyn</id>
-    <version>0.5.0</version>
+    <version>0.5.0-alpha</version>
     <title>RosMockLyn</title>
     <authors>Alexander Endris</authors>
     <owners>Alexander Endris</owners>
@@ -13,12 +13,12 @@
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <copyright>Copyright  2015</copyright>
     <references>
-        <reference file="RosMockLyn.Mocking.dll" />
+        <reference file="RosMockLyn.Mocking.dll"/>
     </references>
     <tags>Roslyn WP8 WP8.1 Mock MSBuild</tags>
   </metadata>
   <files>
-    <file src="lib\" target="lib" />
-    <file src="build\" target="build" />
+    <file src="lib\**" target="lib\portable-netcore451+wpa81" />
+    <file src="build\" target="build\portable-netcore451+wpa81" />
   </files>
 </package>

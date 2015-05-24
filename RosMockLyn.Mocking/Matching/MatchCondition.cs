@@ -27,7 +27,27 @@ namespace RosMockLyn.Mocking.Matching
 {
     internal abstract class MatchCondition
     {
-        internal static MatchCondition LastCreatedCondition { get; private set; }
+        private static object locker = new object();
+
+        private static MatchCondition lastCreatedCondition;
+
+        internal static MatchCondition LastCreatedCondition
+        {
+            get
+            {
+                lock (locker)
+                {
+                    return lastCreatedCondition;
+                }
+            }
+            private set
+            {
+                lock (locker)
+                {
+                    lastCreatedCondition = value;
+                }
+            }
+        }
 
         public static TReturn Create<TReturn>(Predicate<TReturn> predicate)
         {
