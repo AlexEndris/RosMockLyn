@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/AlexEndris/RosMockLyn</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/AlexEndris/RosMockLyn/blob/Develop/LICENSE</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/AlexEndris/RosMockLyn/master/LICENSE</licenseUrl>
     <copyright>Copyright  2015</copyright>
     <references>
         <reference file="RosMockLyn.Mocking.dll"/>
