@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
   <metadata>
     <id>RosMockLyn</id>
-    <version>0.5.0-alpha</version>
+    <version>0.5.0-alpha2</version>
     <title>RosMockLyn</title>
     <authors>Alexander Endris</authors>
     <owners>Alexander Endris</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://nuget.org/packages/RosMockLyn</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <licenseUrl>https://github.com/AlexEndris/RosMockLyn/blob/Develop/LICENSE</licenseUrl>
     <copyright>Copyright  2015</copyright>
     <references>
         <reference file="RosMockLyn.Mocking.dll"/>
