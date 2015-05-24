@@ -77,7 +77,7 @@ namespace RosMockLyn.Core.Tests.Preparation
         private static string GetProjectPath()
         {
             var fileName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location) + ".csproj";
-            var projectPath = Path.Combine(Environment.CurrentDirectory, "..", "..", fileName);
+            var projectPath = Path.Combine(Environment.CurrentDirectory, "..", "..", "RosMockLyn.Core.Tests", fileName);
             return projectPath;
         }
 
