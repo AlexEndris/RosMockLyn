@@ -2,25 +2,29 @@
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions
-// are met:
-// * Redistributions of source code must retain the above copyright
-//    notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the
-//    documentation and/or other materials provided with the distribution.
+// modification, are permitted provided that the following conditions are met:
 // 
-// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-// THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+// * Redistributions of source code must retain the above copyright notice, this
+//   list of conditions and the following disclaimer.
+// 
+// * Redistributions in binary form must reproduce the above copyright notice,
+//   this list of conditions and the following disclaimer in the documentation
+//   and/or other materials provided with the distribution.
+// 
+// * Neither the name of RosMockLyn nor the names of its
+//   contributors may be used to endorse or promote products derived from
+//   this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using FluentAssertions;
 
 using NUnit.Framework;
@@ -184,7 +188,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsIn_ArgumentIsIn_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsIn<int>(1));
+            var matchCondition = GetMatcher(Arg.IsIn(1));
 
             // Act
             var result = matchCondition.Matches(1);
@@ -197,7 +201,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsIn_ArgumentIsNotIn_ShouldNotMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsIn<int>(2));
+            var matchCondition = GetMatcher(Arg.IsIn(2));
 
             // Act
             var result = matchCondition.Matches(1);
@@ -210,7 +214,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsIn_NullIsIn_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsIn<string>(new[] { (string)null }));
+            var matchCondition = GetMatcher(Arg.IsIn((string)null));
 
             // Act
             var result = matchCondition.Matches(null);
@@ -223,7 +227,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsIn_NullIsNotIn_ShouldNotMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsIn<string>("1"));
+            var matchCondition = GetMatcher(Arg.IsIn("1"));
 
             // Act
             var result = matchCondition.Matches(null);
@@ -253,7 +257,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsNotIn_ArgumentIsIn_ShouldNotMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsNotIn<int>(1));
+            var matchCondition = GetMatcher(Arg.IsNotIn(1));
 
             // Act
             var result = matchCondition.Matches(1);
@@ -266,7 +270,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsNotIn_ArgumentIsNotIn_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsNotIn<int>(2));
+            var matchCondition = GetMatcher(Arg.IsNotIn(2));
 
             // Act
             var result = matchCondition.Matches(1);
@@ -279,7 +283,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsNotIn_NullIsIn_ShouldNotMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsNotIn<string>(new[] { (string)null }));
+            var matchCondition = GetMatcher(Arg.IsNotIn((string)null));
 
             // Act
             var result = matchCondition.Matches(null);
@@ -292,7 +296,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsNotIn_NullIsNotIn_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsNotIn<string>("1"));
+            var matchCondition = GetMatcher(Arg.IsNotIn("1"));
 
             // Act
             var result = matchCondition.Matches(null);
@@ -322,7 +326,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsInRange_IsInRange_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsInRange<int>(1, 5, Range.Exclusive));
+            var matchCondition = GetMatcher(Arg.IsInRange(1, 5, Range.Exclusive));
 
             // Act
             var result = matchCondition.Matches(2);
@@ -335,7 +339,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsInRange_IsNotInRange_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsInRange<int>(1, 5, Range.Exclusive));
+            var matchCondition = GetMatcher(Arg.IsInRange(1, 5, Range.Exclusive));
 
             // Act
             var result = matchCondition.Matches(6);
@@ -348,7 +352,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsInRange_IsInRangeInclusive_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsInRange<int>(1, 5, Range.Inclusive));
+            var matchCondition = GetMatcher(Arg.IsInRange(1, 5, Range.Inclusive));
 
             // Act
             var result = matchCondition.Matches(5);
@@ -361,7 +365,7 @@ namespace RosMockLyn.Mocking.Tests
         public void ArgIsInRange_IsNotInRangeExclusive_ShouldMatch()
         {
             // Arrange
-            var matchCondition = GetMatcher(Arg.IsInRange<int>(1, 5, Range.Exclusive));
+            var matchCondition = GetMatcher(Arg.IsInRange(1, 5, Range.Exclusive));
 
             // Act
             var result = matchCondition.Matches(5);
