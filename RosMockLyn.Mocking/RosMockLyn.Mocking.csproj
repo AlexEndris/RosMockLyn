@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arg.cs" />
+    <Compile Include="Assertion\AssertionException.cs" />
     <Compile Include="Assertion\Received.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="IoC\IInjector.cs" />
@@ -88,11 +89,6 @@
     <Compile Include="Routing\Invocations\MethodSetupInfo.cs" />
     <Compile Include="Routing\MockSubstitutionContext.cs" />
     <Compile Include="Routing\PropertyCallReturn.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.UnitTestFramework">
-      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\MSTestFramework\11.0\References\CommonConfiguration\Neutral\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

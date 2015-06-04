@@ -41,6 +41,15 @@ namespace RosMockLyn.Mocking.Matching
                 return new ConstantMatcher(constExpression.Value);
             }
 
+            var memberExpression = expression as MemberExpression;
+
+            if (memberExpression != null)
+            {
+                var value = GetMemberValue(memberExpression);
+
+                return new ConstantMatcher(value);
+            }
+
             if (expression is MethodCallExpression)
             {
                 Expression.Lambda<Action>(expression).Compile().Invoke();
@@ -51,6 +60,15 @@ namespace RosMockLyn.Mocking.Matching
             }
 
             throw new NotSupportedException();
+        }
+
+        private static object GetMemberValue(MemberExpression memberExpression)
+        {
+            dynamic info = memberExpression.Member;
+
+            var obj = ((ConstantExpression)memberExpression.Expression).Value;
+
+            return info.GetValue(obj);
         }
     }
 }
