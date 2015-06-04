@@ -28,6 +28,8 @@
 using System;
 using System.Linq.Expressions;
 
+using FluentAssertions;
+
 using NUnit.Framework;
 
 using RosMockLyn.Mocking.Matching;
@@ -38,18 +40,48 @@ namespace RosMockLyn.Mocking.Tests
     public class MatcherFactoryTests
     {
         [Test]
-        public void Method_Scenario_Expected()
+        public void Create_LocalVariableInExpression_ShouldCreateConstantMatcher()
+        {
+            // Arrange
+            int value = 1000;
+            Expression expression = (ToExpression(() => value) as LambdaExpression).Body;
+
+            // Act
+            var matcher = MatcherFactory.Create(expression);
+
+            // Assert
+            matcher.Should().BeOfType<ConstantMatcher>();
+            matcher.Match(value).Should().BeTrue();
+        }
+
+        [Test]
+        public void Create_ConstantValueInExpression_ShouldCreateConstantMatcher()
+        {
+            // Arrange
+            Expression expression = (ToExpression(() => 1000) as LambdaExpression).Body;
+
+            // Act
+            var matcher = MatcherFactory.Create(expression);
+
+            // Assert
+            matcher.Should().BeOfType<ConstantMatcher>();
+            matcher.Match(1000).Should().BeTrue();
+        }
+
+        [Test]
+        public void Create_MethodInExpression_ShouldCreateConditionMatcher()
         {
             // Arrange
             Expression expression = (ToExpression(() => Arg.IsAny<int>()) as LambdaExpression).Body;
 
             // Act
-            MatcherFactory.Create(expression);
+            var matcher = MatcherFactory.Create(expression);
 
             // Assert
+            matcher.Should().BeOfType<ConditionMatcher>();
         }
 
-        public static Expression ToExpression<T>(Expression<Func<T>> expression)
+        private static Expression ToExpression<T>(Expression<Func<T>> expression)
         {
             return expression;
         }
