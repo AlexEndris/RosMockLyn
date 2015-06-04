@@ -28,8 +28,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
 using RosMockLyn.Mocking.Routing.Invocations;
 
 namespace RosMockLyn.Mocking.Assertion
@@ -60,28 +58,28 @@ namespace RosMockLyn.Mocking.Assertion
 
         public void AtLeastOne()
         {
-            Assert.AreNotEqual(0, Calls, string.Format("There were no calls made for method '{0}'.", _methodName));
+            if (Calls <= 0)
+                throw new AssertionException(string.Format("There were no calls made for method '{0}'.", _methodName));
         }
 
         public void Excatly(int expectedCalls)
         {
-            Assert.AreEqual(
-                expectedCalls,
-                Calls,
-                string.Format("There were {0} calls to method '{1}', but {2} were expected.",
-                    Calls,
-                    _methodName,
-                    expectedCalls));
+            if (Calls != expectedCalls)
+                throw new AssertionException(
+                    string.Format("There were {0} calls to method '{1}', but {2} were expected.",
+                        Calls,
+                        _methodName,
+                        expectedCalls));
         }
 
         public void AtLeast(int amountOfCalls)
         {
-            Assert.IsTrue(
-                Calls >= amountOfCalls,
-                string.Format("There were {0} calls to method '{1}', but at least {2} were expected.",
-                    Calls,
-                    _methodName,
-                    amountOfCalls));
+            if (Calls >= amountOfCalls)
+                throw new AssertionException(
+                    string.Format("There were {0} calls to method '{1}', but at least {2} were expected.",
+                        Calls,
+                        _methodName,
+                        amountOfCalls));
         }
 
         public void None()
