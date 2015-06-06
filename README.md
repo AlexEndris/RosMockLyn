@@ -1,6 +1,6 @@
 RosMockLyn [![Build status](https://ci.appveyor.com/api/projects/status/github/AlexEndris/RosMockLyn?svg=true)](https://ci.appveyor.com/project/AlexEndris/rosmocklyn?Branch=master) [![NuGet downloads](https://img.shields.io/nuget/dt/RosMockLyn.svg)](https://www.nuget.org/packages/RosMockLyn) [![Version](https://img.shields.io/nuget/v/RosMockLyn.svg)](https://www.nuget.org/packages/RosMockLyn)
 ========
-RosMockLyn is the most user friendly compile-time mocking framework out there. It is - as the name implies - powered by Project Roslyn compilers which means as long as your project compiles RosMockLyn will create the mocks for you.
+RosMockLyn is the most user friendly compile-time mocking framework out there. It is - as the name implies - powered by Project Roslyn compilers which means, as long as your project compiles itself, RosMockLyn will create the mocks for you.
 
 ##How are the mocks created?
 The NuGet package installs a MSBuild target into the test project that automatically scans the project references (not assembly references), collects all interfaces (even internal ones, so no need to put a special 'InternalsVisibleTo' attribute for RosMockLyn) and creates the mocks while making sure that the fully build test-assembly has those mocks as a reference (which is realized with Mono.Cecil). This all means that you don't need to worry about the mocks as all of this is completely automated. Apart from adding RosMockLyn through NuGet, nothing has to be done.
