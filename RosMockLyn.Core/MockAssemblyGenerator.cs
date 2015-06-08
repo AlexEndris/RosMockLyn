@@ -56,15 +56,15 @@ namespace RosMockLyn.Core
             IAssemblyCompiler compiler)
         {
             if (projectRetriever == null)
-                throw new ArgumentNullException(nameof(projectRetriever));
+                throw new ArgumentNullException("projectRetriever");
             if (interfaceExtractor == null)
-                throw new ArgumentNullException(nameof(interfaceExtractor));
+                throw new ArgumentNullException("interfaceExtractor");
             if (mockGenerator == null)
-                throw new ArgumentNullException(nameof(mockGenerator));
+                throw new ArgumentNullException("mockGenerator");
             if (mockRegistryGenerator == null)
-                throw new ArgumentNullException(nameof(mockRegistryGenerator));
+                throw new ArgumentNullException("mockRegistryGenerator");
             if (compiler == null)
-                throw new ArgumentNullException(nameof(compiler));
+                throw new ArgumentNullException("compiler");
 
             _projectRetriever = projectRetriever;
             _interfaceExtractor = interfaceExtractor;
