@@ -22,6 +22,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="RosMockLyn.nuspec">
       <SubType>Designer</SubType>
     </None>

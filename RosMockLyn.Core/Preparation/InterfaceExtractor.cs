@@ -41,7 +41,14 @@ namespace RosMockLyn.Core.Preparation
         {
             var compilation = project.GetCompilationAsync().Result;
 
-            return compilation.SyntaxTrees.Where(HasInterface).Where(NotRosMockLyn);
+            return compilation.SyntaxTrees.Where(HasInterfaceDeclaration).Where(NotRosMockLyn);
+        }
+
+        public IEnumerable<string> GetUsedInterfaceNames(Project project)
+        {
+            var compilation = project.GetCompilationAsync().Result;
+
+            return compilation.SyntaxTrees.SelectMany(GetUsedInterfaceNames).Distinct();
         }
 
         private bool NotRosMockLyn(SyntaxTree tree)
@@ -55,13 +62,22 @@ namespace RosMockLyn.Core.Preparation
             return !interfaceBlockSyntaxs.Any();
         }
 
-        private bool HasInterface(SyntaxTree tree)
+        private bool HasInterfaceDeclaration(SyntaxTree tree)
         {
             var root = tree.GetRoot();
 
             var interfaceBlockSyntaxs = from node in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>() select node;
 
             return interfaceBlockSyntaxs.Any();
+        }
+
+        private IEnumerable<string> GetUsedInterfaceNames(SyntaxTree tree)
+        {
+            var root = tree.GetRoot();
+
+            return from node in root.DescendantNodes().OfType<TypeArgumentListSyntax>()
+                                     where node.Ancestors().OfType<GenericNameSyntax>().Any(x => x.Identifier.ToString() == "For")
+                                     select node.Arguments.OfType<IdentifierNameSyntax>().First().Identifier.ToString();
         }
     }
 }

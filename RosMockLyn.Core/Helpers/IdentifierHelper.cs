@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -51,6 +52,13 @@ namespace RosMockLyn.Core.Helpers
         public static string AppendIdentifier(params string[] parts)
         {
             return string.Join(".", parts);
+        }
+
+        public static bool Contains(SyntaxNode node, IEnumerable<string> usedInterfaces)
+        {
+            return node.DescendantNodesAndSelf()
+                .OfType<InterfaceDeclarationSyntax>()
+                .Any(x => usedInterfaces.Contains(x.Identifier.ToString()));
         }
 
         private static IEnumerable<IdentifierNameSyntax> CreateIdentifiers(string fullyQualifiedName)
