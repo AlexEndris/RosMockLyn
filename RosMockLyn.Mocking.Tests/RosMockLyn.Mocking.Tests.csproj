@@ -116,11 +116,6 @@
     <AppxPackageIncludePrivateSymbols>true</AppxPackageIncludePrivateSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
-    <SDKReference Include="MSTestFramework, Version=11.0" />
-    <SDKReference Include="TestPlatform, Version=11.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Mocks\HandleIndexInvocationMock.cs" />
     <Compile Include="Mocks\HandleMethodInvocationMock.cs" />

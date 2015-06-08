@@ -30,7 +30,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core
@@ -54,15 +56,15 @@ namespace RosMockLyn.Core
             IAssemblyCompiler compiler)
         {
             if (projectRetriever == null)
-                throw new ArgumentNullException("projectRetriever");
+                throw new ArgumentNullException(nameof(projectRetriever));
             if (interfaceExtractor == null)
-                throw new ArgumentNullException("interfaceExtractor");
+                throw new ArgumentNullException(nameof(interfaceExtractor));
             if (mockGenerator == null)
-                throw new ArgumentNullException("mockGenerator");
+                throw new ArgumentNullException(nameof(mockGenerator));
             if (mockRegistryGenerator == null)
-                throw new ArgumentNullException("mockRegistryGenerator");
+                throw new ArgumentNullException(nameof(mockRegistryGenerator));
             if (compiler == null)
-                throw new ArgumentNullException("compiler");
+                throw new ArgumentNullException(nameof(compiler));
 
             _projectRetriever = projectRetriever;
             _interfaceExtractor = interfaceExtractor;
@@ -73,19 +75,29 @@ namespace RosMockLyn.Core
 
         public bool GenerateMockAssembly(GenerationOptions options)
         {
+
             var mainProject = _projectRetriever.OpenProject(options.ProjectPath);
-            
+
+            var usedInterfaces = _interfaceExtractor.GetUsedInterfaceNames(mainProject);
+
             var referencedProjects = _projectRetriever.GetReferencedProjects(mainProject);
 
-            var trees = referencedProjects.SelectMany(_interfaceExtractor.Extract).ToList();
+            var finalTrees = GenerateMocks(referencedProjects, usedInterfaces);
+
+            return _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
+        }
+
+        private List<SyntaxTree> GenerateMocks(IEnumerable<Project> referencedProjects, IEnumerable<string> usedInterfaces)
+        {
+            var trees = referencedProjects.SelectMany(_interfaceExtractor.Extract)
+                                           .Where(x => IdentifierHelper.Contains(x.GetRoot(), usedInterfaces));
 
             var mocks = trees.Select(_mockGenerator.GenerateMock);
 
             var registry = _mockRegistryGenerator.GenerateRegistry(trees);
 
             List<SyntaxTree> finalTrees = new List<SyntaxTree>(mocks) { registry };
-            
-            return _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
+            return finalTrees;
         }
     }
 }
