@@ -75,7 +75,6 @@ namespace RosMockLyn.Core
 
         public bool GenerateMockAssembly(GenerationOptions options)
         {
-
             var mainProject = _projectRetriever.OpenProject(options.ProjectPath);
 
             var usedInterfaces = _interfaceExtractor.GetUsedInterfaceNames(mainProject);
