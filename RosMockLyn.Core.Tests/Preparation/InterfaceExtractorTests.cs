@@ -96,6 +96,55 @@ namespace RosMockLyn.Core.Tests.Preparation
                 .Should().Contain(x => x.Identifier.ToString() == interfaceName);
         }
 
+        [Test, Category("Unit Test")]
+        public void GetUsedInterfaces_ShouldReturnNamesOfUsedInterfaces()
+        {
+            // Arrange
+            string interfaceName = "IMyInterface";
+            var compilation = CreateClassWithMockCalls(interfaceName);
+            var project = CreateProjectWithSyntaxNode(compilation);
+            
+            // Act
+            var result = _extractor.GetUsedInterfaceNames(project);
+
+            // Assert
+            result.Should().Contain(interfaceName);
+        }
+
+        [Test, Category("Unit Test")]
+        public void GetUsedInterfaces_ShouldReturnNamesOfUsedInterfaces_OnlyOnce()
+        {
+            // Arrange
+            string interfaceName = "IMyInterface";
+            var compilation = CreateClassWithMockCalls(interfaceName, interfaceName);
+            var project = CreateProjectWithSyntaxNode(compilation);
+            
+            // Act
+            var result = _extractor.GetUsedInterfaceNames(project);
+
+            // Assert
+            result.Should().HaveCount(1);
+            result.Should().Contain(interfaceName);
+        }
+
+        [Test, Category("Unit Test")]
+        public void GetUsedInterfaces_ShouldReturnNamesOfUsedInterfaces_AllDistinct()
+        {
+            // Arrange
+            string interfaceName = "IMyInterface";
+            string interfaceName2 = "IMyInterface2";
+            var compilation = CreateClassWithMockCalls(interfaceName, interfaceName2);
+            var project = CreateProjectWithSyntaxNode(compilation);
+            
+            // Act
+            var result = _extractor.GetUsedInterfaceNames(project);
+
+            // Assert
+            result.Should().HaveCount(2);
+            result.Should().Contain(interfaceName)
+                .And.Contain(interfaceName2);
+        }
+
         private Project CreateProjectWithSyntaxNode(SyntaxNode root)
         {
             var workspace = new AdhocWorkspace();
@@ -120,6 +169,41 @@ namespace RosMockLyn.Core.Tests.Preparation
                 .AddMembers(interfaceDeclaration);
 
             return SyntaxFactory.CompilationUnit().AddMembers(namespaceDeclaration);
+        }
+
+        private SyntaxNode CreateClassWithMockCalls(params string[] interfaceNames)
+        {
+            return
+                SyntaxFactory.CompilationUnit()
+                    .WithMembers(
+                        SyntaxFactory.SingletonList<MemberDeclarationSyntax>(
+                            SyntaxFactory.ClassDeclaration(@"Test")
+                                .WithModifiers(SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)))
+                                .WithMembers(
+                                    SyntaxFactory.SingletonList<MemberDeclarationSyntax>(
+                                        SyntaxFactory.MethodDeclaration(
+                                            SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)),
+                                            SyntaxFactory.Identifier(@"Test_Methods"))
+                                            .WithModifiers(
+                                                SyntaxFactory.TokenList(SyntaxFactory.Token(SyntaxKind.PublicKeyword)))
+                                            .WithBody(
+                                                SyntaxFactory.Block(
+                                                    SyntaxFactory.List<StatementSyntax>(
+                                                        interfaceNames.Select(CreateMockForCall))))))));
+        }
+
+        private ExpressionStatementSyntax CreateMockForCall(string interfaceName)
+        {
+            return SyntaxFactory.ExpressionStatement(
+                SyntaxFactory.InvocationExpression(
+                SyntaxFactory.MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxFactory.IdentifierName(@"Mock"),
+                    SyntaxFactory.GenericName(SyntaxFactory.Identifier(@"For"))
+                        .WithTypeArgumentList(
+                            SyntaxFactory.TypeArgumentList(
+                                SyntaxFactory.SingletonSeparatedList<TypeSyntax>(
+                                    SyntaxFactory.IdentifierName(interfaceName)))))));
         }
     }
 }

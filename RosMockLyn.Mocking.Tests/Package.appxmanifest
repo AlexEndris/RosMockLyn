@@ -6,10 +6,10 @@
             Version="1.0.0.0" />
   
   <Properties>
-    <DisplayName>RosMockLyn.Utilities.Tests</DisplayName>
+    <DisplayName>RosMockLyn.Mocking.Tests</DisplayName>
     <PublisherDisplayName>Alex</PublisherDisplayName>
     <Logo>Images\UnitTestStoreLogo.png</Logo>
-    <Description>RosMockLyn.Utilities.Tests</Description>
+    <Description>RosMockLyn.Mocking.Tests</Description>
   </Properties>
   
   <Prerequisites>
