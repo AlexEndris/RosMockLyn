@@ -38,7 +38,7 @@ namespace RosMockLyn.Core.Helpers
         public static IdentifierNameSyntax GetBaseInterfaceIdentifier(SyntaxNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             var typeDeclarationSyntax =
                 (TypeDeclarationSyntax)node.AncestorsAndSelf().OfType<ClassDeclarationSyntax>().Single();
@@ -51,10 +51,10 @@ namespace RosMockLyn.Core.Helpers
         public static string GetMockImplementationName(SyntaxNode node, string suffix = "Mock")
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             if (string.IsNullOrWhiteSpace(suffix))
-                throw new ArgumentNullException("suffix");
+                throw new ArgumentNullException(nameof(suffix));
 
             var typeDeclarationSyntax = GetTypeDeclaration(node);
 
@@ -64,7 +64,7 @@ namespace RosMockLyn.Core.Helpers
         public static string GetInterfaceName(SyntaxNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             var typeDeclarationSyntax = (TypeDeclarationSyntax)node.DescendantNodesAndSelf()
                                         .OfType<InterfaceDeclarationSyntax>()
@@ -76,7 +76,7 @@ namespace RosMockLyn.Core.Helpers
         public static string GetFullyQualifiedNamespace(SyntaxNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             
             var namespaceDeclaration = node.SyntaxTree.GetRoot()
                                         .DescendantNodesAndSelf()

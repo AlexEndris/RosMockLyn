@@ -53,7 +53,7 @@ namespace RosMockLyn.Core.Transformation
         public SyntaxNode Transform(SyntaxNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             var propertyDeclaration = node as PropertyDeclarationSyntax;
 

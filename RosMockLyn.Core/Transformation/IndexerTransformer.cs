@@ -53,7 +53,7 @@ namespace RosMockLyn.Core.Transformation
         public SyntaxNode Transform(SyntaxNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             var indexerDeclaration = node as IndexerDeclarationSyntax;
 
@@ -108,10 +108,7 @@ namespace RosMockLyn.Core.Transformation
 
         private string GetAccessor(SyntaxKind syntaxKind)
         {
-            if (syntaxKind == SyntaxKind.GetAccessorDeclaration)
-                return "Get";
-
-            return "Set";
+            return syntaxKind == SyntaxKind.GetAccessorDeclaration ? "Get" : "Set";
         }
 
         private AccessorDeclarationSyntax GenerateAccessor(SyntaxKind accessor, InvocationExpressionSyntax substitutionCall)
