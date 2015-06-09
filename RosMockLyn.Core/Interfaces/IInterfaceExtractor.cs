@@ -34,5 +34,7 @@ namespace RosMockLyn.Core.Interfaces
     public interface IInterfaceExtractor
     {
         IEnumerable<SyntaxTree> Extract(Project project);
+
+        IEnumerable<string> GetUsedInterfaceNames(Project project);
     }
 }

@@ -31,8 +31,6 @@ using NUnit.Framework;
 
 using RosMockLyn.Mocking.IoC;
 
-using Assert = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.Assert;
-
 namespace RosMockLyn.Mocking.Tests
 {
     [TestFixture]
@@ -54,7 +52,7 @@ namespace RosMockLyn.Mocking.Tests
             
             // Act
             // Assert
-            Assert.ThrowsException<InvalidOperationException>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
+            Assert.Throws<InvalidOperationException>(() => _injector.RegisterType<ISomeInterface, SomeInterfaceOtherImpl>());
         }
 
         [Test, Category("Unit Test")]
