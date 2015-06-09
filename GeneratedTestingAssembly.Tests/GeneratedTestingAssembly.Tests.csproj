@@ -116,10 +116,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
-    <SDKReference Include="MSTestFramework, Version=14.0">
+    <SDKReference Include="MSTestFramework, Version=11.0">
       <Name>MSTest for Managed Projects</Name>
     </SDKReference>
-    <SDKReference Include="TestPlatform, Version=14.0">
+    <SDKReference Include="TestPlatform, Version=11.0">
       <Name>Microsoft Visual Studio Test Core</Name>
     </SDKReference>
   </ItemGroup>
