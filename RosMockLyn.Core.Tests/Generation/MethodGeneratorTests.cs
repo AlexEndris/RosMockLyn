@@ -47,6 +47,7 @@ namespace RosMockLyn.Core.Tests.Generation
     public class MethodGeneratorTests
     {
         private MethodGenerator _methodGenerator;
+
         public int TestProperty { get; set; }
         
         [SetUp]
@@ -158,7 +159,7 @@ namespace RosMockLyn.Core.Tests.Generation
 
             memberAccessExpressionSyntaxes.Should().NotBeEmpty();
 
-            var memberAccessExpression =memberAccessExpressionSyntaxes.First();
+            var memberAccessExpression = memberAccessExpressionSyntaxes.First();
             var invocationExpressionSyntax = syntaxNode.DescendantNodes().OfType<InvocationExpressionSyntax>().First();
 
             memberAccessExpression.Name.ToString().Should().Be("Method");
@@ -197,7 +198,6 @@ namespace RosMockLyn.Core.Tests.Generation
 
         public void TestMethod()
         {
-            
         }
     }
 }

@@ -45,7 +45,13 @@ namespace RosMockLyn.Core.Generation
         private const string Method = "Method";
         private const string Arguments = "arguments";
 
-        public GeneratorType Type { get; }
+        public GeneratorType Type
+        {
+            get
+            {
+                return GeneratorType.Method;
+            }
+        }
 
         public SyntaxNode Generate(MemberInfo memberInfo)
         {
