@@ -57,7 +57,7 @@ namespace RosMockLyn.Core.Tests.Transformation
             // Arrange
             // Act
             // Assert
-            _transformer.Type.Should().Be(TransformerType.Property);
+            _transformer.Type.Should().Be(GeneratorType.Property);
         }
 
         [Test, Category("Unit Test")]

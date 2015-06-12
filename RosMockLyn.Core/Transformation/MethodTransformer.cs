@@ -44,11 +44,11 @@ namespace RosMockLyn.Core.Transformation
         private const string Method = "Method";
         private const string Arguments = "arguments";
 
-        public TransformerType Type
+        public GeneratorType Type
         {
             get
             {
-                return TransformerType.Method;
+                return GeneratorType.Method;
             }
         }
 

@@ -123,6 +123,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Generation\MethodGeneratorTests.cs" />
     <Compile Include="Generation\MockGeneratorTests.cs" />
     <Compile Include="Generation\MockRegistryGeneratorTests.cs" />
     <Compile Include="Helpers\IdentifierHelperTests.cs" />

@@ -57,7 +57,7 @@ namespace RosMockLyn.Core.Tests.Transformation
             // Arrange
             // Act
             // Assert
-            _transformer.Type.Should().Be(TransformerType.Indexer);
+            _transformer.Type.Should().Be(GeneratorType.Indexer);
         }
 
         [Test, Category("Unit Test")]

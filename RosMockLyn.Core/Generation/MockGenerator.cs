@@ -47,42 +47,42 @@ namespace RosMockLyn.Core.Generation
 
         public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node)
         {
-            var syntaxNode = (CompilationUnitSyntax)GetTransformer(TransformerType.Using).Transform(node);
+            var syntaxNode = (CompilationUnitSyntax)GetTransformer(GeneratorType.Using).Transform(node);
 
             return base.VisitCompilationUnit(syntaxNode);
         }
 
         public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
-            var syntaxNode = GetTransformer(TransformerType.Namespace).Transform(node);
+            var syntaxNode = GetTransformer(GeneratorType.Namespace).Transform(node);
 
             return base.VisitNamespaceDeclaration((NamespaceDeclarationSyntax)syntaxNode);
         }
 
         public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
-            var syntaxNode = GetTransformer(TransformerType.Interface).Transform(node);
+            var syntaxNode = GetTransformer(GeneratorType.Interface).Transform(node);
 
             return VisitClassDeclaration((ClassDeclarationSyntax)syntaxNode);
         }
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var newMethodSyntax = GetTransformer(TransformerType.Method).Transform(node);
+            var newMethodSyntax = GetTransformer(GeneratorType.Method).Transform(node);
 
             return base.VisitMethodDeclaration((MethodDeclarationSyntax)newMethodSyntax);
         }
 
         public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
         {
-            var syntaxNode = GetTransformer(TransformerType.Property).Transform(node);
+            var syntaxNode = GetTransformer(GeneratorType.Property).Transform(node);
 
             return base.VisitPropertyDeclaration((PropertyDeclarationSyntax)syntaxNode);
         }
 
         public override SyntaxNode VisitIndexerDeclaration(IndexerDeclarationSyntax node)
         {
-            var syntaxNode = GetTransformer(TransformerType.Indexer).Transform(node);
+            var syntaxNode = GetTransformer(GeneratorType.Indexer).Transform(node);
 
             return base.VisitIndexerDeclaration((IndexerDeclarationSyntax)syntaxNode);
         }
@@ -92,7 +92,7 @@ namespace RosMockLyn.Core.Generation
             return SyntaxFactory.SyntaxTree(Visit(treeToGenerateMockFrom.GetRoot()).NormalizeWhitespace());
         }
 
-        private ICodeTransformer GetTransformer(TransformerType type)
+        private ICodeTransformer GetTransformer(GeneratorType type)
         {
             return _transformers.Single(x => x.Type == type);
         }

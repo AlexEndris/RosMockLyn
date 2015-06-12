@@ -42,11 +42,11 @@ namespace RosMockLyn.Core.Transformation
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Index = "Index";
 
-        public TransformerType Type
+        public GeneratorType Type
         {
             get
             {
-                return TransformerType.Indexer;
+                return GeneratorType.Indexer;
             }
         }
 

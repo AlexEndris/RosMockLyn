@@ -31,7 +31,7 @@ namespace RosMockLyn.Core.Interfaces
 {
     public interface ICodeTransformer
     {
-        TransformerType Type { get; }
+        GeneratorType Type { get; }
 
         SyntaxNode Transform(SyntaxNode node);
     }

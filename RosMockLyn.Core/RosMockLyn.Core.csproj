@@ -126,8 +126,10 @@
     <Compile Include="AssemblyManipulator.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="GenerationOptions.cs" />
+    <Compile Include="Generation\MethodGenerator.cs" />
     <Compile Include="Interfaces\IAssemblyManipulator.cs" />
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
+    <Compile Include="Interfaces\ICodeGenerator.cs" />
     <Compile Include="Interfaces\IProjectRetriever.cs" />
     <Compile Include="Preparation\AssemblyCompiler.cs" />
     <Compile Include="Preparation\InterfaceExtractor.cs" />
@@ -149,7 +151,7 @@
     <Compile Include="Transformation\MethodTransformer.cs" />
     <Compile Include="Transformation\NamespaceTransformer.cs" />
     <Compile Include="Transformation\PropertyTransformer.cs" />
-    <Compile Include="Interfaces\TransformerType.cs" />
+    <Compile Include="Interfaces\GeneratorType.cs" />
     <Compile Include="Transformation\UsingsTransformer.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -41,11 +41,11 @@ namespace RosMockLyn.Core.Transformation
     {
         private const string DerivesFrom = "MockBase";
 
-        public TransformerType Type
+        public GeneratorType Type
         {
             get
             {
-                return TransformerType.Interface;
+                return GeneratorType.Interface;
             }
         }
 
