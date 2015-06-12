@@ -41,6 +41,10 @@ namespace RosMockLyn.Core.Generation
 {
     public class MethodGenerator : ICodeGenerator
     {
+        private const string SubstitutionContext = "SubstitutionContext";
+        private const string Method = "Method";
+        private const string Arguments = "arguments";
+
         public GeneratorType Type { get; }
 
         public SyntaxNode Generate(MemberInfo memberInfo)
@@ -53,10 +57,13 @@ namespace RosMockLyn.Core.Generation
             var methodName = methodInfo.Name;
             var returnType = GetType(methodInfo.ReturnType);
 
-            var parameters = GetParameters(methodInfo.GetParameters());
+            var parameterInfos = methodInfo.GetParameters();
 
-            return CreateMethod(methodName, returnType)
-                .WithParameterList(parameters);
+            var parameters = GetParameters(parameterInfos);
+
+            return GenerateMethod(methodName, returnType)
+                .WithParameterList(parameters)
+                .WithBody(GenerateMethodBody(methodInfo.ReturnType, parameterInfos));
         }
 
         private ParameterListSyntax GetParameters(IEnumerable<ParameterInfo> parameters)
@@ -79,10 +86,104 @@ namespace RosMockLyn.Core.Generation
                     .WithType(GetType(parameter.ParameterType));
         }
 
-        private MethodDeclarationSyntax CreateMethod(string methodName, TypeSyntax returnType)
+        private MethodDeclarationSyntax GenerateMethod(string methodName, TypeSyntax returnType)
         {
             return SyntaxFactory.MethodDeclaration(returnType, methodName);
         }
 
+        private BlockSyntax GenerateMethodBody(Type returnType, IEnumerable<ParameterInfo> parameters)
+        {
+            if (returnType == typeof(void))
+            {
+                return SyntaxFactory.Block(GenerateVoidMethodBody(parameters));
+            }
+
+            return SyntaxFactory.Block(GenerateReturnMethodBody(returnType, parameters));
+        }
+
+        private StatementSyntax GenerateVoidMethodBody(IEnumerable<ParameterInfo> parameters)
+        {
+            var substitution = GenerateMethodSubstitution(parameters);
+
+            return SyntaxFactory.ExpressionStatement(substitution);
+        }
+
+        private static InvocationExpressionSyntax GenerateMethodSubstitution(IEnumerable<ParameterInfo> parameters)
+        {
+            var substitution =
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),
+                        SyntaxFactory.IdentifierName(Method)));
+
+            substitution = AddMethodArguments(parameters, substitution);
+
+            return substitution;
+        }
+
+        private static InvocationExpressionSyntax AddMethodArguments(
+             IEnumerable<ParameterInfo> parameters,
+            InvocationExpressionSyntax substitution)
+        {
+            if (!parameters.Any())
+                return substitution;
+
+            var arguments = parameters.Select(x => SyntaxFactory.IdentifierName(x.Name));
+
+            var namedArgument = SyntaxFactory.NameColon(SyntaxFactory.IdentifierName(Arguments));
+            var newObjectArry = CreateObjectArray(arguments);
+
+            var argumentList =
+                SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Argument(newObjectArry).WithNameColon(namedArgument));
+
+            substitution = substitution.WithArgumentList(SyntaxFactory.ArgumentList(argumentList));
+
+            return substitution;
+        }
+
+        private static ArrayCreationExpressionSyntax CreateObjectArray(IEnumerable<IdentifierNameSyntax> arguments)
+        {
+            return SyntaxFactory.ArrayCreationExpression(SyntaxFactory.ArrayType(
+                SyntaxFactory.PredefinedType(
+                    SyntaxFactory.Token(SyntaxKind.ObjectKeyword)))
+                    .WithRankSpecifiers(SyntaxFactory.SingletonList(
+                                                            SyntaxFactory.ArrayRankSpecifier(
+                                                                SyntaxFactory.SingletonSeparatedList<ExpressionSyntax>(
+                                                                    SyntaxFactory.OmittedArraySizeExpression())))))
+                .WithInitializer(SyntaxFactory.InitializerExpression(
+                    SyntaxKind.ArrayInitializerExpression,
+                    SyntaxFactory.SeparatedList<ExpressionSyntax>(arguments)));
+        }
+
+        private StatementSyntax GenerateReturnMethodBody(Type returnType, IEnumerable<ParameterInfo> parameters)
+        {
+            var substitution = GenerateGenericMethodSubstitution(parameters, returnType);
+
+            return SyntaxFactory.ReturnStatement(substitution);
+        }
+
+        private static InvocationExpressionSyntax GenerateGenericMethodSubstitution(IEnumerable<ParameterInfo> parameters, Type returnType)
+        {
+            var typeList = SyntaxFactory.SeparatedList<TypeSyntax>(new[] { SyntaxFactory.IdentifierName(returnType.Name) });
+
+            var substitution = CreateInvocationExpression(typeList);
+
+            substitution = AddMethodArguments(parameters, substitution);
+
+            return substitution;
+        }
+
+        private static InvocationExpressionSyntax CreateInvocationExpression(SeparatedSyntaxList<TypeSyntax> typeList)
+        {
+            var substitution =
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(SubstitutionContext),
+                        SyntaxFactory.GenericName(Method).WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))));
+
+            return substitution;
+        }
     }
 }

@@ -27,6 +27,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -120,6 +121,69 @@ namespace RosMockLyn.Core.Tests.Generation
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
                 .And.Match<MethodDeclarationSyntax>(x => x.ReturnType.ChildTokens().All(t => !t.IsKind(SyntaxKind.VoidKeyword)));
+        }
+
+        [Test, Category("Unit Test")]
+        public void Generate_Method_ReturnedMethodHasSubstitutionContextCall()
+        {
+            // Arrange
+            var methodInfo = GetType().GetMethod("TestMethodWithParameter");
+
+            // Act
+            var syntaxNode = _methodGenerator.Generate(methodInfo);
+
+            // Assert
+            var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
+                .OfType<MemberAccessExpressionSyntax>();
+
+            memberAccessExpressionSyntaxes.Should().NotBeEmpty();
+
+            var memberAccessExpression =memberAccessExpressionSyntaxes.First();
+
+            memberAccessExpression.Name.ToString().Should().Be("Method");
+        }
+
+        [Test, Category("Unit Test")]
+        public void Generate_MethodWithParameters_ReturnedMethodHasSubstitutionContextCallWithParameters()
+        {
+            // Arrange
+            var methodInfo = GetType().GetMethod("TestMethodWithParameter");
+
+            // Act
+            var syntaxNode = _methodGenerator.Generate(methodInfo);
+
+            // Assert
+            var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
+                .OfType<MemberAccessExpressionSyntax>();
+
+            memberAccessExpressionSyntaxes.Should().NotBeEmpty();
+
+            var memberAccessExpression =memberAccessExpressionSyntaxes.First();
+            var invocationExpressionSyntax = syntaxNode.DescendantNodes().OfType<InvocationExpressionSyntax>().First();
+
+            memberAccessExpression.Name.ToString().Should().Be("Method");
+            invocationExpressionSyntax.ArgumentList.Arguments.Should().NotBeEmpty();
+        }
+
+        [Test, Category("Unit Test")]
+        public void Generate_MethodWithReturnValue_ReturnedMethodHasSubstitutionContextCallWithReturnValue()
+        {
+            // Arrange
+            var methodInfo = GetType().GetMethod("TestMethodWithReturnValue");
+
+            // Act
+            var syntaxNode = _methodGenerator.Generate(methodInfo);
+
+            // Assert
+            var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
+                .OfType<MemberAccessExpressionSyntax>();
+
+            memberAccessExpressionSyntaxes.Should().NotBeEmpty();
+
+            var memberAccessExpression = memberAccessExpressionSyntaxes.First().Name.As<GenericNameSyntax>();
+
+            memberAccessExpression.Identifier.ToString().Should().Be("Method");
+            memberAccessExpression.TypeArgumentList.Arguments.Should().NotBeEmpty();
         }
 
         public void TestMethodWithParameter(int i)
