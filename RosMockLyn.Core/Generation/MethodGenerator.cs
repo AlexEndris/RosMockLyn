@@ -62,8 +62,14 @@ namespace RosMockLyn.Core.Generation
             var parameters = GetParameters(parameterInfos);
 
             return GenerateMethod(methodName, returnType)
+                .WithExplicitInterfaceSpecifier(GenerateExplicitInterfaceSpecifier(methodInfo))
                 .WithParameterList(parameters)
                 .WithBody(GenerateMethodBody(methodInfo.ReturnType, parameterInfos));
+        }
+
+        private static ExplicitInterfaceSpecifierSyntax GenerateExplicitInterfaceSpecifier(MethodInfo methodInfo)
+        {
+            return SyntaxFactory.ExplicitInterfaceSpecifier(SyntaxFactory.IdentifierName(methodInfo.DeclaringType.Name));
         }
 
         private ParameterListSyntax GetParameters(IEnumerable<ParameterInfo> parameters)

@@ -138,7 +138,7 @@ namespace RosMockLyn.Core.Tests.Generation
 
             memberAccessExpressionSyntaxes.Should().NotBeEmpty();
 
-            var memberAccessExpression =memberAccessExpressionSyntaxes.First();
+            var memberAccessExpression = memberAccessExpressionSyntaxes.First();
 
             memberAccessExpression.Name.ToString().Should().Be("Method");
         }
