@@ -40,7 +40,7 @@ namespace RosMockLyn.Core.Helpers
         public static NameSyntax GetIdentifier(string fullyQualifiedName)
         {
             if (string.IsNullOrWhiteSpace(fullyQualifiedName))
-                throw new ArgumentNullException("fullyQualifiedName");
+                throw new ArgumentNullException(nameof(fullyQualifiedName));
 
             var identifiers = CreateIdentifiers(fullyQualifiedName);
 
