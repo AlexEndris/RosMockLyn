@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Cmd", "RosMockLyn.Cmd\RosMockLyn.Cmd.csproj", "{93F224D4-5948-446C-A1AE-D1C7E0D94952}"
 EndProject
@@ -200,6 +200,7 @@ Global
 		{605E59EE-1031-4EA2-9A29-A8FF57B6AB05}.Release|x86.Build.0 = Release|x86
 		{605E59EE-1031-4EA2-9A29-A8FF57B6AB05}.Release|x86.Deploy.0 = Release|x86
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -216,6 +217,8 @@ Global
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|x64.ActiveCfg = Release|Any CPU
 		{597007AB-7EC8-48AA-884C-86D8A90A12F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|ARM.ActiveCfg = Debug|ARM
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|ARM.Build.0 = Debug|ARM
 		{41E3549F-0B67-4C6E-A3D5-7D871CB393CC}.Debug|ARM.Deploy.0 = Debug|ARM
