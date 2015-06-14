@@ -41,6 +41,8 @@ using NUnit.Framework;
 
 using RosMockLyn.Core.Generation;
 
+using MethodInfo = RosMockLyn.Core.Generation.MethodInfo;
+
 namespace RosMockLyn.Core.Tests.Generation
 {
     [TestFixture]
@@ -48,8 +50,6 @@ namespace RosMockLyn.Core.Tests.Generation
     {
         private MethodGenerator _methodGenerator;
 
-        public int TestProperty { get; set; }
-        
         [SetUp]
         public void SetUp()
         {
@@ -60,50 +60,35 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_ReturnsMethodDeclarationSyntax()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethod");
-
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>();
         }
 
         [Test, Category("Unit Test")]
-        public void Generate_PropertyInfo_ThrowsInvalidOperationException()
-        {
-            // Arrange
-            var propertyInfo = GetType().GetProperty("TestProperty");
-
-            // Act
-            Action action = () => _methodGenerator.Generate(propertyInfo);
-
-            // Assert
-            action.ShouldThrow<InvalidOperationException>();
-        }
-
-        [Test, Category("Unit Test")]
         public void Generate_MethodInfo_ReturnedMethodHasCorrectName()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethod");
+            const string methodName = "TestMethod";
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", methodName, "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
-                .And.Match<MethodDeclarationSyntax>(x => x.Identifier.ToString() == methodInfo.Name);
+                .And.Match<MethodDeclarationSyntax>(x => x.Identifier.ToString() == methodName);
         }
 
         [Test, Category("Unit Test")]
         public void Generate_MethodWithParameters_ReturnedMethodHasParameters()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethodWithParameter");
+            var parameter = new Parameter("int", "i");
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", new List<Parameter> { parameter }));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
@@ -114,10 +99,8 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_MethodWithReturnValue_ReturnedMethodHasAReturnValue()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethodWithReturnValue");
-
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "int", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
@@ -128,10 +111,8 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_Method_ReturnedMethodHasSubstitutionContextCall()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethodWithParameter");
-
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
@@ -148,10 +129,10 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_MethodWithParameters_ReturnedMethodHasSubstitutionContextCallWithParameters()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethodWithParameter");
+            var parameter = new Parameter("int", "i");
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", new List<Parameter> { parameter }));
 
             // Assert
             var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
@@ -170,10 +151,8 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_MethodWithReturnValue_ReturnedMethodHasSubstitutionContextCallWithReturnValue()
         {
             // Arrange
-            var methodInfo = GetType().GetMethod("TestMethodWithReturnValue");
-
             // Act
-            var syntaxNode = _methodGenerator.Generate(methodInfo);
+            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "int", Enumerable.Empty<Parameter>()));
 
             // Assert
             var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
@@ -185,19 +164,6 @@ namespace RosMockLyn.Core.Tests.Generation
 
             memberAccessExpression.Identifier.ToString().Should().Be("Method");
             memberAccessExpression.TypeArgumentList.Arguments.Should().NotBeEmpty();
-        }
-
-        public void TestMethodWithParameter(int i)
-        {
-        }
-
-        public int TestMethodWithReturnValue()
-        {
-            return 1;
-        }
-
-        public void TestMethod()
-        {
         }
     }
 }

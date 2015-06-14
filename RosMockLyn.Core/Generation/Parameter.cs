@@ -25,22 +25,18 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using System.Collections.Generic;
-using System.Reflection;
-
-using Microsoft.CodeAnalysis;
-
-using RosMockLyn.Core.Generation;
-
-using MethodInfo = RosMockLyn.Core.Generation.MethodInfo;
-
-namespace RosMockLyn.Core.Interfaces
+namespace RosMockLyn.Core.Generation
 {
-    public interface ICodeGenerator
+    public struct Parameter
     {
-        GeneratorType Type { get; }
+        public string ParameterType { get; private set; } 
 
-        SyntaxNode Generate(MethodInfo methodInfo);
+        public string ParameterName { get; private set; }
+
+        public Parameter(string parameterType, string parameterName)
+        {
+            ParameterType = parameterType;
+            ParameterName = parameterName;
+        }
     }
 }

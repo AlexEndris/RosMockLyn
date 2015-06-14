@@ -25,11 +25,8 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -53,59 +50,49 @@ namespace RosMockLyn.Core.Generation
             }
         }
 
-        public SyntaxNode Generate(MemberInfo memberInfo)
+        public SyntaxNode Generate(MethodInfo methodInfo)
         {
-            var methodInfo = memberInfo as MethodInfo;
-
-            if (methodInfo == null)
-                throw new InvalidOperationException("Supplied MemberInfo must be a MethodInfo");
-
-            var methodName = methodInfo.Name;
-            var returnType = GetType(methodInfo.ReturnType);
-
-            var parameterInfos = methodInfo.GetParameters();
-
-            var parameters = GetParameters(parameterInfos);
-
-            return GenerateMethod(methodName, returnType)
-                .WithExplicitInterfaceSpecifier(GenerateExplicitInterfaceSpecifier(methodInfo))
-                .WithParameterList(parameters)
-                .WithBody(GenerateMethodBody(methodInfo.ReturnType, parameterInfos));
+            return GenerateMethod(methodInfo.MethodName, methodInfo.ReturnType)
+                .WithExplicitInterfaceSpecifier(GenerateExplicitInterfaceSpecifier(methodInfo.InterfaceName))
+                .WithParameterList(GetParameters(methodInfo.Parameters))
+                .WithBody(GenerateMethodBody(methodInfo.ReturnType, methodInfo.Parameters));
         }
 
-        private static ExplicitInterfaceSpecifierSyntax GenerateExplicitInterfaceSpecifier(MethodInfo methodInfo)
+        private static ExplicitInterfaceSpecifierSyntax GenerateExplicitInterfaceSpecifier(string interfaceName)
         {
-            return SyntaxFactory.ExplicitInterfaceSpecifier(SyntaxFactory.IdentifierName(methodInfo.DeclaringType.Name));
+            return SyntaxFactory.ExplicitInterfaceSpecifier(SyntaxFactory.IdentifierName(interfaceName));
         }
 
-        private ParameterListSyntax GetParameters(IEnumerable<ParameterInfo> parameters)
+        private ParameterListSyntax GetParameters(IEnumerable<Parameter> parameters)
         {
             if (!parameters.Any())
                 return SyntaxFactory.ParameterList();
 
-            return SyntaxFactory.ParameterList(SyntaxFactory.SeparatedList(parameters.Select(CreateParameter)));
+            return SyntaxFactory.ParameterList(
+                    SyntaxFactory.SeparatedList(
+                        parameters.Select(x => CreateParameter(x.ParameterType, x.ParameterName))));
         }
 
-        private TypeSyntax GetType(Type type)
+        private TypeSyntax GetType(string type)
         {
-            return SyntaxFactory.IdentifierName(type.ToString());
+            return SyntaxFactory.IdentifierName(type);
         }
 
-        private ParameterSyntax CreateParameter(ParameterInfo parameter)
+        private ParameterSyntax CreateParameter(string parameterType, string parameterName)
         {
             return
-                SyntaxFactory.Parameter(SyntaxFactory.Identifier(parameter.Name))
-                    .WithType(GetType(parameter.ParameterType));
+                SyntaxFactory.Parameter(SyntaxFactory.Identifier(parameterName))
+                    .WithType(GetType(parameterType));
         }
 
-        private MethodDeclarationSyntax GenerateMethod(string methodName, TypeSyntax returnType)
+        private MethodDeclarationSyntax GenerateMethod(string methodName, string returnType)
         {
-            return SyntaxFactory.MethodDeclaration(returnType, methodName);
+            return SyntaxFactory.MethodDeclaration(GetType(returnType), methodName);
         }
 
-        private BlockSyntax GenerateMethodBody(Type returnType, IEnumerable<ParameterInfo> parameters)
+        private BlockSyntax GenerateMethodBody(string returnType, IEnumerable<Parameter> parameters)
         {
-            if (returnType == typeof(void))
+            if (returnType == typeof(void).Name)
             {
                 return SyntaxFactory.Block(GenerateVoidMethodBody(parameters));
             }
@@ -113,14 +100,14 @@ namespace RosMockLyn.Core.Generation
             return SyntaxFactory.Block(GenerateReturnMethodBody(returnType, parameters));
         }
 
-        private StatementSyntax GenerateVoidMethodBody(IEnumerable<ParameterInfo> parameters)
+        private StatementSyntax GenerateVoidMethodBody(IEnumerable<Parameter> parameters)
         {
             var substitution = GenerateMethodSubstitution(parameters);
 
             return SyntaxFactory.ExpressionStatement(substitution);
         }
 
-        private static InvocationExpressionSyntax GenerateMethodSubstitution(IEnumerable<ParameterInfo> parameters)
+        private static InvocationExpressionSyntax GenerateMethodSubstitution(IEnumerable<Parameter> parameters)
         {
             var substitution =
                 SyntaxFactory.InvocationExpression(
@@ -135,13 +122,13 @@ namespace RosMockLyn.Core.Generation
         }
 
         private static InvocationExpressionSyntax AddMethodArguments(
-             IEnumerable<ParameterInfo> parameters,
+             IEnumerable<Parameter> parameters,
             InvocationExpressionSyntax substitution)
         {
             if (!parameters.Any())
                 return substitution;
 
-            var arguments = parameters.Select(x => SyntaxFactory.IdentifierName(x.Name));
+            var arguments = parameters.Select(x => SyntaxFactory.IdentifierName(x.ParameterName));
 
             var namedArgument = SyntaxFactory.NameColon(SyntaxFactory.IdentifierName(Arguments));
             var newObjectArry = CreateObjectArray(arguments);
@@ -168,16 +155,16 @@ namespace RosMockLyn.Core.Generation
                     SyntaxFactory.SeparatedList<ExpressionSyntax>(arguments)));
         }
 
-        private StatementSyntax GenerateReturnMethodBody(Type returnType, IEnumerable<ParameterInfo> parameters)
+        private StatementSyntax GenerateReturnMethodBody(string returnType, IEnumerable<Parameter> parameters)
         {
             var substitution = GenerateGenericMethodSubstitution(parameters, returnType);
 
             return SyntaxFactory.ReturnStatement(substitution);
         }
 
-        private static InvocationExpressionSyntax GenerateGenericMethodSubstitution(IEnumerable<ParameterInfo> parameters, Type returnType)
+        private static InvocationExpressionSyntax GenerateGenericMethodSubstitution(IEnumerable<Parameter> parameters, string returnType)
         {
-            var typeList = SyntaxFactory.SeparatedList<TypeSyntax>(new[] { SyntaxFactory.IdentifierName(returnType.Name) });
+            var typeList = SyntaxFactory.SeparatedList<TypeSyntax>(new[] { SyntaxFactory.IdentifierName(returnType) });
 
             var substitution = CreateInvocationExpression(typeList);
 
