@@ -26,6 +26,7 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace RosMockLyn.Mocking.Matching
@@ -34,6 +35,8 @@ namespace RosMockLyn.Mocking.Matching
     {
         internal static IMatcher Create(Expression expression)
         {
+            Debug.WriteLine(expression.GetType());
+
             var constExpression = expression as ConstantExpression;
 
             if (constExpression != null)
