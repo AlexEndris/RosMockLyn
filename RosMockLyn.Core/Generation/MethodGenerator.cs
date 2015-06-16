@@ -36,26 +36,18 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-    public class MethodGenerator : ICodeGenerator
+    public class MethodGenerator : IMethodGenerator
     {
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Method = "Method";
         private const string Arguments = "arguments";
 
-        public GeneratorType Type
+        public SyntaxNode Generate(MethodData methodData)
         {
-            get
-            {
-                return GeneratorType.Method;
-            }
-        }
-
-        public SyntaxNode Generate(MethodInfo methodInfo)
-        {
-            return GenerateMethod(methodInfo.MethodName, methodInfo.ReturnType)
-                .WithExplicitInterfaceSpecifier(GenerateExplicitInterfaceSpecifier(methodInfo.InterfaceName))
-                .WithParameterList(GetParameters(methodInfo.Parameters))
-                .WithBody(GenerateMethodBody(methodInfo.ReturnType, methodInfo.Parameters));
+            return GenerateMethod(methodData.MethodName, methodData.ReturnType)
+                .WithExplicitInterfaceSpecifier(GenerateExplicitInterfaceSpecifier(methodData.InterfaceName))
+                .WithParameterList(GetParameters(methodData.Parameters))
+                .WithBody(GenerateMethodBody(methodData.ReturnType, methodData.Parameters));
         }
 
         private static ExplicitInterfaceSpecifierSyntax GenerateExplicitInterfaceSpecifier(string interfaceName)

@@ -127,11 +127,12 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="GenerationOptions.cs" />
     <Compile Include="Generation\MethodGenerator.cs" />
-    <Compile Include="Generation\MethodInfo.cs" />
+    <Compile Include="Generation\MethodData.cs" />
     <Compile Include="Generation\Parameter.cs" />
     <Compile Include="Interfaces\IAssemblyManipulator.cs" />
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
     <Compile Include="Interfaces\ICodeGenerator.cs" />
+    <Compile Include="Interfaces\IMethodGenerator.cs" />
     <Compile Include="Interfaces\IProjectRetriever.cs" />
     <Compile Include="Preparation\AssemblyCompiler.cs" />
     <Compile Include="Preparation\InterfaceExtractor.cs" />

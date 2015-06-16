@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace RosMockLyn.Core.Generation
 {
-    public sealed class MethodInfo
+    public sealed class MethodData
     {
         private readonly string _interfaceName;
 
@@ -12,7 +12,7 @@ namespace RosMockLyn.Core.Generation
 
         private readonly IEnumerable<Parameter> _parameters;
 
-        public MethodInfo(string interfaceName, string methodName, string returnType, IEnumerable<Parameter> parameters)
+        public MethodData(string interfaceName, string methodName, string returnType, IEnumerable<Parameter> parameters)
         {
             _interfaceName = interfaceName;
             _methodName = methodName;

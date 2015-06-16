@@ -32,6 +32,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
@@ -40,9 +41,12 @@ namespace RosMockLyn.Core.Generation
     {
         private readonly IEnumerable<ICodeTransformer> _transformers;
 
-        public MockGenerator(IEnumerable<ICodeTransformer> transformers) : base(false)
+        private readonly IMethodGenerator _methodGenerator;
+
+        public MockGenerator(IEnumerable<ICodeTransformer> transformers, IMethodGenerator methodGenerator) : base(false)
         {
             _transformers = transformers;
+            _methodGenerator = methodGenerator;
         }
 
         public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node)
@@ -68,7 +72,15 @@ namespace RosMockLyn.Core.Generation
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var newMethodSyntax = GetTransformer(GeneratorType.Method).Transform(node);
+            var interfaceName = NameHelper.GetBaseInterfaceIdentifier(node).Identifier.ToString();
+            var methodName = node.Identifier.ToString();
+            var returnType = node.ReturnType.ToString();
+            var parameters = node.ParameterList.Parameters.Select(x => new Parameter(x.Type.ToString(), x.Identifier.ToString()));
+
+            var methodData = new MethodData(interfaceName, methodName, returnType, parameters);
+
+            var newMethodSyntax = _methodGenerator.Generate(methodData);
+            ////var newMethodSyntax = GetTransformer(GeneratorType.Method).Transform(node);
 
             return base.VisitMethodDeclaration((MethodDeclarationSyntax)newMethodSyntax);
         }

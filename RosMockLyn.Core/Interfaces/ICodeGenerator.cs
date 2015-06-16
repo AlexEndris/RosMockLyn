@@ -33,14 +33,12 @@ using Microsoft.CodeAnalysis;
 
 using RosMockLyn.Core.Generation;
 
-using MethodInfo = RosMockLyn.Core.Generation.MethodInfo;
-
 namespace RosMockLyn.Core.Interfaces
 {
     public interface ICodeGenerator
     {
         GeneratorType Type { get; }
 
-        SyntaxNode Generate(MethodInfo methodInfo);
+        SyntaxNode Generate(MethodData methodData);
     }
 }

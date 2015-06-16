@@ -51,7 +51,7 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             _transformer = Substitute.For<ICodeTransformer>();
 
-            _generator = new MockGenerator(new[] {_transformer});
+            _generator = new MockGenerator(new[] {_transformer}, null);
         }
 
         [Test, Category("Unit Test")]

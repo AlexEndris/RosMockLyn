@@ -41,8 +41,6 @@ using NUnit.Framework;
 
 using RosMockLyn.Core.Generation;
 
-using MethodInfo = RosMockLyn.Core.Generation.MethodInfo;
-
 namespace RosMockLyn.Core.Tests.Generation
 {
     [TestFixture]
@@ -61,7 +59,7 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", Enumerable.Empty<Parameter>()));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", "TestMethod", "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>();
@@ -74,7 +72,7 @@ namespace RosMockLyn.Core.Tests.Generation
             const string methodName = "TestMethod";
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", methodName, "Void", Enumerable.Empty<Parameter>()));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", methodName, "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
@@ -88,7 +86,7 @@ namespace RosMockLyn.Core.Tests.Generation
             var parameter = new Parameter("int", "i");
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", new List<Parameter> { parameter }));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", "TestMethod", "Void", new List<Parameter> { parameter }));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
@@ -100,7 +98,7 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "int", Enumerable.Empty<Parameter>()));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", "TestMethod", "int", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
@@ -112,7 +110,7 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", Enumerable.Empty<Parameter>()));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", "TestMethod", "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
@@ -132,7 +130,7 @@ namespace RosMockLyn.Core.Tests.Generation
             var parameter = new Parameter("int", "i");
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "Void", new List<Parameter> { parameter }));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", "TestMethod", "Void", new List<Parameter> { parameter }));
 
             // Assert
             var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
@@ -152,7 +150,7 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodInfo("IInterface", "TestMethod", "int", Enumerable.Empty<Parameter>()));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", "TestMethod", "int", Enumerable.Empty<Parameter>()));
 
             // Assert
             var memberAccessExpressionSyntaxes = syntaxNode.DescendantNodes()
