@@ -1,4 +1,4 @@
-RosMockLyn [![Build status](https://ci.appveyor.com/api/projects/status/github/AlexEndris/RosMockLyn?svg=true)](https://ci.appveyor.com/project/AlexEndris/rosmocklyn?Branch=master) [![NuGet downloads](https://img.shields.io/nuget/dt/RosMockLyn.svg)](https://www.nuget.org/packages/RosMockLyn) [![Version](https://img.shields.io/nuget/v/RosMockLyn.svg)](https://www.nuget.org/packages/RosMockLyn)
+RosMockLyn [![Build status](https://ci.appveyor.com/api/projects/status/github/AlexEndris/RosMockLyn?branch=master&svg=true)](https://ci.appveyor.com/project/AlexEndris/rosmocklyn?Branch=master) [![NuGet downloads](https://img.shields.io/nuget/dt/RosMockLyn.svg)](https://www.nuget.org/packages/RosMockLyn) [![Version](https://img.shields.io/nuget/v/RosMockLyn.svg)](https://www.nuget.org/packages/RosMockLyn)
 ========
 RosMockLyn is the most user friendly compile-time mocking framework out there. It is - as the name implies - powered by Project Roslyn compilers which means, as long as your project compiles itself, RosMockLyn will create the mocks for you.
 
