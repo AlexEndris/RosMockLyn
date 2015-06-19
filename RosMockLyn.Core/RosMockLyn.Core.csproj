@@ -129,6 +129,8 @@
     <Compile Include="Generation\MethodGenerator.cs" />
     <Compile Include="Generation\MethodData.cs" />
     <Compile Include="Generation\Parameter.cs" />
+    <Compile Include="Generation\PropertyData.cs" />
+    <Compile Include="Generation\PropertyGenerator.cs" />
     <Compile Include="Interfaces\IAssemblyManipulator.cs" />
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
     <Compile Include="Interfaces\ICodeGenerator.cs" />

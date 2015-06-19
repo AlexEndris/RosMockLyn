@@ -25,8 +25,11 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -102,6 +105,21 @@ namespace RosMockLyn.Core.Generation
         public SyntaxTree GenerateMock(SyntaxTree treeToGenerateMockFrom)
         {
             return SyntaxFactory.SyntaxTree(Visit(treeToGenerateMockFrom.GetRoot()).NormalizeWhitespace());
+        }
+
+        public SyntaxTree GenerateMockFromType(Type typeToMock)
+        {
+            var methods = typeToMock.GetTypeInfo()
+                .DeclaredMethods
+                .Select(x => new MethodData(typeToMock.FullName, x.Name, x.ReturnType.FullName, GetParamters(x)))
+                .Select(_methodGenerator.Generate);
+
+            return null;
+        }
+
+        private static IEnumerable<Parameter> GetParamters(MethodInfo x)
+        {
+            return x.GetParameters().Select(y => new Parameter(y.ParameterType.FullName, y.Name));
         }
 
         private ICodeTransformer GetTransformer(GeneratorType type)

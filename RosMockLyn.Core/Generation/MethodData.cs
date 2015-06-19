@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace RosMockLyn.Core.Generation
 {
-    public sealed class MethodData
+    public struct MethodData
     {
         private readonly string _interfaceName;
 
