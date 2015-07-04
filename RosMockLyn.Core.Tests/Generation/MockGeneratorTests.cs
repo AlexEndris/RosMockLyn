@@ -112,21 +112,6 @@ namespace RosMockLyn.Core.Tests.Generation
         }
 
         [Test, Category("Unit Test")]
-        public void VisitMethodDeclaration_ShouldCallInterfaceTransformer()
-        {
-            // Arrange
-            _transformer.Type.Returns(GeneratorType.Method);
-            _transformer.Transform(Arg.Any<SyntaxNode>())
-                .Returns(SyntaxFactory.MethodDeclaration(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)), "x"));
-
-            // Act
-            _generator.VisitMethodDeclaration(null);
-
-            // Assert
-            _transformer.Received(1).Transform(Arg.Any<SyntaxNode>());
-        }
-
-        [Test, Category("Unit Test")]
         public void VisitPropertyDeclaration_ShouldCallInterfaceTransformer()
         {
             // Arrange

@@ -67,20 +67,20 @@ namespace RosMockLyn.Mocking.IoC
 
             foreach (var file in await folder.GetFilesAsync())
             {
-                if (file.FileType == ".dll" || file.FileType == ".exe")
-                {
-                    try
-                    {
-                        var assemblyName = new AssemblyName(file.DisplayName);
-                        var assembly = Assembly.Load(assemblyName);
+                if (file.FileType != ".dll" && file.FileType != ".exe")
+                    continue;
 
-                        RegisterAssembly(assembly);
-                    }
-                    catch (Exception)
-                    {
-                        // No need to do something as the assembly loaded
-                        // could just be a native one (like Sqlite)
-                    }
+                try
+                {
+                    var assemblyName = new AssemblyName(file.DisplayName);
+                    var assembly = Assembly.Load(assemblyName);
+
+                    RegisterAssembly(assembly);
+                }
+                catch (Exception)
+                {
+                    // No need to do something as the assembly loaded
+                    // could just be a native one (like Sqlite)
                 }
             }
         }

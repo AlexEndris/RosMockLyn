@@ -32,6 +32,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
@@ -52,7 +53,9 @@ namespace RosMockLyn.Core.Generation
 
         private static ExplicitInterfaceSpecifierSyntax GenerateExplicitInterfaceSpecifier(string interfaceName)
         {
-            return SyntaxFactory.ExplicitInterfaceSpecifier(SyntaxFactory.IdentifierName(interfaceName));
+            var baseInterface = IdentifierHelper.GetIdentifier(interfaceName);
+
+            return SyntaxFactory.ExplicitInterfaceSpecifier(baseInterface);
         }
 
         private ParameterListSyntax GetParameters(IEnumerable<Parameter> parameters)

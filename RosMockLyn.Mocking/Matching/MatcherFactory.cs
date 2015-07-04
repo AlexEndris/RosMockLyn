@@ -45,9 +45,7 @@ namespace RosMockLyn.Mocking.Matching
 
             if (memberExpression != null)
             {
-                var value = GetMemberValue(memberExpression);
-
-                return new ConstantMatcher(value);
+                return new ConstantMatcher(memberExpression.GetMemberValue());
             }
 
             if (expression is MethodCallExpression)
@@ -60,15 +58,6 @@ namespace RosMockLyn.Mocking.Matching
             }
 
             throw new NotSupportedException();
-        }
-
-        private static object GetMemberValue(MemberExpression memberExpression)
-        {
-            dynamic info = memberExpression.Member;
-
-            var obj = ((ConstantExpression)memberExpression.Expression).Value;
-
-            return info.GetValue(obj);
         }
     }
 }

@@ -126,6 +126,10 @@
     <Compile Include="AssemblyManipulator.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="GenerationOptions.cs" />
+    <Compile Include="Generation\ClassData.cs" />
+    <Compile Include="Generation\ClassGenerator.cs" />
+    <Compile Include="Generation\IndexerData.cs" />
+    <Compile Include="Generation\IndexerGenerator.cs" />
     <Compile Include="Generation\MethodGenerator.cs" />
     <Compile Include="Generation\MethodData.cs" />
     <Compile Include="Generation\Parameter.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="Generation\PropertyGenerator.cs" />
     <Compile Include="Interfaces\IAssemblyManipulator.cs" />
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
+    <Compile Include="Interfaces\IClassGenerator.cs" />
     <Compile Include="Interfaces\ICodeGenerator.cs" />
     <Compile Include="Interfaces\IMethodGenerator.cs" />
     <Compile Include="Interfaces\IProjectRetriever.cs" />
