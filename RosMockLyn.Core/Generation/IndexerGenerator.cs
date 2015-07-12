@@ -26,15 +26,92 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System.Collections.Generic;
+using System.Linq;
+
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+using RosMockLyn.Core.Helpers;
 
 namespace RosMockLyn.Core.Generation
 {
     public sealed class IndexerGenerator
     {
+        private const string SubstitutionContext = "SubstitutionContext";
+        private const string Setter = "SetIndex";
+        private const string Getter = "GetIndex";
+
         public SyntaxNode Generate(IndexerData indexerData)
         {
-            return null;
+            var explicitInterfaceSpecifier = SyntaxFactory.ExplicitInterfaceSpecifier(IdentifierHelper.GetIdentifier(indexerData.InterfaceName));
+            var type = IdentifierHelper.GetIdentifier(indexerData.Type);
+
+            return SyntaxFactory.IndexerDeclaration(type)
+                .WithExplicitInterfaceSpecifier(explicitInterfaceSpecifier)
+                .WithParameterList(GenerateParameterList(indexerData.Parameters))
+                .WithAccessorList(GenerateAccessors(type, indexerData.Parameters, indexerData.HasSetter));
+        }
+
+        private BracketedParameterListSyntax GenerateParameterList(IEnumerable<Parameter> parameters)
+        {
+            return SyntaxFactory.BracketedParameterList(
+                    SyntaxFactory.SeparatedList(
+                        parameters.Select(SyntaxHelper.CreateParameter)));
+        }
+        
+        private AccessorListSyntax GenerateAccessors(NameSyntax type, IEnumerable<Parameter> parameters, bool hasSetter)
+        {
+            IList<AccessorDeclarationSyntax> accessors = new List<AccessorDeclarationSyntax>
+                                                             {
+                                                                 GenerateGetter(type, parameters)
+                                                             };
+
+            if (hasSetter)
+                accessors.Add(GenerateSetter(type, parameters));
+
+            return SyntaxFactory.AccessorList(SyntaxFactory.List(accessors));
+        }
+
+        private AccessorDeclarationSyntax GenerateGetter(TypeSyntax type, IEnumerable<Parameter> parameters)
+        {
+            var substitutionCall = SyntaxFactory.ReturnStatement(GenerateSubstitutionCall(type, Getter, parameters));
+
+            return SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration, SyntaxFactory.Block(substitutionCall));
+        }
+
+        private AccessorDeclarationSyntax GenerateSetter(TypeSyntax type, IEnumerable<Parameter> parameters)
+        {
+            var substitution = GenerateSubstitutionCall(type, Setter, parameters);
+
+            var argument = SyntaxFactory.Argument(SyntaxFactory.IdentifierName("value"));
+            substitution = substitution.WithArgumentList(
+                    SyntaxFactory.ArgumentList(SyntaxFactory.SeparatedList(new[] { argument })));
+
+            var substitutionCall = SyntaxFactory.ExpressionStatement(substitution);
+
+            return SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, SyntaxFactory.Block(substitutionCall));
+        }
+
+        private static InvocationExpressionSyntax GenerateSubstitutionCall(TypeSyntax type, string accessor, IEnumerable<Parameter> parameters)
+        {
+            var typeList = SyntaxFactory.SingletonSeparatedList(type);
+
+            return SyntaxFactory.InvocationExpression(
+                SyntaxFactory.MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxFactory.IdentifierName(SubstitutionContext),
+                    SyntaxFactory.GenericName(accessor)
+                            .WithTypeArgumentList(SyntaxFactory.TypeArgumentList(typeList))))
+                        .WithArgumentList(
+                            SyntaxFactory.ArgumentList(
+                                SyntaxFactory.SeparatedList(parameters.Select(GetArgument))));
+        }
+
+        private static ArgumentSyntax GetArgument(Parameter parameter)
+        {
+            return SyntaxFactory.Argument(IdentifierHelper.GetIdentifier(parameter.ParameterName));
         }
     }
 }

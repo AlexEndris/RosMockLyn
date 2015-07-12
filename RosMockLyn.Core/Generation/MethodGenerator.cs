@@ -65,24 +65,12 @@ namespace RosMockLyn.Core.Generation
 
             return SyntaxFactory.ParameterList(
                     SyntaxFactory.SeparatedList(
-                        parameters.Select(x => CreateParameter(x.ParameterType, x.ParameterName))));
-        }
-
-        private TypeSyntax GetType(string type)
-        {
-            return SyntaxFactory.IdentifierName(type);
-        }
-
-        private ParameterSyntax CreateParameter(string parameterType, string parameterName)
-        {
-            return
-                SyntaxFactory.Parameter(SyntaxFactory.Identifier(parameterName))
-                    .WithType(GetType(parameterType));
+                        parameters.Select(SyntaxHelper.CreateParameter)));
         }
 
         private MethodDeclarationSyntax GenerateMethod(string methodName, string returnType)
         {
-            return SyntaxFactory.MethodDeclaration(GetType(returnType), methodName);
+            return SyntaxFactory.MethodDeclaration(IdentifierHelper.GetIdentifier(returnType), methodName);
         }
 
         private BlockSyntax GenerateMethodBody(string returnType, IEnumerable<Parameter> parameters)

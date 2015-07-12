@@ -135,6 +135,7 @@
     <Compile Include="Generation\Parameter.cs" />
     <Compile Include="Generation\PropertyData.cs" />
     <Compile Include="Generation\PropertyGenerator.cs" />
+    <Compile Include="Helpers\SyntaxHelper.cs" />
     <Compile Include="Interfaces\IAssemblyManipulator.cs" />
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
     <Compile Include="Interfaces\IClassGenerator.cs" />
@@ -146,8 +147,8 @@
     <Compile Include="Interfaces\IInterfaceExtractor.cs" />
     <Compile Include="Interfaces\IMockGenerator.cs" />
     <Compile Include="Interfaces\IMockRegistryGenerator.cs" />
-    <Compile Include="Generation\MockRegistryGenerator.cs" />
-    <Compile Include="Generation\MockGenerator.cs" />
+    <Compile Include="MockRegistryGenerator.cs" />
+    <Compile Include="MockGenerator.cs" />
     <Compile Include="Helpers\IdentifierHelper.cs" />
     <Compile Include="Interfaces\IAssemblyGenerator.cs" />
     <Compile Include="IoC\ModuleRegistry.cs" />
