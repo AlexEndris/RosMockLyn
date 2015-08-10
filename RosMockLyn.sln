@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 14.0.22823.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Cmd", "RosMockLyn.Cmd\RosMockLyn.Cmd.csproj", "{93F224D4-5948-446C-A1AE-D1C7E0D94952}"
 EndProject
@@ -43,6 +43,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGetBuild", "NuGetBuild", "{9D21F3CF-2A36-4B37-A7D8-F36B92F0B156}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet", "NuGet\NuGet.csproj", "{66DDADC1-1631-4EC7-8CB2-DD8180188234}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{3194FDB7-2ED0-4A31-B9E6-ADCE701C3FE6}"
+	ProjectSection(SolutionItems) = preProject
+		Rules.ruleset = Rules.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
