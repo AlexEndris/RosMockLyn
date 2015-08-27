@@ -54,7 +54,7 @@ namespace RosMockLyn.Core.Helpers
             return string.Join(".", parts);
         }
 
-        public static bool Contains(SyntaxNode node, IEnumerable<string> usedInterfaces)
+        public static bool ContainsAnyInterface(SyntaxNode node, IEnumerable<string> usedInterfaces)
         {
             return node.DescendantNodesAndSelf()
                 .OfType<InterfaceDeclarationSyntax>()

@@ -89,7 +89,7 @@ namespace RosMockLyn.Core
         private List<SyntaxTree> GenerateMocks(IEnumerable<Project> referencedProjects, IEnumerable<string> usedInterfaces)
         {
             var trees = referencedProjects.SelectMany(_interfaceExtractor.Extract)
-                                           .Where(x => IdentifierHelper.Contains(x.GetRoot(), usedInterfaces));
+                                           .Where(x => IdentifierHelper.ContainsAnyInterface(x.GetRoot(), usedInterfaces));
 
             var mocks = trees.Select(_mockGenerator.GenerateMock);
 

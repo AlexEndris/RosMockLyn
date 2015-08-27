@@ -26,6 +26,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using FluentAssertions;
+
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NUnit.Framework;
 using RosMockLyn.Core.Helpers;
@@ -74,6 +76,49 @@ namespace RosMockLyn.Core.Tests.Helpers
 
             // Assert
             actual.Should().Be(expected);
+        }
+
+        [Test, Category("Unit Test")]
+        public void ContainsAnyInterface_ShouldReturnTrue_WhenAnyInterfaceIsContained()
+        {
+            // Arrange
+            string expected = "MyInterface";
+            string other = "MyOtherInterface";
+            var interfaceDeclaration = SyntaxFactory.InterfaceDeclaration(expected);
+
+            // Act
+            var result = IdentifierHelper.ContainsAnyInterface(interfaceDeclaration, new[] { other, expected });
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test, Category("Unit Test")]
+        public void ContainsAnyInterface_ShouldReturnTrue_WhenInterfaceIsContained()
+        {
+            // Arrange
+            string expected = "MyInterface";
+            var interfaceDeclaration = SyntaxFactory.InterfaceDeclaration(expected);
+
+            // Act
+            var result = IdentifierHelper.ContainsAnyInterface(interfaceDeclaration, new[] { expected });
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test, Category("Unit Test")]
+        public void ContainsAnyInterface_ShouldReturnFalse_WhenInterfaceIsNotContained()
+        {
+            // Arrange
+            string notExpected = "MyInterface";
+            var interfaceDeclaration = SyntaxFactory.InterfaceDeclaration("Test");
+
+            // Act
+            var result = IdentifierHelper.ContainsAnyInterface(interfaceDeclaration, new[] { notExpected });
+
+            // Assert
+            result.Should().BeFalse();
         }
     }
 }
