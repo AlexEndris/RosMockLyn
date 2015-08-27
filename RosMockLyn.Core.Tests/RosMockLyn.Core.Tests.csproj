@@ -127,6 +127,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="EnumerableExtrensionsTests.cs" />
     <Compile Include="Generation\MethodGeneratorTests.cs" />
     <Compile Include="Generation\MockGeneratorTests.cs" />
     <Compile Include="Generation\MockRegistryGeneratorTests.cs" />
