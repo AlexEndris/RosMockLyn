@@ -29,11 +29,8 @@
 using System.Linq;
 
 using FluentAssertions;
-
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NSubstitute;
 using NUnit.Framework;
 
 using RosMockLyn.Core.Generation;

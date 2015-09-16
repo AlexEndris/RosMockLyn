@@ -37,98 +37,98 @@ using RosMockLyn.Core.IoC;
 
 namespace RosMockLyn.Core.Tests.IoC
 {
-	[TestFixture]
-	public class ModuleRegistryTests
-	{
-		private IContainer _container;
+    [TestFixture]
+    public class ModuleRegistryTests
+    {
+        private IContainer _container;
 
-		[SetUp]
-		public void SetUp()
-		{
-			ContainerBuilder builder = new ContainerBuilder();
-			builder.RegisterModule<ModuleRegistry>();
+        [SetUp]
+        public void SetUp()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterModule<ModuleRegistry>();
 
-			_container = builder.Build();
-		}
+            _container = builder.Build();
+        }
 
-		[Test, Category("Unit Test")]
-		public void MethodGenerator_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IMethodGenerator>().Should().BeTrue();
-			_container.Resolve<IMethodGenerator>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void MethodGenerator_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IMethodGenerator>().Should().BeTrue();
+            _container.Resolve<IMethodGenerator>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void MockAssemblyGenerator_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IAssemblyGenerator>().Should().BeTrue();
-			_container.Resolve<IAssemblyGenerator>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void MockAssemblyGenerator_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IAssemblyGenerator>().Should().BeTrue();
+            _container.Resolve<IAssemblyGenerator>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void ProjectRetriever_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IProjectRetriever>().Should().BeTrue();
-			_container.Resolve<IProjectRetriever>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void ProjectRetriever_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IProjectRetriever>().Should().BeTrue();
+            _container.Resolve<IProjectRetriever>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void InterfaceExtractor_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IInterfaceExtractor>().Should().BeTrue();
-			_container.Resolve<IInterfaceExtractor>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void InterfaceExtractor_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IInterfaceExtractor>().Should().BeTrue();
+            _container.Resolve<IInterfaceExtractor>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void MockGenerator_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IMockGenerator>().Should().BeTrue();
-			_container.Resolve<IMockGenerator>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void MockGenerator_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IMockGenerator>().Should().BeTrue();
+            _container.Resolve<IMockGenerator>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void MockRegistryGenerator_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IMockRegistryGenerator>().Should().BeTrue();
-			_container.Resolve<IMockRegistryGenerator>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void MockRegistryGenerator_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IMockRegistryGenerator>().Should().BeTrue();
+            _container.Resolve<IMockRegistryGenerator>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void AssemblyCompiler_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IAssemblyCompiler>().Should().BeTrue();
-			_container.Resolve<IAssemblyCompiler>().Should().NotBeNull();
-		}
+        [Test, Category("Unit Test")]
+        public void AssemblyCompiler_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IAssemblyCompiler>().Should().BeTrue();
+            _container.Resolve<IAssemblyCompiler>().Should().NotBeNull();
+        }
 
-		[Test, Category("Unit Test")]
-		public void AssemblyManipulator_IsRegistered()
-		{
-			// Arrange
-			// Act
-			// Assert
-			_container.IsRegistered<IAssemblyManipulator>().Should().BeTrue();
-			_container.Resolve<IAssemblyManipulator>().Should().NotBeNull();
-		}
-	}
+        [Test, Category("Unit Test")]
+        public void AssemblyManipulator_IsRegistered()
+        {
+            // Arrange
+            // Act
+            // Assert
+            _container.IsRegistered<IAssemblyManipulator>().Should().BeTrue();
+            _container.Resolve<IAssemblyManipulator>().Should().NotBeNull();
+        }
+    }
 }

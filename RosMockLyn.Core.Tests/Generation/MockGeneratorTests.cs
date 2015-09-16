@@ -33,8 +33,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using NSubstitute;
 
 using NUnit.Framework;
-
-using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Tests.Generation
