@@ -131,6 +131,7 @@
     <Compile Include="Generation\MethodGeneratorTests.cs" />
     <Compile Include="Generation\MockGeneratorTests.cs" />
     <Compile Include="Generation\MockRegistryGeneratorTests.cs" />
+    <Compile Include="Generation\IndexerGeneratorTests.cs" />
     <Compile Include="Generation\PropertyGeneratorTests.cs" />
     <Compile Include="Helpers\IdentifierHelperTests.cs" />
     <Compile Include="Helpers\NameHelperTests.cs" />
