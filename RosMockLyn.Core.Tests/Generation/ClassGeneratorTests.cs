@@ -62,42 +62,42 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_ClassData_ReturnsClassDeclarationSyntaxWithSpecifiedName()
         {
             // Arrange
-            const string className = "MyClass";
+            const string ClassName = "MyClass";
 
             // Act
-            var result = _classGenerator.Generate(new ClassData(className, "IMyInterface"));
+            var result = _classGenerator.Generate(new ClassData(ClassName, "IMyInterface"));
 
             // Assert
             result.Should().BeOfType<ClassDeclarationSyntax>()
-                .And.Match<ClassDeclarationSyntax>(x => x.Identifier.ToString() == className);
+                .And.Match<ClassDeclarationSyntax>(x => x.Identifier.ToString() == ClassName);
         }
 
         [Test, Category("Unit Test")]
         public void Generate_ClassData_ReturnsClassDeclarationSyntaxWithSpecifiedInterface()
         {
             // Arrange
-            const string interfaceName = "IMyInterface";
+            const string InterfaceName = "IMyInterface";
 
             // Act
-            var result = _classGenerator.Generate(new ClassData("MyClass", interfaceName));
+            var result = _classGenerator.Generate(new ClassData("MyClass", InterfaceName));
 
             // Assert
             result.Should().BeOfType<ClassDeclarationSyntax>()
-                .And.Match<ClassDeclarationSyntax>(x => x.BaseList.Types.Any(y => y.Type.ToString().Contains(interfaceName)));
+                .And.Match<ClassDeclarationSyntax>(x => x.BaseList.Types.Any(y => y.Type.ToString().Contains(InterfaceName)));
         }
 
         [Test, Category("Unit Test")]
         public void Generate_ClassData_ReturnsClassDeclarationSyntaxWithMockBase()
         {
             // Arrange
-            const string baseClassName = "MockBase";
+            const string BaseClassName = "MockBase";
 
             // Act
             var result = _classGenerator.Generate(new ClassData("MyClass", "IMyInterface"));
 
             // Assert
             result.Should().BeOfType<ClassDeclarationSyntax>()
-                .And.Match<ClassDeclarationSyntax>(x => x.BaseList.Types.Any(y => y.Type.ToString().Contains(baseClassName)));
+                .And.Match<ClassDeclarationSyntax>(x => x.BaseList.Types.Any(y => y.Type.ToString().Contains(BaseClassName)));
         }
 
         [Test, Category("Unit Test")]

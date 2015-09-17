@@ -64,14 +64,14 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_PropertyData_ReturnedPropertyHasCorrectName()
         {
             // Arrange
-            const string propertyName = "TestProperty";
+            const string PropertyName = "TestProperty";
 
             // Act
-            var syntaxNode = _propertyGenerator.Generate(new PropertyData("IInterface", "int", propertyName, true));
+            var syntaxNode = _propertyGenerator.Generate(new PropertyData("IInterface", "int", PropertyName, true));
 
             // Assert
             syntaxNode.Should().BeOfType<PropertyDeclarationSyntax>()
-                .And.Match<PropertyDeclarationSyntax>(x => x.Identifier.ToString() == propertyName);
+                .And.Match<PropertyDeclarationSyntax>(x => x.Identifier.ToString() == PropertyName);
         }
 
         [Test, Category("Unit Test")]
@@ -117,13 +117,13 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            const string returnType = "int";
+            const string ReturnType = "int";
 
-            var syntaxNode = _propertyGenerator.Generate(new PropertyData("IInterface", returnType, "TestMethod", true));
+            var syntaxNode = _propertyGenerator.Generate(new PropertyData("IInterface", ReturnType, "TestMethod", true));
 
             // Assert
             syntaxNode.Should().BeOfType<PropertyDeclarationSyntax>();
-            syntaxNode.DescendantNodes().OfType<IdentifierNameSyntax>().Should().Contain(x => x.ToString().Contains(returnType));
+            syntaxNode.DescendantNodes().OfType<IdentifierNameSyntax>().Should().Contain(x => x.ToString().Contains(ReturnType));
         }
 
         [Test, Category("Unit Test")]

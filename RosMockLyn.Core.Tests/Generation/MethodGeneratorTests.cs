@@ -67,14 +67,14 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_MethodInfo_ReturnedMethodHasCorrectName()
         {
             // Arrange
-            const string methodName = "TestMethod";
+            const string MethodName = "TestMethod";
 
             // Act
-            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", methodName, "Void", Enumerable.Empty<Parameter>()));
+            var syntaxNode = _methodGenerator.Generate(new MethodData("IInterface", MethodName, "Void", Enumerable.Empty<Parameter>()));
 
             // Assert
             syntaxNode.Should().BeOfType<MethodDeclarationSyntax>()
-                .And.Match<MethodDeclarationSyntax>(x => x.Identifier.ToString() == methodName);
+                .And.Match<MethodDeclarationSyntax>(x => x.Identifier.ToString() == MethodName);
         }
 
         [Test, Category("Unit Test")]

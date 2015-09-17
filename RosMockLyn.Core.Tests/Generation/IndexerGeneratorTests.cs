@@ -53,7 +53,7 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            var syntaxNode = _indexerGenerator.Generate(new IndexerData("IInterface", "int", new []{new Parameter("int", "i"), }, true));
+            var syntaxNode = _indexerGenerator.Generate(new IndexerData("IInterface", "int", new[] { new Parameter("int", "i") }, true));
 
             // Assert
             syntaxNode.Should().BeOfType<IndexerDeclarationSyntax>();
@@ -63,15 +63,15 @@ namespace RosMockLyn.Core.Tests.Generation
         public void Generate_IndexerData_ReturnedIndexerHasCorrectParameters()
         {
             // Arrange
-            const string parameterType = "int";
-            const string parameterName = "i";
+            const string ParameterType = "int";
+            const string ParameterName = "i";
 
             // Act
-            var syntaxNode = _indexerGenerator.Generate(new IndexerData("IInterface", "int", new[] { new Parameter(parameterType, parameterName), }, true));
+            var syntaxNode = _indexerGenerator.Generate(new IndexerData("IInterface", "int", new[] { new Parameter(ParameterType, ParameterName), }, true));
 
             // Assert
             syntaxNode.Should().BeOfType<IndexerDeclarationSyntax>()
-                .And.Match<IndexerDeclarationSyntax>(x => x.ParameterList.Parameters.Any(y => y.Type.ToString() == parameterType && y.Identifier.ToString() == parameterName));
+                .And.Match<IndexerDeclarationSyntax>(x => x.ParameterList.Parameters.Any(y => y.Type.ToString() == ParameterType && y.Identifier.ToString() == ParameterName));
         }
 
         [Test, Category("Unit Test")]
@@ -117,13 +117,13 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             // Arrange
             // Act
-            const string returnType = "int";
+            const string ReturnType = "int";
 
-            var syntaxNode = _indexerGenerator.Generate(new IndexerData("IInterface", returnType, new[] { new Parameter("int", "i"), }, true));
+            var syntaxNode = _indexerGenerator.Generate(new IndexerData("IInterface", ReturnType, new[] { new Parameter("int", "i"), }, true));
 
             // Assert
             syntaxNode.Should().BeOfType<IndexerDeclarationSyntax>();
-            syntaxNode.DescendantNodes().OfType<IdentifierNameSyntax>().Should().Contain(x => x.ToString().Contains(returnType));
+            syntaxNode.DescendantNodes().OfType<IdentifierNameSyntax>().Should().Contain(x => x.ToString().Contains(ReturnType));
         }
 
         [Test, Category("Unit Test")]

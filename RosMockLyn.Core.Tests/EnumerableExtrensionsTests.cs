@@ -42,7 +42,7 @@ namespace RosMockLyn.Core.Tests
         public void Apply_TwoItems_ShouldCallActionTwice()
         {
             // Arrange
-            IEnumerable<int> items = Enumerable.Range(0,1);
+            IEnumerable<int> items = Enumerable.Range(0, 1);
             int calls = 0;
 
             // Act
