@@ -52,6 +52,7 @@
     <Compile Include="Assertion\AssertionException.cs" />
     <Compile Include="Assertion\Received.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="IoC\IInjector.cs" />
     <Compile Include="IMock.cs" />
     <Compile Include="IoC\IInjectorRegistry.cs" />

@@ -33,8 +33,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using NSubstitute;
 
 using NUnit.Framework;
-
-using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Tests.Generation
@@ -51,14 +49,14 @@ namespace RosMockLyn.Core.Tests.Generation
         {
             _transformer = Substitute.For<ICodeTransformer>();
 
-            _generator = new MockGenerator(new[] {_transformer});
+            _generator = new MockGenerator(new[] {_transformer}, null);
         }
 
         [Test, Category("Unit Test")]
         public void GenerateMock_ShouldReturnSyntaxTree()
         {
             // Arrange
-            _transformer.Type.Returns(TransformerType.Using);
+            _transformer.Type.Returns(GeneratorType.Using);
             _transformer.Transform(Arg.Any<SyntaxNode>()).Returns(SyntaxFactory.CompilationUnit());
             var tree = SyntaxFactory.CompilationUnit().SyntaxTree;
 
@@ -73,7 +71,7 @@ namespace RosMockLyn.Core.Tests.Generation
         public void VisitCompilationUnit_ShouldCallInterfaceTransformer()
         {
             // Arrange
-            _transformer.Type.Returns(TransformerType.Using);
+            _transformer.Type.Returns(GeneratorType.Using);
             _transformer.Transform(Arg.Any<SyntaxNode>()).Returns(SyntaxFactory.CompilationUnit());
 
             // Act
@@ -87,7 +85,7 @@ namespace RosMockLyn.Core.Tests.Generation
         public void VisitNamespaceDeclaration_ShouldCallInterfaceTransformer()
         {
             // Arrange
-            _transformer.Type.Returns(TransformerType.Namespace);
+            _transformer.Type.Returns(GeneratorType.Namespace);
             _transformer.Transform(Arg.Any<SyntaxNode>()).Returns(SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName("x")));
 
             // Act
@@ -101,7 +99,7 @@ namespace RosMockLyn.Core.Tests.Generation
         public void VisitInterfaceDeclaration_ShouldCallInterfaceTransformer()
         {
             // Arrange
-            _transformer.Type.Returns(TransformerType.Interface);
+            _transformer.Type.Returns(GeneratorType.Interface);
             _transformer.Transform(Arg.Any<SyntaxNode>()).Returns(SyntaxFactory.ClassDeclaration("x"));
 
             // Act
@@ -112,25 +110,10 @@ namespace RosMockLyn.Core.Tests.Generation
         }
 
         [Test, Category("Unit Test")]
-        public void VisitMethodDeclaration_ShouldCallInterfaceTransformer()
-        {
-            // Arrange
-            _transformer.Type.Returns(TransformerType.Method);
-            _transformer.Transform(Arg.Any<SyntaxNode>())
-                .Returns(SyntaxFactory.MethodDeclaration(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.VoidKeyword)), "x"));
-
-            // Act
-            _generator.VisitMethodDeclaration(null);
-
-            // Assert
-            _transformer.Received(1).Transform(Arg.Any<SyntaxNode>());
-        }
-
-        [Test, Category("Unit Test")]
         public void VisitPropertyDeclaration_ShouldCallInterfaceTransformer()
         {
             // Arrange
-            _transformer.Type.Returns(TransformerType.Property);
+            _transformer.Type.Returns(GeneratorType.Property);
             _transformer.Transform(Arg.Any<SyntaxNode>())
                 .Returns(SyntaxFactory.PropertyDeclaration(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword)), "x"));
 
@@ -145,7 +128,7 @@ namespace RosMockLyn.Core.Tests.Generation
         public void VisitIndexerDeclaration_ShouldCallInterfaceTransformer()
         {
             // Arrange
-            _transformer.Type.Returns(TransformerType.Indexer);
+            _transformer.Type.Returns(GeneratorType.Indexer);
             _transformer.Transform(Arg.Any<SyntaxNode>())
                 .Returns(SyntaxFactory.IndexerDeclaration(SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.StringKeyword))));
 

@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -123,10 +127,16 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="EnumerableExtrensionsTests.cs" />
+    <Compile Include="Generation\ClassGeneratorTests.cs" />
+    <Compile Include="Generation\MethodGeneratorTests.cs" />
     <Compile Include="Generation\MockGeneratorTests.cs" />
     <Compile Include="Generation\MockRegistryGeneratorTests.cs" />
+    <Compile Include="Generation\IndexerGeneratorTests.cs" />
+    <Compile Include="Generation\PropertyGeneratorTests.cs" />
     <Compile Include="Helpers\IdentifierHelperTests.cs" />
     <Compile Include="Helpers\NameHelperTests.cs" />
+    <Compile Include="IoC\ModuleRegistryTests.cs" />
     <Compile Include="Preparation\InterfaceExtractorTests.cs" />
     <Compile Include="Preparation\ProjectRetrieverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

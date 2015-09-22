@@ -45,6 +45,8 @@ namespace RosMockLyn.Core.IoC
                 .AssignableTo<ICodeTransformer>()
                 .AsImplementedInterfaces();
 
+            builder.RegisterType<MethodGenerator>().As<IMethodGenerator>();
+
             builder.RegisterType<MockAssemblyGenerator>().As<IAssemblyGenerator>();
             builder.RegisterType<ProjectRetriever>().As<IProjectRetriever>();
             builder.RegisterType<InterfaceExtractor>().As<IInterfaceExtractor>();

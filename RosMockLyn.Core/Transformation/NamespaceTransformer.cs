@@ -39,11 +39,11 @@ namespace RosMockLyn.Core.Transformation
     {
         private const string Namespace = "RosMockLyn";
 
-        public TransformerType Type
+        public GeneratorType Type
         {
             get
             {
-                return TransformerType.Namespace;
+                return GeneratorType.Namespace;
             }
         }
 

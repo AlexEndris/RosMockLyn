@@ -126,16 +126,33 @@
     <Compile Include="AssemblyManipulator.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="GenerationOptions.cs" />
+    <Compile Include="Generation\ClassData.cs" />
+    <Compile Include="Generation\ClassGenerator.cs" />
+    <Compile Include="Generation\IndexerData.cs" />
+    <Compile Include="Generation\IndexerGenerator.cs" />
+    <Compile Include="Generation\MethodGenerator.cs" />
+    <Compile Include="Generation\MethodData.cs" />
+    <Compile Include="Generation\Parameter.cs" />
+    <Compile Include="Generation\PropertyData.cs" />
+    <Compile Include="Generation\PropertyGenerator.cs" />
+    <Compile Include="Helpers\SyntaxHelper.cs" />
     <Compile Include="Interfaces\IAssemblyManipulator.cs" />
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
+    <Compile Include="Interfaces\IClassGenerator.cs" />
+    <Compile Include="Interfaces\ICodeGenerator.cs" />
+    <Compile Include="Interfaces\IIndexerGenerator.cs" />
+    <Compile Include="Interfaces\IMethodGenerator.cs" />
     <Compile Include="Interfaces\IProjectRetriever.cs" />
+    <Compile Include="Interfaces\IPropertyGenerator.cs" />
+    <Compile Include="MockGenerationParameters.cs" />
+    <Compile Include="MockGeneratorV2.cs" />
     <Compile Include="Preparation\AssemblyCompiler.cs" />
     <Compile Include="Preparation\InterfaceExtractor.cs" />
     <Compile Include="Interfaces\IInterfaceExtractor.cs" />
     <Compile Include="Interfaces\IMockGenerator.cs" />
     <Compile Include="Interfaces\IMockRegistryGenerator.cs" />
-    <Compile Include="Generation\MockRegistryGenerator.cs" />
-    <Compile Include="Generation\MockGenerator.cs" />
+    <Compile Include="MockRegistryGenerator.cs" />
+    <Compile Include="MockGenerator.cs" />
     <Compile Include="Helpers\IdentifierHelper.cs" />
     <Compile Include="Interfaces\IAssemblyGenerator.cs" />
     <Compile Include="IoC\ModuleRegistry.cs" />
@@ -149,7 +166,7 @@
     <Compile Include="Transformation\MethodTransformer.cs" />
     <Compile Include="Transformation\NamespaceTransformer.cs" />
     <Compile Include="Transformation\PropertyTransformer.cs" />
-    <Compile Include="Interfaces\TransformerType.cs" />
+    <Compile Include="Interfaces\GeneratorType.cs" />
     <Compile Include="Transformation\UsingsTransformer.cs" />
   </ItemGroup>
   <ItemGroup />

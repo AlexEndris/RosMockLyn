@@ -41,11 +41,11 @@ namespace RosMockLyn.Core.Transformation
     {
         private const string AdditionalUsing = "RosMockLyn.Mocking";
 
-        public TransformerType Type
+        public GeneratorType Type
         {
             get
             {
-                return TransformerType.Using;
+                return GeneratorType.Using;
             }
         }
 
