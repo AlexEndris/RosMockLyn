@@ -28,7 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -84,6 +84,23 @@ namespace RosMockLyn.Core
             var finalTrees = GenerateMocks(referencedProjects, usedInterfaces);
 
             return _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
+        }
+
+        private IEnumerable<Type> GetInterfaces(IEnumerable<string> references, IEnumerable<string> usedInterfaces)
+        {
+            List<Type> interfacesToMock = new List<Type>();
+
+            interfacesToMock.AddRange(references.SelectMany(x => GetTypes(usedInterfaces, x)));
+
+            return interfacesToMock;
+        }
+
+        private static IEnumerable<Type> GetTypes(IEnumerable<string> usedInterfaces, string reference)
+        {
+            var asm = Assembly.LoadFrom(reference);
+
+            return asm.DefinedTypes.Where(x => x.IsInterface && usedInterfaces.Any(y => x.FullName.Contains(y)));
+
         }
 
         private List<SyntaxTree> GenerateMocks(IEnumerable<Project> referencedProjects, IEnumerable<string> usedInterfaces)
