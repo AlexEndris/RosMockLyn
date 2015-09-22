@@ -33,11 +33,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Helpers;
+using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-    public class PropertyGenerator
-    {
+	public class PropertyGenerator : IPropertyGenerator
+	{
         private const string SubstitutionContext = "SubstitutionContext";
 
         private const string Setter = "SetProperty";

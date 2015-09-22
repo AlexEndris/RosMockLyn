@@ -140,8 +140,12 @@
     <Compile Include="Interfaces\IAssemblyCompiler.cs" />
     <Compile Include="Interfaces\IClassGenerator.cs" />
     <Compile Include="Interfaces\ICodeGenerator.cs" />
+    <Compile Include="Interfaces\IIndexerGenerator.cs" />
     <Compile Include="Interfaces\IMethodGenerator.cs" />
     <Compile Include="Interfaces\IProjectRetriever.cs" />
+    <Compile Include="Interfaces\IPropertyGenerator.cs" />
+    <Compile Include="MockGenerationParameters.cs" />
+    <Compile Include="MockGeneratorV2.cs" />
     <Compile Include="Preparation\AssemblyCompiler.cs" />
     <Compile Include="Preparation\InterfaceExtractor.cs" />
     <Compile Include="Interfaces\IInterfaceExtractor.cs" />

@@ -34,11 +34,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Helpers;
+using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-    public sealed class IndexerGenerator
-    {
+	public sealed class IndexerGenerator : IIndexerGenerator
+	{
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Setter = "SetIndex";
         private const string Getter = "GetIndex";

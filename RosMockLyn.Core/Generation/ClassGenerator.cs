@@ -28,7 +28,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
@@ -38,7 +38,7 @@ namespace RosMockLyn.Core.Generation
     {
         private const string DerivesFrom = "RosMockLyn.Mocking.MockBase";
 
-        public SyntaxNode Generate(ClassData classData)
+        public ClassDeclarationSyntax Generate(ClassData classData)
         {
             var baseClass = IdentifierHelper.GetIdentifier(DerivesFrom);
             var baseInterface = IdentifierHelper.GetIdentifier(classData.InterfaceName);

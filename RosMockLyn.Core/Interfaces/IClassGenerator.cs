@@ -26,14 +26,13 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using Microsoft.CodeAnalysis;
-
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using RosMockLyn.Core.Generation;
 
 namespace RosMockLyn.Core.Interfaces
 {
     public interface IClassGenerator
     {
-        SyntaxNode Generate(ClassData classData);
+        ClassDeclarationSyntax Generate(ClassData classData);
     }
 }
