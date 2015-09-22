@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core
@@ -31,7 +32,7 @@ namespace RosMockLyn.Core
             var classSyntax = _classGenerator.Generate(mockGenerationParameters.ClassData)
                 .WithMembers(SyntaxFactory.List(methods.Union(properties).Union(indexers)));
 
-            var namespaceSyntax = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.IdentifierName("TODO"))
+            var namespaceSyntax = SyntaxFactory.NamespaceDeclaration(IdentifierHelper.GetIdentifier(mockGenerationParameters.NamespaceName))
                 .WithMembers(SyntaxFactory.SingletonList<MemberDeclarationSyntax>(classSyntax));
 
             var compilationUnit = SyntaxFactory.CompilationUnit()
