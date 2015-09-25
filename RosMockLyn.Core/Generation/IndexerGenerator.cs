@@ -38,8 +38,8 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-	public sealed class IndexerGenerator : IIndexerGenerator
-	{
+    public sealed class IndexerGenerator : IIndexerGenerator
+    {
         private const string SubstitutionContext = "SubstitutionContext";
         private const string Setter = "SetIndex";
         private const string Getter = "GetIndex";

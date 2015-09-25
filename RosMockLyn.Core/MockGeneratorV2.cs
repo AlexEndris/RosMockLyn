@@ -14,8 +14,10 @@ namespace RosMockLyn.Core
         private readonly IPropertyGenerator _propertyGenerator;
         private readonly IIndexerGenerator _indexerGenerator;
 
-        public MockGeneratorV2(IClassGenerator classGenerator, IMethodGenerator methodGenerator,
-            IPropertyGenerator propertyGenerator, IIndexerGenerator indexerGenerator)
+        public MockGeneratorV2(IClassGenerator classGenerator, 
+            IMethodGenerator methodGenerator,
+            IPropertyGenerator propertyGenerator,
+            IIndexerGenerator indexerGenerator)
         {
             _classGenerator = classGenerator;
             _methodGenerator = methodGenerator;

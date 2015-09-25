@@ -37,8 +37,8 @@ using RosMockLyn.Core.Interfaces;
 
 namespace RosMockLyn.Core.Generation
 {
-	public class PropertyGenerator : IPropertyGenerator
-	{
+    public class PropertyGenerator : IPropertyGenerator
+    {
         private const string SubstitutionContext = "SubstitutionContext";
 
         private const string Setter = "SetProperty";

@@ -100,7 +100,6 @@ namespace RosMockLyn.Core
             var asm = Assembly.LoadFrom(reference);
 
             return asm.DefinedTypes.Where(x => x.IsInterface && usedInterfaces.Any(y => x.FullName.Contains(y)));
-
         }
 
         private List<SyntaxTree> GenerateMocks(IEnumerable<Project> referencedProjects, IEnumerable<string> usedInterfaces)
