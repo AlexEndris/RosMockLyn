@@ -102,11 +102,12 @@ namespace RosMockLyn.Build
 
         private GenerationOptions CreateGenerationOptions()
         {
-            return new GenerationOptions {
+            return new GenerationOptions
+            {
                                                ProjectPath = TestProjectPath,
                                                OutputFilePath = GeneratedAssemblyPath,
                                                SolutionRoot = SolutionRoot
-                                         };
+            };
         }
 
         private void GenerateOutput()

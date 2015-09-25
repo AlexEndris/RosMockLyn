@@ -41,8 +41,6 @@ namespace RosMockLyn.Core.Tests.Helpers
     [TestFixture]
     public class NameHelperTests
     {
-        #region GetBaseInterfaceIdentifier
-
         [Test, Category("Unit Test")]
         public void GetBaseInterfaceIdentifier_ShouldReturnBaseTypeIdentifier_WhenSelf()
         {
@@ -117,10 +115,6 @@ namespace RosMockLyn.Core.Tests.Helpers
             actual.ShouldThrow<InvalidOperationException>();
         }
 
-        #endregion
-
-        #region GetMockImplementationName
-
         [Test, Category("Unit Test")]
         public void GetMockImplementationName_ShouldReturnMockImplementationName_WhenInterfaceDeclarationSelf()
         {
@@ -191,10 +185,6 @@ namespace RosMockLyn.Core.Tests.Helpers
             result.ShouldThrow<InvalidOperationException>();
         }
 
-        #endregion
-
-        #region GetInterfaceName
-
         [Test, Category("Unit Test")]
         public void GetInterfaceName_ShouldReturnInterfaceName_WhenSelf()
         {
@@ -245,10 +235,6 @@ namespace RosMockLyn.Core.Tests.Helpers
             result.ShouldThrow<InvalidOperationException>();
         }
 
-        #endregion
-
-        #region GetFullyQualifiedNamespace
-
         [Test, Category("Unit Test")]
         public void GetFullyQualifiedNamespace_ShouldReturnFullyQualifiedNamespace_WhenSelf()
         {
@@ -296,7 +282,5 @@ namespace RosMockLyn.Core.Tests.Helpers
             // Assert
             result.ShouldThrow<InvalidOperationException>();
         }
-
-        #endregion
     }
 }

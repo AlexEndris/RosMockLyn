@@ -32,7 +32,7 @@ namespace RosMockLyn.Core
 {
     public class GenerationOptions
     {
-        public static readonly GenerationOptions Default = new GenerationOptions();
+        private static readonly GenerationOptions Default = new GenerationOptions();
 
         public TextWriter CodeOutput { get; set; }
 

@@ -49,7 +49,6 @@ namespace RosMockLyn.Build
                 try
                 {
                     assembly = Assembly.LoadFile(assemblyPath);
-
                 }
                 catch (Exception)
                 {

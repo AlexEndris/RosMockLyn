@@ -47,7 +47,8 @@ namespace RosMockLyn.Core
 
         private readonly IMethodGenerator _methodGenerator;
 
-        public MockGenerator(IEnumerable<ICodeTransformer> transformers, IMethodGenerator methodGenerator) : base(false)
+        public MockGenerator(IEnumerable<ICodeTransformer> transformers, IMethodGenerator methodGenerator) 
+             : base(false)
         {
             _transformers = transformers;
             _methodGenerator = methodGenerator;
