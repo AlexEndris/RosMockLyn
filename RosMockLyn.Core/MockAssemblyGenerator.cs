@@ -31,7 +31,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
+using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
@@ -84,6 +84,37 @@ namespace RosMockLyn.Core
             var finalTrees = GenerateMocks(referencedProjects, usedInterfaces);
 
             return _compiler.Compile(mainProject, referencedProjects, finalTrees, options.OutputFilePath);
+        }
+
+        private MockGenerationParameters GenerateMockGenerationParameters(Type type)
+        {
+            var classData = new ClassData(type.Name.Substring(1) + "Mock", type.Name);
+
+            var methodDatas =
+                type.GetMethods()
+                    .Select(
+                        x =>
+                            new MethodData(type.Name, x.Name, x.ReturnType.FullName,
+                                x.GetParameters().Select(y => new Parameter(y.ParameterType.FullName, y.Name))));
+            var propertyDatas =
+                type.GetProperties()
+                .Where(x => x.GetIndexParameters().Length == 0)
+                    .Select(
+                        x =>
+                            new PropertyData(type.Name, x.Name, x.PropertyType.FullName, x.CanWrite));
+            var indexerDatas =
+                type.GetProperties()
+                .Where(x => x.GetIndexParameters().Length > 0)
+                    .Select(
+                        x =>
+                            new IndexerData(type.Name, x.PropertyType.FullName, x.GetIndexParameters().Select(y => new Parameter(y.ParameterType.FullName, y.Name)),
+                                x.CanWrite));
+
+            return new MockGenerationParameters(type.Namespace + ".RosMockLyn", 
+                classData,
+                methodDatas,
+                propertyDatas,
+                indexerDatas);
         }
 
         private IEnumerable<Type> GetInterfaces(IEnumerable<string> references, IEnumerable<string> usedInterfaces)
