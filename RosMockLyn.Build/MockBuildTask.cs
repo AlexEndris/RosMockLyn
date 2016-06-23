@@ -59,9 +59,9 @@ namespace RosMockLyn.Build
             var mockFileGenerator = container.Resolve<IMockFileGenerator>();
             var projectModifier = container.Resolve<IProjectModifier>();
 
-            var mockFile = mockFileGenerator.GenerateMockFile(TestProjectPath);
+            var mockFileContents = mockFileGenerator.GenerateMockFile(TestProjectPath);
 
-            if (!projectModifier.AddFileToProject(mockFile, GeneratedFilePath))
+            if (!projectModifier.AddFileToProject(mockFileContents, GeneratedFilePath, TestProjectPath))
                 return false;
             
             return true;

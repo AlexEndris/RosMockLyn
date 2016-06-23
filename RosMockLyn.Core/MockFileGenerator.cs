@@ -28,10 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
@@ -48,29 +45,24 @@ namespace RosMockLyn.Core
 
         private readonly IMockRegistryGenerator _mockRegistryGenerator;
 
+        private readonly ITreeJoiner _treeJoiner;
+
         public MockFileGenerator(IProjectRetriever projectRetriever, 
             IInterfaceExtractor interfaceExtractor,
             IMockGenerator mockGenerator, 
-            IMockRegistryGenerator mockRegistryGenerator)
+            IMockRegistryGenerator mockRegistryGenerator,
+            ITreeJoiner treeJoiner)
         {
-            if (projectRetriever == null)
-                throw new ArgumentNullException("projectRetriever");
-            if (interfaceExtractor == null)
-                throw new ArgumentNullException("interfaceExtractor");
-            if (mockGenerator == null)
-                throw new ArgumentNullException("mockGenerator");
-            if (mockRegistryGenerator == null)
-                throw new ArgumentNullException("mockRegistryGenerator");
-
             _projectRetriever = projectRetriever;
             _interfaceExtractor = interfaceExtractor;
             _mockGenerator = mockGenerator;
             _mockRegistryGenerator = mockRegistryGenerator;
+            _treeJoiner = treeJoiner;
         }
 
-        public string GenerateMockFile(GenerationOptions options)
+        public string GenerateMockFile(string projectPath)
         {
-            var mainProject = _projectRetriever.OpenProject(options.ProjectPath);
+            var mainProject = _projectRetriever.OpenProject(projectPath);
 
             var usedInterfaces = _interfaceExtractor.GetUsedInterfaceNames(mainProject);
 
@@ -78,56 +70,7 @@ namespace RosMockLyn.Core
 
             var finalTrees = GenerateMocks(referencedProjects, usedInterfaces);
 
-            return JoinTrees(finalTrees);
-        }
-
-        private string JoinTrees(IEnumerable<SyntaxTree> trees)
-        {
-            var usings = ExtractUsings(trees);
-
-            trees = RemoveUsings(trees);
-
-            var template = GenerateTemplate(usings);
-
-            var printedTrees = PrintTrees(trees);
-
-            return string.Format(template, string.Join(@"\r\n", printedTrees));
-        }
-
-        private IEnumerable<SyntaxTree> RemoveUsings(IEnumerable<SyntaxTree> trees)
-        {
-            return trees.Select(RemoveUsings);
-        }
-
-        private SyntaxTree RemoveUsings(SyntaxTree tree)
-        {
-            var root = tree.GetCompilationUnitRoot();
-
-            return root.WithUsings(SyntaxFactory.List<UsingDirectiveSyntax>()).SyntaxTree;
-        }
-
-        private IEnumerable<string> ExtractUsings(IEnumerable<SyntaxTree> trees)
-        {
-            return trees.SelectMany(ExtractUsings);
-        }
-
-        private IEnumerable<string> ExtractUsings(SyntaxTree tree)
-        {
-            var root = tree.GetCompilationUnitRoot();
-
-            return root.Usings.Select(x => x.ToString());
-        }
-
-        private string GenerateTemplate(IEnumerable<string> usings)
-        {
-            var joinedUsings = string.Join(@"\r\n", usings);
-
-            return $"{joinedUsings}\r\n\r\nnamespace RosMockLyn.Mocks\r\n{{\r\n{{0}}\r\n}}";
-        }
-
-        private IEnumerable<string> PrintTrees(IEnumerable<SyntaxTree> finalTrees)
-        {
-            return finalTrees.Select(x => x.ToString());
+            return _treeJoiner.JoinTrees(finalTrees);
         }
 
         private IEnumerable<SyntaxTree> GenerateMocks(IEnumerable<Project> referencedProjects, IEnumerable<string> usedInterfaces)

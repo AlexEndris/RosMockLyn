@@ -144,8 +144,10 @@
     <Compile Include="Interfaces\ICodeGenerator.cs" />
     <Compile Include="Interfaces\IIndexerGenerator.cs" />
     <Compile Include="Interfaces\IMethodGenerator.cs" />
+    <Compile Include="Interfaces\IProjectModifier.cs" />
     <Compile Include="Interfaces\IProjectRetriever.cs" />
     <Compile Include="Interfaces\IPropertyGenerator.cs" />
+    <Compile Include="Interfaces\ITreeJoiner.cs" />
     <Compile Include="MockGenerationParameters.cs" />
     <Compile Include="MockGeneratorV2.cs" />
     <Compile Include="Preparation\AssemblyCompiler.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="IoC\ModuleRegistry.cs" />
     <Compile Include="MockFileGenerator.cs" />
     <Compile Include="Preparation\ProjectRetriever.cs" />
+    <Compile Include="ProjectModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\ICodeTransformer.cs" />
     <Compile Include="Transformation\IndexerTransformer.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="Transformation\PropertyTransformer.cs" />
     <Compile Include="Interfaces\GeneratorType.cs" />
     <Compile Include="Transformation\UsingsTransformer.cs" />
+    <Compile Include="TreeJoiner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

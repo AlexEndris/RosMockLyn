@@ -29,6 +29,6 @@ namespace RosMockLyn.Core.Interfaces
 {
     public interface IMockFileGenerator
     {
-        string GenerateMockFile(GenerationOptions options);
+        string GenerateMockFile(string projectPath);
     }
 }
