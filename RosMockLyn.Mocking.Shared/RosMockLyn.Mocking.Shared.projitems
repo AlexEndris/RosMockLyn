@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>86399b4a-3ce4-4d89-b208-e46392c14f4d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>RosMockLyn.Mocking.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Arg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Assertion\AssertionException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Assertion\Received.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnumerableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IMock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IoC\IInjector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IoC\IInjectorRegistry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IoC\MockInjector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IReceived.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ISetup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matching\ConditionMatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matching\ConstantMatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matching\IMatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matching\MatchCondition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matching\MatcherFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MockBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MockExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Range.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReflectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\IndexerCallReturn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\IndexerInvocationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\IndexInvocationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\Interfaces\IHandleIndexInvocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\Interfaces\IHandleMethodInvocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\Interfaces\IHandlePropertyInvocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\Interfaces\IMethodCallRecorder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\InvocationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\MethodCallRecorder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\MethodInvocationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\MethodInvocationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\MethodSetupInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\PropertyInvocationHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\PropertyInvocationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\Invocations\PropertyMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\ISubstitutionContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\MethodCall.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\MethodCallReturn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\MockSubstitutionContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Routing\PropertyCallReturn.cs" />
+  </ItemGroup>
+</Project>

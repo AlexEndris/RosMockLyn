@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosMockLyn.Cmd", "RosMockLyn.Cmd\RosMockLyn.Cmd.csproj", "{93F224D4-5948-446C-A1AE-D1C7E0D94952}"
 EndProject
@@ -46,7 +46,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGetBuild", "NuGetBuild", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet", "NuGet\NuGet.csproj", "{66DDADC1-1631-4EC7-8CB2-DD8180188234}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RosMockLyn.Mocking.Shared", "RosMockLyn.Mocking.Shared\RosMockLyn.Mocking.Shared.shproj", "{86399B4A-3CE4-4D89-B208-E46392C14F4D}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		RosMockLyn.Mocking.Shared\RosMockLyn.Mocking.Shared.projitems*{8304e31c-400e-47ba-a083-0b1abd72f1a6}*SharedItemsImports = 4
+		RosMockLyn.Mocking.Shared\RosMockLyn.Mocking.Shared.projitems*{86399b4a-3ce4-4d89-b208-e46392c14f4d}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -346,5 +352,6 @@ Global
 		{1E1C1C2B-D66C-4543-8CEF-D887C4D7C8CE} = {7528AB22-0B49-44AD-9673-5DCECDD8808A}
 		{15C07ACA-FD12-4B90-B051-DC88150E2AD5} = {37217691-04E2-4CC3-B6DD-69FEE604DDBC}
 		{66DDADC1-1631-4EC7-8CB2-DD8180188234} = {9D21F3CF-2A36-4B37-A7D8-F36B92F0B156}
+		{86399B4A-3CE4-4D89-B208-E46392C14F4D} = {43E8B138-C0CA-4F5B-B20A-C132BC4B8A8C}
 	EndGlobalSection
 EndGlobal

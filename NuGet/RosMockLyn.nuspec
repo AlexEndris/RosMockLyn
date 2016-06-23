@@ -15,7 +15,7 @@
     <references>
         <reference file="RosMockLyn.Mocking.dll"/>
     </references>
-    <tags>Roslyn WP8 WP8.1 Mock MSBuild</tags>
+    <tags>Roslyn WP8 WP8.1 Mock Mocking MSBuild</tags>
   </metadata>
   <files>
     <file src="lib\**" target="lib\portable-netcore451+wpa81" />
