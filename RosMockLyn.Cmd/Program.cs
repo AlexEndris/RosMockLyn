@@ -54,7 +54,7 @@ namespace RosMockLyn.Cmd
 
         private static void GenerateAssembly(IContainer buildContainer)
         {
-            var assemblyGenerator = buildContainer.Resolve<IAssemblyGenerator>();
+            var assemblyGenerator = buildContainer.Resolve<IMockFileGenerator>();
 
             GenerationOptions options = new GenerationOptions();
 
@@ -65,7 +65,7 @@ namespace RosMockLyn.Cmd
             options.OutputFilePath =
                 @"E:\important\eigene dateien\visual studio 2013\Projects\RosMockLyn\GeneratedTestingAssembly.Tests\bin\Debug\MockAssembly.dll";
 
-            assemblyGenerator.GenerateMockAssembly(options);
+            assemblyGenerator.GenerateMockFile(options);
         }
 
         private static IContainer BuildContainer()

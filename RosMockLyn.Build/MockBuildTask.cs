@@ -27,9 +27,6 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 
 using Autofac;
 
@@ -45,50 +42,28 @@ namespace RosMockLyn.Build
     public class MockBuildTask : Task
     {
         [Required]
-        public string SolutionRoot { get; set; }
-
-        [Required]
-        public string GeneratedAssemblyPath { get; set; }
-
-        [Required]
         public string TestProjectPath { get; set; }
 
         [Required]
-        public string TestAssemblyPath { get; set; }
+        public string GeneratedFilePath { get; set; }
 
-        [Output]
-        public string GeneratedAssemblyFullPath { get; set; }
-
-        [Output]
-        public string GeneratedFile { get; set; }
 
         static MockBuildTask()
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => DependencyResolver.GetAssembly(args.Name);
         }
         
-        /// <summary>
-        /// When overridden in a derived class, executes the task.
-        /// </summary>
-        /// <returns>
-        /// true if the task successfully executed; otherwise, false.
-        /// </returns>
         public override bool Execute()
         {
             var container = BuildContainer();
-            var assemblyGenerator = container.Resolve<IAssemblyGenerator>();
-            var assemblyManipulator = container.Resolve<IAssemblyManipulator>();
+            var mockFileGenerator = container.Resolve<IMockFileGenerator>();
+            var projectModifier = container.Resolve<IProjectModifier>();
 
-            var generationOptions = CreateGenerationOptions();
+            var mockFile = mockFileGenerator.GenerateMockFile(TestProjectPath);
 
-            if (!assemblyGenerator.GenerateMockAssembly(generationOptions))
+            if (!projectModifier.AddFileToProject(mockFile, GeneratedFilePath))
                 return false;
-
-            if (!assemblyManipulator.AddReferenceToAssembly(TestAssemblyPath, GeneratedAssemblyPath))
-                return false;
-
-            GenerateOutput();
-
+            
             return true;
         }
 
@@ -98,22 +73,6 @@ namespace RosMockLyn.Build
             builder.RegisterModule<ModuleRegistry>();
 
             return builder.Build();
-        }
-
-        private GenerationOptions CreateGenerationOptions()
-        {
-            return new GenerationOptions
-            {
-                                               ProjectPath = TestProjectPath,
-                                               OutputFilePath = GeneratedAssemblyPath,
-                                               SolutionRoot = SolutionRoot
-            };
-        }
-
-        private void GenerateOutput()
-        {
-            GeneratedFile = Path.GetFileName(GeneratedAssemblyPath);
-            GeneratedAssemblyFullPath = Path.GetFullPath(GeneratedAssemblyPath);
         }
     }
 }

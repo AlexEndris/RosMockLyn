@@ -67,8 +67,8 @@ namespace RosMockLyn.Core.Tests.IoC
             // Arrange
             // Act
             // Assert
-            _container.IsRegistered<IAssemblyGenerator>().Should().BeTrue();
-            _container.Resolve<IAssemblyGenerator>().Should().NotBeNull();
+            _container.IsRegistered<IMockFileGenerator>().Should().BeTrue();
+            _container.Resolve<IMockFileGenerator>().Should().NotBeNull();
         }
 
         [Test, Category("Unit Test")]

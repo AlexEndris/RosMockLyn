@@ -156,9 +156,9 @@
     <Compile Include="MockRegistryGenerator.cs" />
     <Compile Include="MockGenerator.cs" />
     <Compile Include="Helpers\IdentifierHelper.cs" />
-    <Compile Include="Interfaces\IAssemblyGenerator.cs" />
+    <Compile Include="Interfaces\IMockFileGenerator.cs" />
     <Compile Include="IoC\ModuleRegistry.cs" />
-    <Compile Include="MockAssemblyGenerator.cs" />
+    <Compile Include="MockFileGenerator.cs" />
     <Compile Include="Preparation\ProjectRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\ICodeTransformer.cs" />

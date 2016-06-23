@@ -47,7 +47,7 @@ namespace RosMockLyn.Core.IoC
 
             builder.RegisterType<MethodGenerator>().As<IMethodGenerator>();
 
-            builder.RegisterType<MockAssemblyGenerator>().As<IAssemblyGenerator>();
+            builder.RegisterType<MockFileGenerator>().As<IMockFileGenerator>();
             builder.RegisterType<ProjectRetriever>().As<IProjectRetriever>();
             builder.RegisterType<InterfaceExtractor>().As<IInterfaceExtractor>();
             builder.RegisterType<MockGenerator>().As<IMockGenerator>();
