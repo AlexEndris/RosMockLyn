@@ -130,14 +130,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="EnumerableExtrensionsTests.cs" />
-    <Compile Include="Generation\ClassGeneratorTests.cs" />
-    <Compile Include="Generation\MethodGeneratorTests.cs" />
-    <Compile Include="Generation\MockGeneratorTests.cs" />
-    <Compile Include="Generation\MockRegistryGeneratorTests.cs" />
-    <Compile Include="Generation\IndexerGeneratorTests.cs" />
-    <Compile Include="Generation\PropertyGeneratorTests.cs" />
     <Compile Include="Helpers\IdentifierHelperTests.cs" />
     <Compile Include="Helpers\NameHelperTests.cs" />
+    <Compile Include="Integration\IntegrationTests.cs" />
     <Compile Include="IoC\ModuleRegistryTests.cs" />
     <Compile Include="Preparation\InterfaceExtractorTests.cs" />
     <Compile Include="Preparation\ProjectRetrieverTests.cs" />

@@ -29,10 +29,6 @@ using System.Reflection;
 
 using Autofac;
 
-using RosMockLyn.Core.Generation;
-using RosMockLyn.Core.Interfaces;
-using RosMockLyn.Core.Preparation;
-
 using Module = Autofac.Module;
 
 namespace RosMockLyn.Core.IoC
@@ -42,18 +38,7 @@ namespace RosMockLyn.Core.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .AssignableTo<ICodeTransformer>()
                 .AsImplementedInterfaces();
-
-            builder.RegisterType<MethodGenerator>().As<IMethodGenerator>();
-
-            builder.RegisterType<MockFileGenerator>().As<IMockFileGenerator>();
-            builder.RegisterType<ProjectRetriever>().As<IProjectRetriever>();
-            builder.RegisterType<InterfaceExtractor>().As<IInterfaceExtractor>();
-            builder.RegisterType<MockGenerator>().As<IMockGenerator>();
-            builder.RegisterType<MockRegistryGenerator>().As<IMockRegistryGenerator>();
-            builder.RegisterType<AssemblyCompiler>().As<IAssemblyCompiler>();
-            builder.RegisterType<AssemblyManipulator>().As<IAssemblyManipulator>();
 
             base.Load(builder);
         }

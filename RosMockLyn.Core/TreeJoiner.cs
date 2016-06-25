@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,12 +17,38 @@ namespace RosMockLyn.Core
             var usings = ExtractUsings(trees);
 
             trees = RemoveUsings(trees);
+            trees = RemoveNamespaces(trees);
+            trees = NormalizeWhitespace(trees);
 
             var template = GenerateTemplate(usings);
 
             var printedTrees = PrintTrees(trees);
 
-            return string.Format(template, string.Join(@"\r\n", printedTrees));
+            return string.Format(template, string.Join("\r\n", printedTrees));
+        }
+
+        private IEnumerable<SyntaxTree> NormalizeWhitespace(IEnumerable<SyntaxTree> trees)
+        {
+            return trees.Select(NormalizeWhitespace);
+        }
+
+        private SyntaxTree NormalizeWhitespace(SyntaxTree tree)
+        {
+            var root = tree.GetCompilationUnitRoot();
+
+            return root.NormalizeWhitespace().SyntaxTree;
+        }
+
+        private IEnumerable<SyntaxTree> RemoveNamespaces(IEnumerable<SyntaxTree> trees)
+        {
+            return trees.Select(RemoveNamespaces);
+        }
+
+        private SyntaxTree RemoveNamespaces(SyntaxTree tree)
+        {
+            var root = tree.GetCompilationUnitRoot();
+
+            return root.WithMembers(SyntaxFactory.List(((NamespaceDeclarationSyntax)root.Members.First()).Members)).SyntaxTree;
         }
 
         private IEnumerable<SyntaxTree> RemoveUsings(IEnumerable<SyntaxTree> trees)
@@ -50,9 +77,9 @@ namespace RosMockLyn.Core
 
         private string GenerateTemplate(IEnumerable<string> usings)
         {
-            var joinedUsings = string.Join(@"\r\n", usings);
+            var joinedUsings = string.Join("\r\n", usings);
 
-            return $"{joinedUsings}\r\n\r\nnamespace RosMockLyn.Mocks\r\n{{\r\n{{0}}\r\n}}";
+            return $"{joinedUsings}\r\n\r\nnamespace RosMockLyn.Mocks\r\n{{{{\r\n{{0}}\r\n}}}}";
         }
 
         private IEnumerable<string> PrintTrees(IEnumerable<SyntaxTree> finalTrees)

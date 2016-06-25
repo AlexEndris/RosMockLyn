@@ -52,17 +52,7 @@ namespace RosMockLyn.Core.Tests.IoC
         }
 
         [Test, Category("Unit Test")]
-        public void MethodGenerator_IsRegistered()
-        {
-            // Arrange
-            // Act
-            // Assert
-            _container.IsRegistered<IMethodGenerator>().Should().BeTrue();
-            _container.Resolve<IMethodGenerator>().Should().NotBeNull();
-        }
-
-        [Test, Category("Unit Test")]
-        public void MockAssemblyGenerator_IsRegistered()
+        public void MockFileGenerator_IsRegistered()
         {
             // Arrange
             // Act
@@ -109,26 +99,6 @@ namespace RosMockLyn.Core.Tests.IoC
             // Assert
             _container.IsRegistered<IMockRegistryGenerator>().Should().BeTrue();
             _container.Resolve<IMockRegistryGenerator>().Should().NotBeNull();
-        }
-
-        [Test, Category("Unit Test")]
-        public void AssemblyCompiler_IsRegistered()
-        {
-            // Arrange
-            // Act
-            // Assert
-            _container.IsRegistered<IAssemblyCompiler>().Should().BeTrue();
-            _container.Resolve<IAssemblyCompiler>().Should().NotBeNull();
-        }
-
-        [Test, Category("Unit Test")]
-        public void AssemblyManipulator_IsRegistered()
-        {
-            // Arrange
-            // Act
-            // Assert
-            _container.IsRegistered<IAssemblyManipulator>().Should().BeTrue();
-            _container.Resolve<IAssemblyManipulator>().Should().NotBeNull();
         }
     }
 }

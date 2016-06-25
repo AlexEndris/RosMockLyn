@@ -33,6 +33,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
 
 using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
@@ -51,7 +52,7 @@ namespace RosMockLyn.Core
         
         private const string NamespaceName = "MockRegistry";
 
-        private const string MockNamespace = "RosMockLyn";
+        private const string MockNamespace = "RosMockLyn.Mocks";
 
         private const string RegistryName = "GeneratedRegistry";
         
@@ -110,7 +111,6 @@ namespace RosMockLyn.Core
             string fullyQualifiedNamespace = NameHelper.GetFullyQualifiedNamespace(tree.GetRoot());
             string interfaceName = IdentifierHelper.AppendIdentifier(fullyQualifiedNamespace, NameHelper.GetInterfaceName(tree.GetRoot()));
             string mockName = IdentifierHelper.AppendIdentifier(
-                fullyQualifiedNamespace,
                 MockNamespace,
                 NameHelper.GetMockImplementationName(tree.GetRoot()));
 

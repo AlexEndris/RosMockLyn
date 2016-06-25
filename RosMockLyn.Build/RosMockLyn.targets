@@ -7,42 +7,11 @@
     <UsingTask TaskName="RosMockLyn.Build.MockBuildTask" AssemblyFile="$(RosMockLynBuildTaskPath)RosMockLyn.Build.dll"/>
 
     <Target 
-        AfterTargets="AfterCompile"
+        AfterTargets="BeforeBuild"
         Name="MockBuildTarget">
         <RosMockLyn.Build.MockBuildTask
-            SolutionRoot="$(SolutionDir)"
-            GeneratedAssemblyPath="$(IntermediateOutputPath)$(TargetName).Mocks.dll"
             TestProjectPath="$(ProjectPath)"
-            TestAssemblyPath="@(IntermediateAssembly)"
-        >
-            <Output TaskParameter="GeneratedFile" ItemName="GeneratedFile"/>
-            <Output TaskParameter="GeneratedAssemblyFullPath" ItemName="GeneratedAssemblyFullPath"/>
+            GeneratedFilePath="$(ProjectDir)Properties\RosMockLyn.Mocks.generated.cs">
         </RosMockLyn.Build.MockBuildTask>
-        <ItemGroup>
-            <AppxPackagePayload Include="@(GeneratedAssemblyFullPath)" Condition="@(AppxPackagePayload) != '' Or @(AppxPackagePayload) != '*Undefined*'">
-                <TargetPath>@(GeneratedFile)</TargetPath>
-            </AppxPackagePayload>
-        </ItemGroup>
-
-        <!--<PropertyGroup>
-            <NCrunchGeneratedOutput>$(TargetDir)@(GeneratedFile)</NCrunchGeneratedOutput>
-        </PropertyGroup>
-        
-        <ItemGroup Condition="'$(NCrunch)' == '1'">
-            <AddModules Include="@(GeneratedAssemblyFullPath)">
-                    <TargetPath>@(GeneratedFile)</TargetPath>
-            </AddModules>
-            <ReferenceCopyLocalPaths Include="$(NCrunchGeneratedOutput)">
-                <TargetPath>@(GeneratedFile)</TargetPath>
-            </ReferenceCopyLocalPaths>
-        </ItemGroup>
-
-        <Message Text="THIS IS MY OUTPUT: @(AppxPackagePayload)" />
-        <Message Text="THIS IS MY OUTPUT: @(ReferenceCopyLocalPaths)" />-->
     </Target>
-
-    <!--Support for ncrunch-->
-    <ItemGroup Condition="'$(NCrunch)' == '1'">
-        <None Include="$(RosMockLynBuildTaskPath)\*.*" />
-    </ItemGroup>
 </Project>

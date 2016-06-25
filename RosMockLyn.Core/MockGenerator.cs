@@ -35,7 +35,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using RosMockLyn.Core.Generation;
 using RosMockLyn.Core.Helpers;
 using RosMockLyn.Core.Interfaces;
 
@@ -45,13 +44,10 @@ namespace RosMockLyn.Core
     {
         private readonly IEnumerable<ICodeTransformer> _transformers;
 
-        private readonly IMethodGenerator _methodGenerator;
 
-        public MockGenerator(IEnumerable<ICodeTransformer> transformers, IMethodGenerator methodGenerator) 
-             : base(false)
+        public MockGenerator(IEnumerable<ICodeTransformer> transformers) 
         {
             _transformers = transformers;
-            _methodGenerator = methodGenerator;
         }
 
         public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node)
@@ -77,15 +73,7 @@ namespace RosMockLyn.Core
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var interfaceName = NameHelper.GetBaseInterfaceIdentifier(node).Identifier.ToString();
-            var methodName = node.Identifier.ToString();
-            var returnType = node.ReturnType.ToString();
-            var parameters = node.ParameterList.Parameters.Select(x => new Parameter(x.Type.ToString(), x.Identifier.ToString()));
-
-            var methodData = new MethodData(interfaceName, methodName, returnType, parameters);
-
-            var newMethodSyntax = _methodGenerator.Generate(methodData);
-            ////var newMethodSyntax = GetTransformer(GeneratorType.Method).Transform(node);
+            var newMethodSyntax = GetTransformer(GeneratorType.Method).Transform(node);
 
             return base.VisitMethodDeclaration((MethodDeclarationSyntax)newMethodSyntax);
         }
@@ -107,21 +95,6 @@ namespace RosMockLyn.Core
         public SyntaxTree GenerateMock(SyntaxTree treeToGenerateMockFrom)
         {
             return SyntaxFactory.SyntaxTree(Visit(treeToGenerateMockFrom.GetRoot()).NormalizeWhitespace());
-        }
-
-        public SyntaxTree GenerateMockFromType(Type typeToMock)
-        {
-            var methods = typeToMock.GetTypeInfo()
-                .DeclaredMethods
-                .Select(x => new MethodData(typeToMock.FullName, x.Name, x.ReturnType.FullName, GetParamters(x)))
-                .Select(_methodGenerator.Generate);
-
-            return null;
-        }
-
-        private static IEnumerable<Parameter> GetParamters(MethodInfo x)
-        {
-            return x.GetParameters().Select(y => new Parameter(y.ParameterType.FullName, y.Name));
         }
 
         private ICodeTransformer GetTransformer(GeneratorType type)

@@ -33,7 +33,6 @@ using Autofac;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-using RosMockLyn.Core;
 using RosMockLyn.Core.Interfaces;
 using RosMockLyn.Core.IoC;
 
@@ -57,13 +56,11 @@ namespace RosMockLyn.Build
         {
             var container = BuildContainer();
             var mockFileGenerator = container.Resolve<IMockFileGenerator>();
-            var projectModifier = container.Resolve<IProjectModifier>();
 
             var mockFileContents = mockFileGenerator.GenerateMockFile(TestProjectPath);
-
-            if (!projectModifier.AddFileToProject(mockFileContents, GeneratedFilePath, TestProjectPath))
-                return false;
             
+            File.WriteAllText(GeneratedFilePath, mockFileContents);
+
             return true;
         }
 
